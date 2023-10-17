@@ -7,10 +7,10 @@ USE ieee.numeric_std.ALL;
 USE std.textio.ALL;
 USE work.divider_const.ALL;
 
-ENTITY testbench IS
-END ENTITY testbench;
+ENTITY testbench1 IS
+END ENTITY testbench1;
 
-ARCHITECTURE behavioral OF testbench IS
+ARCHITECTURE behavioral OF testbench1 IS
     --Entity (as component) and input ports (as signals) go here
     COMPONENT divider IS
         PORT (
@@ -46,15 +46,16 @@ BEGIN
 
     PROCESS IS
         -- CONSTANT DIVIDE : std_logic_vector(OP_WIDTH - 1 downto 0) := std_logic_vector(to_unsigned(2,OP_WIDTH));
-
         VARIABLE read_line : line; -- a buffer for what was read
         VARIABLE write_line : line; -- a buffer for what was written
-        FILE infile : text OPEN read_mode IS "divider16.in";
-        FILE outfile : text OPEN write_mode IS "divider16.out";
+        FILE infile : text OPEN read_mode IS "divider32.in";
+        FILE outfile : text OPEN write_mode IS "divider32.out";
         VARIABLE temp1 : INTEGER;
         VARIABLE temp2 : INTEGER;
 
     BEGIN
+        wait for 1ns;
+        
         WHILE NOT (endfile(infile)) LOOP
             -- read in both operands and operations
             readline(infile, read_line);
@@ -64,6 +65,9 @@ BEGIN
             readline(infile, read_line);
             read(read_line, temp2);
             divisor_tb <= STD_LOGIC_VECTOR(to_unsigned(temp2, DIVISOR_WIDTH));
+
+            wait for 1ns;            
+            start_tb <= '1';
 
             -- write operand one
             write(write_line, temp1);
@@ -79,6 +83,8 @@ BEGIN
             write(write_line, STRING'(" -- "));       
             write(write_line, to_integer(unsigned(remainder_tb)));
             writeline (outfile, write_line);
+            start_tb <= '0';
+            WAIT FOR 5 ns;
         END LOOP;
 
     END PROCESS;

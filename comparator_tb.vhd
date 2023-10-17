@@ -6,6 +6,7 @@ USE ieee.numeric_std.ALL;
 
 ENTITY testbench IS
 END ENTITY testbench;
+
 ARCHITECTURE behavioral OF testbench IS
     --Entity (as component) and input ports (as signals) go here
     COMPONENT comparator IS

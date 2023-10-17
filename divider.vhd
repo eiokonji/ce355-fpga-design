@@ -35,60 +35,67 @@ ARCHITECTURE structural_combinational OF divider IS
         );
     END COMPONENT comparator;
 
-    SIGNAL temp_out : STD_LOGIC_VECTOR ((DIVISOR_WIDTH)*(DIVIDEND_WIDTH-DIVISOR_WIDTH) DOWNTO 0);
-    signal t_in1 : STD_LOGIC_VECTOR (DIVISOR_WIDTH DOWNTO 0);
-    signal t_in2 : STD_LOGIC_VECTOR (DIVISOR_WIDTH DOWNTO 0);
-    signal t_in3 : STD_LOGIC_VECTOR (DIVISOR_WIDTH DOWNTO 0);
+    --custom 2D array to store DINL input values to mid slice comparators
+    --dividend width x divisor width + 1
+    TYPE DINL_var_type IS ARRAY(DIVIDEND_WIDTH - 1 DOWNTO 0) OF STD_LOGIC_VECTOR(DIVISOR_WIDTH DOWNTO 0);
+    SIGNAL DINL_var : DINL_var_type;
+    TYPE DOUT_var_type IS ARRAY(DIVIDEND_WIDTH - 1 DOWNTO 0) OF STD_LOGIC_VECTOR(DIVISOR_WIDTH - 1 DOWNTO 0);
+    SIGNAL DOUT_var : DOUT_var_type;
+    SIGNAL temp_dinl : STD_LOGIC_VECTOR (DIVISOR_WIDTH DOWNTO 0);
+    SIGNAL quotient_temp : STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0);
+    SIGNAL remainder_temp : STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0);
+    SIGNAL overflow_temp : STD_LOGIC;
 
 BEGIN
-    -- initialize quotient
-    quotient <= (OTHERS => '0');
-
-    -- check for overflow
-    overflow <= '1' when (unsigned(dividend(DIVIDEND_WIDTH - 1 DOWNTO DIVISOR_WIDTH)) >= unsigned(divisor)) ELSE
+    -- compute overflow_temp
+    overflow_temp <= '1' WHEN (to_integer(unsigned(divisor)) = 0) ELSE
         '0';
 
     -- actual division here
-    -- report "sliced dividend " & integer'image(to_integer(unsigned(dividend(DIVIDEND_WIDTH - 1 DOWNTO DIVIDEND_WIDTH - DIVISOR_WIDTH))));
-    subtractor : FOR i IN 0 TO (DIVIDEND_WIDTH - DIVISOR_WIDTH) GENERATE BEGIN
+    subtractor : FOR i IN 0 TO (DIVIDEND_WIDTH - 1) GENERATE BEGIN
         firstslice : IF (i = 0) GENERATE BEGIN
-            t_in1 <= std_logic_vector(resize(unsigned(dividend(DIVIDEND_WIDTH - 1 DOWNTO DIVIDEND_WIDTH - DIVISOR_WIDTH)), DIVISOR_WIDTH+1));
+            temp_dinl <= (0 => dividend(DIVIDEND_WIDTH - 1), OTHERS => '0');
             comp_first : comparator
             PORT MAP(
-                -- DINL => '0' & dividend(DIVIDEND_WIDTH - 1 DOWNTO DIVIDEND_WIDTH - DIVISOR_WIDTH),
-                DINL => t_in1,
+                DINL => temp_dinl,
                 DINR => divisor,
-                DOUT => temp_out((DIVISOR_WIDTH)*(i+1)-1 downto (DIVISOR_WIDTH)*(i)),
-                isGreaterEq => quotient(DIVIDEND_WIDTH - DIVISOR_WIDTH)
+                DOUT => DOUT_var(i),
+                isGreaterEq => quotient_temp(DIVIDEND_WIDTH - 1 - i)
             );
+            DINL_var(i) <= DOUT_var(i) & dividend(DIVIDEND_WIDTH - 2 - i);
         END GENERATE firstslice;
 
-        midslice : IF (i > 0 AND i < (DIVIDEND_WIDTH - DIVISOR_WIDTH)) GENERATE BEGIN
-            -- t_in <= temp_out & dividend(DIVIDEND_WIDTH - DIVISOR_WIDTH - i);
-            t_in2 <= temp_out((DIVISOR_WIDTH)*(i)-1 downto (DIVISOR_WIDTH)*(i-1)) & dividend(DIVIDEND_WIDTH - DIVISOR_WIDTH - i);
-            -- t_in <= (DIVISOR_WIDTH downto 1 => temp_out, others => dividend(DIVIDEND_WIDTH - DIVISOR_WIDTH - i));
+        midslice : IF (i > 0 AND i < (DIVIDEND_WIDTH - 1)) GENERATE BEGIN
             comp_mid : comparator
             PORT MAP(
-                DINL => '0'&'1'&'0'&'1'&'0'&'1'&'0'&'1'&'0',
+                DINL => DINL_var(i - 1),
                 DINR => divisor,
-                DOUT => temp_out((DIVISOR_WIDTH)*(i+1)-1 downto (DIVISOR_WIDTH)*(i)),
-                isGreaterEq => quotient(DIVIDEND_WIDTH - DIVISOR_WIDTH - i)
+                DOUT => DOUT_var(i),
+                isGreaterEq => quotient_temp(DIVIDEND_WIDTH - 1 - i)
             );
+            DINL_var(i) <= DOUT_var(i) & dividend(DIVIDEND_WIDTH - 2 - i);
         END GENERATE midslice;
 
-        lastslice : IF (i = (DIVIDEND_WIDTH - DIVISOR_WIDTH)) GENERATE BEGIN
-            -- t_in <= temp_out & dividend(0);
-            -- t_in <= (DIVISOR_WIDTH downto 1 => temp_out, others => dividend(0));
-            t_in3 <= temp_out((DIVISOR_WIDTH)*(i)-1 downto (DIVISOR_WIDTH)*(i-1)) & dividend(0);
+        lastslice : IF (i = (DIVIDEND_WIDTH - 1)) GENERATE BEGIN
             comp_last : comparator
             PORT MAP(
-                DINL => t_in3,
+                DINL => DINL_var(i - 1), --t_in3,
                 DINR => divisor,
-                DOUT => remainder,
-                isGreaterEq => quotient(0) -- same as quotient(DIVIDEND_WIDTH-DIVISOR_WIDTH-i) ie last bit
+                DOUT => remainder_temp,
+                isGreaterEq => quotient_temp(DIVIDEND_WIDTH - 1 - i) -- ie last bit
             );
         END GENERATE lastslice;
 
     END GENERATE subtractor;
+
+    gate_start : PROCESS (start) BEGIN
+        -- check for overflow: only when divisor is 0
+        -- IF (start = '1') THEN
+        if (rising_edge(start)) then
+            quotient <= quotient_temp;
+            remainder <= remainder_temp;
+            overflow <= overflow_temp;
+        END IF;
+    END PROCESS gate_start;
 
 END ARCHITECTURE structural_combinational;
