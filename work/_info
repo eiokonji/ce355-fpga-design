@@ -1,0 +1,430 @@
+m255
+K4
+z2
+Z0 !s99 nomlopt
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+!s11e MIXED_VERSIONS
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z1 dC:/intelFPGA_lite/22.1std
+T_opt
+!s110 1697512461
+VZ6S2kmP24MNV3k<DTkhD62
+04 9 10 work testbench behavioral 1
+=22-14755bdc8980-652dfc0c-3b9-140c
+!s124 OEM10U2 
+Z2 o-quiet -auto_acc_if_foreign -work work
+Z3 tCvgOpt 0
+n@_opt
+Z4 OL;O;2021.2;73
+R1
+T_opt1
+!s110 1698173177
+VEK?`B[Wj_aQX5Al<[><4:3
+04 10 10 work testbench1 behavioral 1
+=18-14755bdc8980-653810f9-bd-1d80
+!s124 OEM10U3 
+R2
+R3
+n@_opt1
+R4
+Ecomparator
+Z5 w1697328287
+Z6 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+Z7 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z8 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 781
+Z9 dC:/Users/laptop/Documents/lab2
+Z10 8C:/Users/laptop/Documents/lab2/comparator.vhd
+Z11 FC:/Users/laptop/Documents/lab2/comparator.vhd
+l0
+L6 1
+VMcYW>hOH^NJ20_IU0;Pok1
+!s100 mU:Uj1f4bi3SnibXJkP1A0
+Z12 OL;C;2021.2;73
+32
+Z13 !s110 1698173172
+!i10b 1
+Z14 !s108 1698173172.000000
+Z15 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/comparator.vhd|
+Z16 !s107 C:/Users/laptop/Documents/lab2/comparator.vhd|
+!i113 0
+Z17 o-work work -2002 -explicit
+Z18 tExplicit 1 CvgOpt 0
+Abehavioral
+R6
+R7
+R8
+DEx4 work 10 comparator 0 22 McYW>hOH^NJ20_IU0;Pok1
+!i122 781
+l24
+L19 29
+Vgaclf_K9JzmeO0ljB7MNF0
+!s100 S]Te7ISY?>RWCo`keA^?40
+R12
+32
+R13
+!i10b 1
+R14
+R15
+R16
+!i113 0
+R17
+R18
+Pdecoder
+R7
+R8
+!i122 787
+Z19 w1696720731
+R9
+Z20 8C:/Users/laptop/Documents/decoder.vhd
+Z21 FC:/Users/laptop/Documents/decoder.vhd
+l0
+L5 1
+Vi]lKab@D^e1hXie]P[1f@2
+!s100 Ud[j953SRTJJU5=44_4m[0
+R12
+32
+Z22 !s110 1698173173
+!i10b 1
+Z23 !s108 1698173173.000000
+Z24 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/decoder.vhd|
+Z25 !s107 C:/Users/laptop/Documents/decoder.vhd|
+!i113 0
+R17
+R18
+Bbody
+Z26 DPx4 work 7 decoder 0 22 i]lKab@D^e1hXie]P[1f@2
+R7
+R8
+!i122 787
+l0
+L21 1
+VjNzP`5RUGzbF5JN2M;SCN2
+!s100 @NA1F7A?4Q6M>ohiHD2Ln2
+R12
+32
+R22
+!i10b 1
+R23
+R24
+R25
+!i113 0
+R17
+R18
+Edisplay_divider
+Z27 w1697512437
+Z28 DPx4 work 13 divider_const 0 22 E9RMg8iKBWZo`5QH2;Yfj0
+R26
+R7
+R8
+!i122 783
+R9
+Z29 8C:/Users/laptop/Documents/lab2/display_divider.vhd
+Z30 FC:/Users/laptop/Documents/lab2/display_divider.vhd
+l0
+L6 1
+VQ6WJ9NHSVjiOX:nY2nF`V0
+!s100 ;dW1c]dB@J=nobzW`cQ8h1
+R12
+32
+R22
+!i10b 1
+R14
+Z31 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/display_divider.vhd|
+Z32 !s107 C:/Users/laptop/Documents/lab2/display_divider.vhd|
+!i113 0
+R17
+R18
+Astructural
+R28
+R26
+R7
+R8
+DEx4 work 15 display_divider 0 22 Q6WJ9NHSVjiOX:nY2nF`V0
+!i122 783
+l47
+L19 67
+VFmFW_ckXWB09CgN]_[k1?2
+!s100 KW<SATnYW`SdiS[4X4LOm0
+R12
+32
+R22
+!i10b 1
+R14
+R31
+R32
+!i113 0
+R17
+R18
+Edivider
+Z33 w1698173161
+Z34 DPx4 ieee 16 std_logic_textio 0 22 8]8<fKiYoHe;_IDO3kmNH2
+R6
+R28
+R7
+R8
+!i122 784
+R9
+Z35 8C:/Users/laptop/Documents/lab2/divider.vhd
+Z36 FC:/Users/laptop/Documents/lab2/divider.vhd
+l0
+L8 1
+Va=ELal2XC@L<_KzJ>^gn>0
+!s100 jZ]13blBV]]W6nXmLaFjL1
+R12
+32
+R22
+!i10b 1
+R23
+Z37 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/divider.vhd|
+Z38 !s107 C:/Users/laptop/Documents/lab2/divider.vhd|
+!i113 0
+R17
+R18
+Astructural_combinational
+R34
+R6
+R28
+R7
+R8
+Z39 DEx4 work 7 divider 0 22 a=ELal2XC@L<_KzJ>^gn>0
+!i122 784
+l146
+L117 82
+VcUP_[XQHV5i0:WzQ4LSkj1
+!s100 8FAzgo>MMGo:lD7TR4>VQ0
+R12
+32
+R22
+!i10b 1
+R23
+R37
+R38
+!i113 0
+R17
+R18
+Abehavioral_sequential
+R34
+R6
+R28
+R7
+R8
+R39
+!i122 784
+l59
+L22 93
+VHckN5X6J=1@Ed=fSm3BOC3
+!s100 ;nnk]S>nh?RF3GDlk>>773
+R12
+32
+R22
+!i10b 1
+R23
+R37
+R38
+!i113 0
+R17
+R18
+Pdivider_const
+R7
+R8
+!i122 785
+Z40 w1697564447
+R9
+Z41 8C:/Users/laptop/Documents/lab2/divider_const.vhd
+Z42 FC:/Users/laptop/Documents/lab2/divider_const.vhd
+l0
+L6 1
+VE9RMg8iKBWZo`5QH2;Yfj0
+!s100 Wk>CT]O9ele[4>7RNGS6j0
+R12
+32
+R22
+!i10b 1
+R23
+Z43 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/divider_const.vhd|
+Z44 !s107 C:/Users/laptop/Documents/lab2/divider_const.vhd|
+!i113 0
+R17
+R18
+Bbody
+R28
+R7
+R8
+!i122 785
+l0
+L11 1
+VXkALdoG8h1n_:o[Wk0nW82
+!s100 BR1FRdfdT>oB[603H6WR63
+R12
+32
+R22
+!i10b 1
+R23
+R43
+R44
+!i113 0
+R17
+R18
+Etestbench
+Z45 w1697512001
+R6
+R7
+R8
+!i122 782
+R9
+Z46 8C:/Users/laptop/Documents/lab2/comparator_tb.vhd
+Z47 FC:/Users/laptop/Documents/lab2/comparator_tb.vhd
+l0
+L7 1
+Vh`^De6_SF;m]>A2Hae<Y23
+!s100 HW?Vo_ZEi46SOfodY^ko:2
+R12
+32
+R13
+!i10b 1
+R14
+Z48 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/comparator_tb.vhd|
+Z49 !s107 C:/Users/laptop/Documents/lab2/comparator_tb.vhd|
+!i113 0
+R17
+R18
+Abehavioral
+R6
+R7
+R8
+DEx4 work 9 testbench 0 22 h`^De6_SF;m]>A2Hae<Y23
+!i122 782
+l33
+L10 60
+V1nYPH>l5V;GcB0on]OMl;0
+!s100 02HGzW2CARRnZgmmmg1oJ0
+R12
+32
+R13
+!i10b 1
+R14
+R48
+R49
+!i113 0
+R17
+R18
+Etestbench1
+Z50 w1698172998
+R28
+R6
+R34
+R7
+R8
+!i122 786
+R9
+Z51 8C:/Users/laptop/Documents/lab2/divider_tb.vhd
+Z52 FC:/Users/laptop/Documents/lab2/divider_tb.vhd
+l0
+L10 1
+VP9KTSCEFW6IYVXE:h;hY[0
+!s100 __@RogRFUeOZN6AW4=<4^3
+R12
+32
+R22
+!i10b 1
+R23
+Z53 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/divider_tb.vhd|
+Z54 !s107 C:/Users/laptop/Documents/lab2/divider_tb.vhd|
+!i113 0
+R17
+R18
+Abehavioral
+R39
+R28
+R6
+R34
+R7
+R8
+DEx4 work 10 testbench1 0 22 P9KTSCEFW6IYVXE:h;hY[0
+!i122 786
+l41
+L13 114
+VcjVRTbbmYlS]>Re[gJo0]0
+!s100 8GHW0fDJcg?jX<4YfR[=T1
+R12
+32
+R22
+!i10b 1
+R23
+R53
+R54
+!i113 0
+R17
+R18
