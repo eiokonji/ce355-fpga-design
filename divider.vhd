@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 USE work.divider_const.ALL;
@@ -242,7 +241,7 @@ BEGIN
         END IF;
     END PROCESS gate_start;
 
-=======
+
 LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 USE work.divider_const.ALL;
@@ -438,5 +437,4 @@ BEGIN
         END IF;
     END PROCESS gate_start;
 
->>>>>>> Stashed changes
 END ARCHITECTURE structural_combinational;
