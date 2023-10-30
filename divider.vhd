@@ -90,9 +90,7 @@ BEGIN
             ELSE
                 overflow_temp <= '0';
             END IF;
-
-            
-
+                
         --check for clock edge
         ELSIF (rising_edge(clk)) THEN
             IF (i < DIVIDEND_WIDTH) THEN
@@ -115,51 +113,7 @@ BEGIN
     overflow <= overflow_temp;
 
 END ARCHITECTURE behavioral_sequential;
---         --DINL_var(i) <= DOUT_var(i) & dividend_temp(DIVIDEND_WIDTH - 2 - i);
 
---         divide_loop : FOR i IN 0 TO DIVIDEND_WIDTH - 1 LOOP
---             --start loop
---             --feed inputs into comparator 
---             --do one step division
---             --feed inputs back into comparator (instantly?)
---             --comparator only starts on the rising clock edge
-
---             --figure out how to change temp_dinl according to current case
---             --prepare inputs for the next clock cycle
-
---             CASE (i) IS
---                 WHEN (0)
---                     temp_dinl <= (0 => dividend_temp(DIVIDEND_WIDTH - 1), OTHERS => '0');
---                 WHEN (1 TO DIVIDEND_WIDTH - 1)
---                     temp_din1 <= DINL_var(i - 1);
---             END CASE;
-
---             WHILE (NOT rising_edge(clk)) LOOP
---                 --wait for rising clock edge
---             END LOOP;
-
---             IF (rising_edge(clk)) THEN
---                 comp_first : comparator
---                 PORT MAP(-- not necessarily concurrent
---                     DINL => temp_dinl,
---                     DINR => divisor_temp,
---                     DOUT => DOUT_var(i),
---                     isGreaterEq => quotient_temp(DIVIDEND_WIDTH - 1 - i)
---                 );
---                 DINL_var(i) <= DOUT_var(i) & dividend_temp(DIVIDEND_WIDTH - 2 - i);
-
---             END IF;
---         END LOOP;
-
---     END IF;
---     -- end process seq_divide;
---     --release results in temp variables to actual result variables
---     --concurrently assign signals outside to prevent delay
---     IF (rising_edge(start)) THEN
---         quotient <= quotient_temp;
---         remainder <= DOUT_var(DIVIDEND_WIDTH - 1);
---         overflow <= overflow_temp;
---     END IF;
 ARCHITECTURE structural_combinational OF divider IS
     --Signals and components go here
     COMPONENT comparator IS
