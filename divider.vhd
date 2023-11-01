@@ -70,7 +70,7 @@ BEGIN
             q <= (OTHERS => '0');
             state <= s0;
 
-            -- update on rising edge of clock
+        -- update on rising edge of clock
         ELSIF (rising_edge(clk)) THEN
             done <= done_c;
             a <= a_c;
@@ -98,13 +98,6 @@ BEGIN
                 o_c <= (divisor = zeros) ? '1' : '0';
                 q_c <= (others => '0');
                 next_state <= s1;
-
-                -- overflow check :: long form
-                -- if (divisor = zeros) then
-                --     o_c <= '1';
-                -- else
-                --     o_c <= '0';
-                -- end if
 
             -- division state
             when s1 =>
