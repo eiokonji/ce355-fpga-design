@@ -20,57 +20,58 @@ ENTITY divider IS
     );
 END ENTITY divider;
 
-ARCHITECTURE fsm_behavior of divider is
+ARCHITECTURE fsm_behavior OF divider IS
     --declaration region
-    signal a : std_logic_vector(DIVIDEND_WIDTH-1 downto 0);
-    signal b : std_logic_vector(DIVISOR_WIDTH-1 downto 0);
-    signal q : STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0) := (others = '0');
-    signal r : STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0); 
-    signal o : std_logic;
-    signal done : std_logic;
+    SIGNAL a : STD_LOGIC_VECTOR(DIVIDEND_WIDTH - 1 DOWNTO 0);
+    SIGNAL b : STD_LOGIC_VECTOR(DIVISOR_WIDTH - 1 DOWNTO 0);
+    SIGNAL q : STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0) := (OTHERS = '0');
+    SIGNAL r : STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0);
+    SIGNAL o : STD_LOGIC;
+    SIGNAL done : STD_LOGIC;
 
     -- clocked signals
-    signal a_c : std_logic_vector(DIVIDEND_WIDTH-1 downto 0);
-    signal b_c : std_logic_vector(DIVISOR_WIDTH-1 downto 0);
-    signal q_c : STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0);
-    signal r_c : STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0); 
-    signal o_c : std_logic;
-    signal done_c : std_logic;
+    SIGNAL a_c : STD_LOGIC_VECTOR(DIVIDEND_WIDTH - 1 DOWNTO 0);
+    SIGNAL b_c : STD_LOGIC_VECTOR(DIVISOR_WIDTH - 1 DOWNTO 0);
+    SIGNAL q_c : STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0);
+    SIGNAL r_c : STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0);
+    SIGNAL o_c : STD_LOGIC;
+    SIGNAL done_c : STD_LOGIC;
 
     -- declaring state signals
-    type states (s0, s1, s2);
-    signal state, next_state : states;
+    TYPE states (s0, s1, s2);
+    SIGNAL state, next_state : states;
 
-    function get_msb_pos (signal s: std_logic_vector) return integer is
+    -- constants
+    constant zeros : std_logic_vector(DIVISOR_WIDTH - 1 downto 0) := (others => '0');
+
+    -- get_msb_pos function
+    FUNCTION get_msb_pos (SIGNAL s : STD_LOGIC_VECTOR) RETURN INTEGER IS
         -- declarative region
-        begin
-            for i in s'Reverse_Range loop
-                if s(i) = '1' then
-                    return i;
-                end if;
-            end loop;
-            --if vector is 0
-            return 0;
+    BEGIN
+        FOR i IN s'Reverse_Range LOOP
+            IF s(i) = '1' THEN
+                RETURN i;
+            END IF;
+        END LOOP;
+        --if vector is 0
+        RETURN 0;
 
-    end function get_msb_pos;
-
-
-    begin
-
-    clk_process: process(clk,reset) is 
-    begin
+    END FUNCTION get_msb_pos;
+BEGIN
+    clk_process : PROCESS (clk, reset) IS
+    BEGIN
         -- intialize on reset
-        if (reset = '1') then
+        IF (reset = '1') THEN
             done <= '0';
-            a <= (others => '0');
-            b <= (others => '0');
-            r <= (others => '0');
+            a <= (OTHERS => '0');
+            b <= (OTHERS => '0');
+            r <= (OTHERS => '0');
             o <= '0';
-            q <= (others => '0');
+            q <= (OTHERS => '0');
             state <= s0;
-        
-        -- update on rising edge of clock
-        elsif (rising_edge(clk)) then
+
+            -- update on rising edge of clock
+        ELSIF (rising_edge(clk)) THEN
             done <= done_c;
             a <= a_c;
             b <= b_c;
@@ -78,23 +79,59 @@ ARCHITECTURE fsm_behavior of divider is
             o <= o_c;
             q <= q_c;
             state <= next_state;
-        end if;
+        END IF;
+    END PROCESS clk_process;
+
+    comb_process : PROCESS (a, b, start, state, done) IS
+        -- set internal variables
+        VARIABLE p : INTEGER := 0;
+        VARIABLE sign_ : STD_LOGIC := '0';
+
+    BEGIN
+    -- _c signals are LHS in this section
+        case (state) is 
+            -- init state
+            when s0 =>
+                a_c <= ((signed)dividend < 0) ? (NOT((signed)dividend) + 1) : dividend;
+                b_c <= ((signed)divisor < 0) ? (NOT((signed)divisor) + 1) : divisor;
+                r_c <= (others => '0');
+                o_c <= (divisor = zeros) ? '1' : '0';
+                q_c <= (others => '0');
+                next_state <= s1;
+
+                -- overflow check :: long form
+                -- if (divisor = zeros) then
+                --     o_c <= '1';
+                -- else
+                --     o_c <= '0';
+                -- end if
+
+            -- division state
+            when s1 =>
+                next_state <= s2;
+
+            -- epilogue state
+            when s2 =>
+                -- get sign_ 
+                sign_ := (dividend >> (DIVIDEND_WIDTH - 1)) xor (divisor >> (DIVISOR_WIDTH - 1));
+                -- apply result's sign to quotient, dividend's sign to remainder
+                if (sign_ = '1') then
+                    q_c <= (NOT((signed)q_c) + 1);
+                end if;
+                if ((unsigned(dividend >> (DIVIDEND_WIDTH - 1))) = 1) then
+                    r_c <= (NOT((signed)a_c) + 1);
+                end if;
+                -- next_state <= ???
+        end case;
         
+    END PROCESS comb_process;
 
-    end process clk_process;
+    -- pass the correct signals into the actual outputs
+    quotient <= q;
+    remainder <= r;
+    overflow <= o;
 
-    comb_process: process(a,b,p,start) is 
-    variable p : integer := 0;
-    variable sign : std_logic := '0';
-
-    begin
-        a <= ((signed)dividend < 0) ? (not((signed)dividend) + 1) : dividend;
-        b <= ((signed)divisor < 0) ? (not((signed)divisor) + 1) : divisor;
-    end process comb_process;
-
-
-
-end architecture fsm_behavior;
+END ARCHITECTURE fsm_behavior;
 
 ARCHITECTURE behavioral_sequential OF divider IS
     --signals and components
@@ -131,8 +168,6 @@ ARCHITECTURE behavioral_sequential OF divider IS
     SIGNAL overflow_temp : STD_LOGIC;
     SIGNAL remainder_temp : STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0);
 
-
-
 BEGIN
     --instantiate a single comparator
     comp_first : comparator
@@ -160,17 +195,15 @@ BEGIN
             ELSE
                 overflow_temp <= '0';
             END IF;
-
-            
-        --check for clock edge
+            --check for clock edge
         ELSIF (rising_edge(clk)) THEN
             IF (i < DIVIDEND_WIDTH) THEN
                 --store IsGreaterEq result 
                 quotient_temp(DIVIDEND_WIDTH - 1 - i) <= quotient_bit;
                 --update din1_temp with previous output
-                if (i < DIVIDEND_WIDTH-1) then
+                IF (i < DIVIDEND_WIDTH - 1) THEN
                     dinl_temp <= dout_temp & dividend_temp(DIVIDEND_WIDTH - 2 - i);
-                end if;
+                END IF;
                 --increment division index
                 i <= i + 1;
             ELSE
@@ -187,7 +220,6 @@ BEGIN
     overflow <= overflow_temp;
 
 END ARCHITECTURE behavioral_sequential;
-
 
 ARCHITECTURE structural_combinational OF divider IS
     --Signals and components go here
