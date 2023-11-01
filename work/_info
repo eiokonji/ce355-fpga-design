@@ -1,0 +1,446 @@
+m255
+K4
+z2
+Z0 !s99 nomlopt
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+R0
+!s11e MIXED_VERSIONS
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z1 dC:/intelFPGA_lite/22.1std
+T_opt
+!s110 1697512461
+VZ6S2kmP24MNV3k<DTkhD62
+04 9 10 work testbench behavioral 1
+=22-14755bdc8980-652dfc0c-3b9-140c
+!s124 OEM10U2 
+Z2 o-quiet -auto_acc_if_foreign -work work
+Z3 tCvgOpt 0
+n@_opt
+Z4 OL;O;2021.2;73
+R1
+T_opt1
+!s110 1698704179
+VWHfVAaIR12Z:R;`=M^0f10
+Z5 04 10 10 work testbench1 behavioral 1
+=21-14755bdc8980-65402b32-2c3-1d80
+Z6 !s124 OEM10U3 
+R2
+R3
+n@_opt1
+R4
+R1
+T_opt2
+!s110 1698717605
+VIOn;8B<OLjh6ZoCFBljHD1
+R5
+=3-14755bdc8980-65405fa5-1ce-1e50
+R6
+R2
+R3
+n@_opt2
+R4
+Ecomparator
+Z7 w1697328287
+Z8 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+Z9 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z10 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 837
+Z11 dC:/Users/laptop/Documents/lab2
+Z12 8C:/Users/laptop/Documents/lab2/comparator.vhd
+Z13 FC:/Users/laptop/Documents/lab2/comparator.vhd
+l0
+L6 1
+VMcYW>hOH^NJ20_IU0;Pok1
+!s100 mU:Uj1f4bi3SnibXJkP1A0
+Z14 OL;C;2021.2;73
+32
+Z15 !s110 1698717600
+!i10b 1
+Z16 !s108 1698717600.000000
+Z17 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/comparator.vhd|
+Z18 !s107 C:/Users/laptop/Documents/lab2/comparator.vhd|
+!i113 0
+Z19 o-work work -2002 -explicit
+Z20 tExplicit 1 CvgOpt 0
+Abehavioral
+R8
+R9
+R10
+DEx4 work 10 comparator 0 22 McYW>hOH^NJ20_IU0;Pok1
+!i122 837
+l24
+L19 29
+Vgaclf_K9JzmeO0ljB7MNF0
+!s100 S]Te7ISY?>RWCo`keA^?40
+R14
+32
+R15
+!i10b 1
+R16
+R17
+R18
+!i113 0
+R19
+R20
+Pdecoder
+R9
+R10
+!i122 843
+Z21 w1696720731
+R11
+Z22 8C:/Users/laptop/Documents/decoder.vhd
+Z23 FC:/Users/laptop/Documents/decoder.vhd
+l0
+L5 1
+Vi]lKab@D^e1hXie]P[1f@2
+!s100 Ud[j953SRTJJU5=44_4m[0
+R14
+32
+Z24 !s110 1698717601
+!i10b 1
+Z25 !s108 1698717601.000000
+Z26 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/decoder.vhd|
+Z27 !s107 C:/Users/laptop/Documents/decoder.vhd|
+!i113 0
+R19
+R20
+Bbody
+Z28 DPx4 work 7 decoder 0 22 i]lKab@D^e1hXie]P[1f@2
+R9
+R10
+!i122 843
+l0
+L21 1
+VjNzP`5RUGzbF5JN2M;SCN2
+!s100 @NA1F7A?4Q6M>ohiHD2Ln2
+R14
+32
+R24
+!i10b 1
+R25
+R26
+R27
+!i113 0
+R19
+R20
+Edisplay_divider
+Z29 w1698270130
+Z30 DPx4 work 13 divider_const 0 22 E9RMg8iKBWZo`5QH2;Yfj0
+R28
+R9
+R10
+!i122 839
+R11
+Z31 8C:/Users/laptop/Documents/lab2/display_divider.vhd
+Z32 FC:/Users/laptop/Documents/lab2/display_divider.vhd
+l0
+L6 1
+VZROc08_8ih^3D9a>>zg410
+!s100 ]FBk^:lYZSfE_<<?hSGO>3
+R14
+32
+R24
+!i10b 1
+R25
+Z33 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/display_divider.vhd|
+Z34 !s107 C:/Users/laptop/Documents/lab2/display_divider.vhd|
+!i113 0
+R19
+R20
+Astructural
+R30
+R28
+R9
+R10
+DEx4 work 15 display_divider 0 22 ZROc08_8ih^3D9a>>zg410
+!i122 839
+l48
+L20 68
+VCDcN];aRnLBRiaU=BmC]k2
+!s100 1ZYa]<hLJ@H60g20K0OCb1
+R14
+32
+R24
+!i10b 1
+R25
+R33
+R34
+!i113 0
+R19
+R20
+Edivider
+Z35 w1698173292
+Z36 DPx4 ieee 16 std_logic_textio 0 22 8]8<fKiYoHe;_IDO3kmNH2
+R8
+R30
+R9
+R10
+!i122 840
+R11
+Z37 8C:/Users/laptop/Documents/lab2/divider.vhd
+Z38 FC:/Users/laptop/Documents/lab2/divider.vhd
+l0
+L8 1
+Va=ELal2XC@L<_KzJ>^gn>0
+!s100 jZ]13blBV]]W6nXmLaFjL1
+R14
+32
+R24
+!i10b 1
+R25
+Z39 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/divider.vhd|
+Z40 !s107 C:/Users/laptop/Documents/lab2/divider.vhd|
+!i113 0
+R19
+R20
+Astructural_combinational
+R36
+R8
+R30
+R9
+R10
+Z41 DEx4 work 7 divider 0 22 a=ELal2XC@L<_KzJ>^gn>0
+!i122 840
+l144
+L115 82
+VmeL9Q^^31Rk=Q9N:DZG8l0
+!s100 AYLLQGVDe:=di0EzjWza?0
+R14
+32
+R24
+!i10b 1
+R25
+R39
+R40
+!i113 0
+R19
+R20
+Abehavioral_sequential
+R36
+R8
+R30
+R9
+R10
+R41
+!i122 840
+l59
+L22 91
+Vghn9GGh4<jB_XR3A3MV2k3
+!s100 MEd58CIGViF9lJ@FHL4dP2
+R14
+32
+R24
+!i10b 1
+R25
+R39
+R40
+!i113 0
+R19
+R20
+Pdivider_const
+R9
+R10
+!i122 841
+Z42 w1698717364
+R11
+Z43 8C:/Users/laptop/Documents/lab2/divider_const.vhd
+Z44 FC:/Users/laptop/Documents/lab2/divider_const.vhd
+l0
+L6 1
+VE9RMg8iKBWZo`5QH2;Yfj0
+!s100 Wk>CT]O9ele[4>7RNGS6j0
+R14
+32
+R24
+!i10b 1
+R25
+Z45 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/divider_const.vhd|
+Z46 !s107 C:/Users/laptop/Documents/lab2/divider_const.vhd|
+!i113 0
+R19
+R20
+Bbody
+R30
+R9
+R10
+!i122 841
+l0
+L11 1
+VXkALdoG8h1n_:o[Wk0nW82
+!s100 BR1FRdfdT>oB[603H6WR63
+R14
+32
+R24
+!i10b 1
+R25
+R45
+R46
+!i113 0
+R19
+R20
+Etestbench
+Z47 w1697512001
+R8
+R9
+R10
+!i122 838
+R11
+Z48 8C:/Users/laptop/Documents/lab2/comparator_tb.vhd
+Z49 FC:/Users/laptop/Documents/lab2/comparator_tb.vhd
+l0
+L7 1
+Vh`^De6_SF;m]>A2Hae<Y23
+!s100 HW?Vo_ZEi46SOfodY^ko:2
+R14
+32
+R24
+!i10b 1
+R16
+Z50 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/comparator_tb.vhd|
+Z51 !s107 C:/Users/laptop/Documents/lab2/comparator_tb.vhd|
+!i113 0
+R19
+R20
+Abehavioral
+R8
+R9
+R10
+DEx4 work 9 testbench 0 22 h`^De6_SF;m]>A2Hae<Y23
+!i122 838
+l33
+L10 60
+V1nYPH>l5V;GcB0on]OMl;0
+!s100 02HGzW2CARRnZgmmmg1oJ0
+R14
+32
+R24
+!i10b 1
+R16
+R50
+R51
+!i113 0
+R19
+R20
+Etestbench1
+Z52 w1698717594
+R30
+R8
+R36
+R9
+R10
+!i122 842
+R11
+Z53 8C:/Users/laptop/Documents/lab2/divider_tb.vhd
+Z54 FC:/Users/laptop/Documents/lab2/divider_tb.vhd
+l0
+L10 1
+VP9KTSCEFW6IYVXE:h;hY[0
+!s100 __@RogRFUeOZN6AW4=<4^3
+R14
+32
+R24
+!i10b 1
+R25
+Z55 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/laptop/Documents/lab2/divider_tb.vhd|
+Z56 !s107 C:/Users/laptop/Documents/lab2/divider_tb.vhd|
+!i113 0
+R19
+R20
+Abehavioral
+R41
+R30
+R8
+R36
+R9
+R10
+DEx4 work 10 testbench1 0 22 P9KTSCEFW6IYVXE:h;hY[0
+!i122 842
+l41
+L13 114
+VcjVRTbbmYlS]>Re[gJo0]0
+!s100 8GHW0fDJcg?jX<4YfR[=T1
+R14
+32
+R24
+!i10b 1
+R25
+R55
+R56
+!i113 0
+R19
+R20

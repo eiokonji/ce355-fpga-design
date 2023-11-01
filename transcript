@@ -1,0 +1,66 @@
+# Compile of comparator.vhd was successful.
+# Compile of comparator_tb.vhd was successful with warnings.
+# Compile of display_divider.vhd was successful.
+# Compile of divider.vhd was successful.
+# Compile of divider_const.vhd was successful.
+# Compile of divider_tb.vhd failed with 4 errors.
+# Compile of decoder.vhd was successful.
+# 7 compiles, 1 failed with 4 errors.
+# Compile of comparator.vhd was successful.
+# Compile of comparator_tb.vhd was successful with warnings.
+# Compile of display_divider.vhd was successful.
+# Compile of divider.vhd was successful.
+# Compile of divider_const.vhd was successful.
+# Compile of divider_tb.vhd was successful with warnings.
+# Compile of decoder.vhd was successful.
+# 7 compiles, 0 failed with no errors.
+vsim work.testbench1
+# vsim work.testbench1 
+# Start time: 20:57:02 on Oct 30,2023
+# ** Note: (vsim-3812) Design is being optimized...
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_textio(body)
+# Loading ieee.numeric_std(body)
+# Loading work.divider_const(body)
+# Loading work.testbench1(behavioral)#1
+# Loading work.divider(behavioral_sequential)#1
+add wave -r sim:/testbench1/*
+# ** Warning: (vsim-WLF-5000) WLF file currently in use: vsim.wlf
+#           File in use by: laptop  Hostname: NUL-LENDLAP59  ProcessID: 7552
+#           Attempting to use alternate WLF file "./wlftzvzv1e".
+# ** Warning: (vsim-WLF-5001) Could not open WLF file: vsim.wlf
+#           Using alternate file: ./wlftzvzv1e
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+run -all
+# ** Warning: NUMERIC_STD.">=": metavalue detected, returning FALSE
+#    Time: 0 ns  Iteration: 0  Instance: /testbench1/dut/comp_first
+# Break key hit
+# Simulation stop requested.
+# Compile of comparator.vhd was successful.
+# Compile of comparator_tb.vhd was successful with warnings.
+# Compile of display_divider.vhd was successful.
+# Compile of divider.vhd was successful.
+# Compile of divider_const.vhd was successful.
+# Compile of divider_tb.vhd was successful with warnings.
+# Compile of decoder.vhd was successful.
+# 7 compiles, 0 failed with no errors.
+restart
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_textio(body)
+# Loading ieee.numeric_std(body)
+# Loading work.divider_const(body)
+# Loading work.testbench1(behavioral)#1
+# Loading work.divider(behavioral_sequential)#1
+run -all
+# ** Warning: NUMERIC_STD.">=": metavalue detected, returning FALSE
+#    Time: 0 ns  Iteration: 0  Instance: /testbench1/dut/comp_first
+# Break key hit
+# Simulation stop requested.
