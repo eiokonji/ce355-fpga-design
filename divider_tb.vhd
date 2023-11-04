@@ -15,6 +15,7 @@ ARCHITECTURE behavioral OF testbench1 IS
     COMPONENT divider IS
         PORT (
             clk : in std_logic;
+            reset : IN STD_LOGIC;
             --COMMENT OUT clk signal for Part A.
             start : IN STD_LOGIC;
             dividend : IN STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0);
@@ -25,10 +26,11 @@ ARCHITECTURE behavioral OF testbench1 IS
         );
     END COMPONENT divider;
     --specify which architecture to use
-    for all : divider use entity WORK.divider (behavioral_sequential);
+    for all : divider use entity WORK.divider (fsm_behavior);
 
     --declare testbench signals
     SIGNAL clk_tb : STD_LOGIC := '0';
+    SIGNAL reset_tb : std_logic := '0';
     SIGNAL start_tb : STD_LOGIC := '0';
     constant PERIOD : time := 10 ns;
     constant PERIOD2 : time := 170 ns;   --((DIVIDEND_WIDTH*10)+1)
@@ -43,6 +45,7 @@ BEGIN
     dut : divider
     PORT MAP (
         clk => clk_tb,
+        reset => reset_tb,
         start => start_tb,
         dividend => dividend_tb,
         divisor => divisor_tb,

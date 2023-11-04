@@ -24,7 +24,7 @@ ARCHITECTURE fsm_behavior OF divider IS
     --declaration region
     SIGNAL a : STD_LOGIC_VECTOR(DIVIDEND_WIDTH - 1 DOWNTO 0);
     SIGNAL b : STD_LOGIC_VECTOR(DIVISOR_WIDTH - 1 DOWNTO 0);
-    SIGNAL q : STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0) := (OTHERS = '0');
+    SIGNAL q : STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL r : STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0);
     SIGNAL o : STD_LOGIC;
     SIGNAL done : STD_LOGIC;
@@ -38,7 +38,7 @@ ARCHITECTURE fsm_behavior OF divider IS
     SIGNAL done_c : STD_LOGIC;
 
     -- declaring state signals
-    TYPE states (s0, s1, s2);
+    TYPE states is (s0, s1, s2);
     SIGNAL state, next_state : states;
 
     -- constants
@@ -67,7 +67,7 @@ BEGIN
             b <= (OTHERS => '0');
             r <= (OTHERS => '0');
             o <= '0';
-            q <= (OTHERS => '0');
+            q <= (OTHERS => '0'); 
             state <= s0;
 
         -- update on rising edge of clock
@@ -85,36 +85,77 @@ BEGIN
     comb_process : PROCESS (a, b, start, state, done) IS
         -- set internal variables
         VARIABLE p : INTEGER := 0;
-        VARIABLE sign_ : STD_LOGIC := '0';
+        VARIABLE sign_q : STD_LOGIC := '0';
+        VARIABLE one : STD_LOGIC_VECTOR(DIVIDEND_WIDTH - 1 DOWNTO 0) := (0 => '1', OTHERS => '0');
 
     BEGIN
     -- _c signals are LHS in this section
         case (state) is 
             -- init state
             when s0 =>
-                a_c <= ((signed)dividend < 0) ? (NOT((signed)dividend) + 1) : dividend;
-                b_c <= ((signed)divisor < 0) ? (NOT((signed)divisor) + 1) : divisor;
+                --a_c <= (signed(dividend) < 0)  ? (NOT(signed(dividend)) + 1) : dividend;
+                -- b_c <= (signed(divisor) < 0) ? (NOT(signed(divisor)) + 1) : divisor;
+                -- o_c <= (unsigned(divisor) = unsigned(zeros)) ? '1' : '0';
+                
+                if (signed(dividend) < 0) then
+                    a_c <= std_logic_vector((NOT(unsigned(dividend)) + unsigned(one)));
+                else 
+                    a_c <= dividend;
+                end if;
+
+                if (signed(divisor) < 0) then
+                    b_c <= std_logic_vector((NOT(unsigned(divisor)) + unsigned(one)));
+                else 
+                    b_c <= divisor;
+                end if;
+                
+                if (unsigned(divisor) = unsigned(zeros)) then 
+                    o_c <= '1';
+                else 
+                    o_c <= '0';
+                end if;
+
                 r_c <= (others => '0');
-                o_c <= (divisor = zeros) ? '1' : '0';
                 q_c <= (others => '0');
-                next_state <= s1;
+                done_c <= '0';
+
+                --check if start button was pressed
+                if (rising_edge(start)) then
+                    done_c <= '1';
+                    next_state <= s1;
+                end if;
 
             -- division state
+            -- how do you use done signal?
             when s1 =>
-                next_state <= s2;
+                p := get_msb_pos(a) - get_msb_pos(b);
+                if (shift_left(unsigned(b), p) > unsigned(a)) then -- shouldn't matter if signed/unsigned right?
+                    p := p - 1;
+                end if;
+                q_c <= std_logic_vector(unsigned(q) + (shift_left(unsigned(one), p)));
+                a_c <= std_logic_vector(unsigned(a) - (shift_left(unsigned(b), p)));
+    
+                --increment state when done
+                if (unsigned(a_c) < unsigned(b_c)) then -- compare the clocked or unclocked?
+                    done <= '1';
+                    next_state <= s2;
+                end if;
 
             -- epilogue state
             when s2 =>
                 -- get sign_ 
-                sign_ := (dividend >> (DIVIDEND_WIDTH - 1)) xor (divisor >> (DIVISOR_WIDTH - 1));
+                sign_q := dividend(DIVIDEND_WIDTH-1) xor divisor(DIVISOR_WIDTH-1);
+                --sign_q := (shift_right(signed(dividend),(DIVIDEND_WIDTH - 1))) xor (shift_right(signed(divisor), (DIVISOR_WIDTH - 1)));
                 -- apply result's sign to quotient, dividend's sign to remainder
-                if (sign_ = '1') then
-                    q_c <= (NOT((signed)q_c) + 1);
+                if (sign_q = '1') then
+                    q_c <= std_logic_vector(NOT(unsigned(q_c)) + unsigned(one));
                 end if;
-                if ((unsigned(dividend >> (DIVIDEND_WIDTH - 1))) = 1) then
-                    r_c <= (NOT((signed)a_c) + 1);
+                if (shift_right(unsigned(dividend), (DIVIDEND_WIDTH - 1)) = unsigned(one)) then
+                    r_c <= std_logic_vector(NOT(unsigned(a_c)) + unsigned(one));
                 end if;
-                -- next_state <= ???
+                
+                --return to first state
+                next_state <= s0;
         end case;
         
     END PROCESS comb_process;
