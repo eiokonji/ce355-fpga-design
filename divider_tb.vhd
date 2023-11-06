@@ -72,6 +72,15 @@ BEGIN
             wait for (PERIOD2/2);
     end process start_generate;
 
+    reset_generate: process is 
+        begin
+            wait for 1ns;
+            start_tb <= '1';
+            wait for (PERIOD2/2);
+            start_tb <= '0';
+            wait for (PERIOD2/2);
+    end process reset_generate;
+
     PROCESS IS
         -- CONSTANT DIVIDE : std_logic_vector(OP_WIDTH - 1 downto 0) := std_logic_vector(to_unsigned(2,OP_WIDTH));
         VARIABLE read_line : line; -- a buffer for what was read
@@ -82,7 +91,7 @@ BEGIN
         VARIABLE temp2 : INTEGER;
 
     BEGIN
-        wait for 1ns;
+        wait for 1 ns;
         -- start_tb <= '1';
         
         --have this accept clock
