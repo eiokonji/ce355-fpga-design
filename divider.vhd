@@ -76,8 +76,8 @@ ARCHITECTURE fsm_behavior OF divider IS
         
     begin
         while (l <= r) loop
-            mid := floor((l+r)/2);
-            if ((shift_left(1, mid)) > s) then
+            mid := floor(real((l+r)/2));
+            if ((shift_left(signed(1), mid)) > s) then
                 msb := mid - 1;
                 r := mid - 1;
             else
