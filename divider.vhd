@@ -3,6 +3,7 @@ USE IEEE.std_logic_1164.ALL;
 USE work.divider_const.ALL;
 --Additional standard or custom libraries go here
 USE ieee.numeric_std.ALL;
+use ieee.math_real.all;
 USE IEEE.std_logic_textio.ALL;
 
 ENTITY divider IS
@@ -66,27 +67,25 @@ ARCHITECTURE fsm_behavior OF divider IS
 
     END FUNCTION get_msb_pos;
 
-    FUNCTION get_msb_pos_recursive (SIGNAL s : STD_LOGIC_VECTOR) RETURN INTEGER IS
+    FUNCTION get_msb_pos_recursive (SIGNAL s : integer) RETURN INTEGER IS
         --declarative region
-        variable msb : integer := 0;
-        -- variable s_int : integer;
+        variable msb : integer := -1;
+        variable l : integer := 0;
+        variable r : integer := s'length;
+        variable mid : integer := 0;
+        
     begin
-        -- s_int := to_integer(unsigned(s));
-
-        -- --base case
-        -- if (s_int = 0) then 
-        --     return 0;
-        -- end if;
-
-        -- s_int = s_int/2;
-        -- while (s /= 0) loop
-        --     s = s/2;
-        --     msb := msb + 1;
-        -- end loop;
+        while (l <= r) loop
+            mid := floor((l+r)/2);
+            if ((shift_left(1, mid)) > s) then
+                msb := mid - 1;
+                r := mid - 1;
+            else
+                l := mid + 1;
+            end if;
+        end loop; 
 
         return msb;
-        
-
     end function get_msb_pos_recursive;
 
 
