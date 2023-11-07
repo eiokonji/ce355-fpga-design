@@ -1,5 +1,5 @@
 Analysis & Synthesis report for display_divider
-Wed Oct 25 16:44:11 2023
+Mon Nov  6 20:59:25 2023
 Quartus Prime Version 22.1std.0 Build 915 10/25/2022 SC Lite Edition
 
 
@@ -21,12 +21,37 @@ Quartus Prime Version 22.1std.0 Build 915 10/25/2022 SC Lite Edition
  13. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:4:midslice:comp_mid
  14. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:5:midslice:comp_mid
  15. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:6:midslice:comp_mid
- 16. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:7:lastslice:comp_last
- 17. Port Connectivity Checks: "leddcd:ovr"
- 18. Port Connectivity Checks: "divider:divider1|comparator:\subtractor:0:firstslice:comp_first"
- 19. Post-Synthesis Netlist Statistics for Top Partition
- 20. Elapsed Time Per Partition
- 21. Analysis & Synthesis Messages
+ 16. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:7:midslice:comp_mid
+ 17. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:8:midslice:comp_mid
+ 18. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:9:midslice:comp_mid
+ 19. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:10:midslice:comp_mid
+ 20. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:11:midslice:comp_mid
+ 21. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:12:midslice:comp_mid
+ 22. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:13:midslice:comp_mid
+ 23. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:14:midslice:comp_mid
+ 24. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:15:midslice:comp_mid
+ 25. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:16:midslice:comp_mid
+ 26. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:17:midslice:comp_mid
+ 27. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:18:midslice:comp_mid
+ 28. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:19:midslice:comp_mid
+ 29. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:20:midslice:comp_mid
+ 30. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:21:midslice:comp_mid
+ 31. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:22:midslice:comp_mid
+ 32. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:23:midslice:comp_mid
+ 33. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:24:midslice:comp_mid
+ 34. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:25:midslice:comp_mid
+ 35. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:26:midslice:comp_mid
+ 36. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:27:midslice:comp_mid
+ 37. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:28:midslice:comp_mid
+ 38. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:29:midslice:comp_mid
+ 39. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:30:midslice:comp_mid
+ 40. Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:31:lastslice:comp_last
+ 41. Port Connectivity Checks: "leddcd:ovr"
+ 42. Port Connectivity Checks: "divider:divider1|comparator:\subtractor:0:firstslice:comp_first"
+ 43. Port Connectivity Checks: "divider:divider1"
+ 44. Post-Synthesis Netlist Statistics for Top Partition
+ 45. Elapsed Time Per Partition
+ 46. Analysis & Synthesis Messages
 
 
 
@@ -53,16 +78,16 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                        ;
 +------------------------------------+------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Wed Oct 25 16:44:10 2023          ;
+; Analysis & Synthesis Status        ; Successful - Mon Nov  6 20:59:25 2023          ;
 ; Quartus Prime Version              ; 22.1std.0 Build 915 10/25/2022 SC Lite Edition ;
 ; Revision Name                      ; display_divider                                ;
 ; Top-level Entity Name              ; display_divider                                ;
 ; Family                             ; Cyclone IV E                                   ;
-; Total logic elements               ; 111                                            ;
-;     Total combinational functions  ; 111                                            ;
-;     Dedicated logic registers      ; 13                                             ;
-; Total registers                    ; 13                                             ;
-; Total pins                         ; 42                                             ;
+; Total logic elements               ; 1,612                                          ;
+;     Total combinational functions  ; 1,612                                          ;
+;     Dedicated logic registers      ; 49                                             ;
+; Total registers                    ; 49                                             ;
+; Total pins                         ; 157                                            ;
 ; Total virtual pins                 ; 0                                              ;
 ; Total memory bits                  ; 0                                              ;
 ; Embedded Multiplier 9-bit elements ; 0                                              ;
@@ -165,10 +190,17 @@ https://fpgasoftware.intel.com/eula.
 ; Maximum allowed            ; 10          ;
 ;                            ;             ;
 ; Average used               ; 1.00        ;
-; Maximum used               ; 1           ;
+; Maximum used               ; 8           ;
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.0%      ;
+;     Processor 3            ;   0.0%      ;
+;     Processor 4            ;   0.0%      ;
+;     Processor 5            ;   0.0%      ;
+;     Processor 6            ;   0.0%      ;
+;     Processor 7            ;   0.0%      ;
+;     Processor 8            ;   0.0%      ;
 +----------------------------+-------------+
 
 
@@ -177,10 +209,10 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------+-----------------+-----------------+----------------------------------------------------+---------+
 ; File Name with User-Entered Path ; Used in Netlist ; File Type       ; File Name with Absolute Path                       ; Library ;
 +----------------------------------+-----------------+-----------------+----------------------------------------------------+---------+
-; divider_const.vhd                ; yes             ; User VHDL File  ; C:/Users/laptop/Documents/lab2/divider_const.vhd   ;         ;
-; divider.vhd                      ; yes             ; User VHDL File  ; C:/Users/laptop/Documents/lab2/divider.vhd         ;         ;
-; comparator.vhd                   ; yes             ; User VHDL File  ; C:/Users/laptop/Documents/lab2/comparator.vhd      ;         ;
-; display_divider.vhd              ; yes             ; User VHDL File  ; C:/Users/laptop/Documents/lab2/display_divider.vhd ;         ;
+; ../lab2/divider_const.vhd        ; yes             ; User VHDL File  ; C:/Users/laptop/Documents/lab2/divider_const.vhd   ;         ;
+; divider.vhd                      ; yes             ; User VHDL File  ; C:/Users/laptop/Documents/lab4/divider.vhd         ;         ;
+; comparator.vhd                   ; yes             ; User VHDL File  ; C:/Users/laptop/Documents/lab4/comparator.vhd      ;         ;
+; display_divider.vhd              ; yes             ; User VHDL File  ; C:/Users/laptop/Documents/lab4/display_divider.vhd ;         ;
 ; ../leddcd.vhd                    ; yes             ; User VHDL File  ; C:/Users/laptop/Documents/leddcd.vhd               ;         ;
 ; ../decoder.vhd                   ; yes             ; User VHDL File  ; C:/Users/laptop/Documents/decoder.vhd              ;         ;
 +----------------------------------+-----------------+-----------------+----------------------------------------------------+---------+
@@ -191,30 +223,30 @@ https://fpgasoftware.intel.com/eula.
 +---------------------------------------------+-------------------+
 ; Resource                                    ; Usage             ;
 +---------------------------------------------+-------------------+
-; Estimated Total logic elements              ; 111               ;
+; Estimated Total logic elements              ; 1,612             ;
 ;                                             ;                   ;
-; Total combinational functions               ; 111               ;
+; Total combinational functions               ; 1612              ;
 ; Logic element usage by number of LUT inputs ;                   ;
-;     -- 4 input functions                    ; 47                ;
-;     -- 3 input functions                    ; 51                ;
-;     -- <=2 input functions                  ; 13                ;
+;     -- 4 input functions                    ; 374               ;
+;     -- 3 input functions                    ; 1146              ;
+;     -- <=2 input functions                  ; 92                ;
 ;                                             ;                   ;
 ; Logic elements by mode                      ;                   ;
-;     -- normal mode                          ; 87                ;
-;     -- arithmetic mode                      ; 24                ;
+;     -- normal mode                          ; 667               ;
+;     -- arithmetic mode                      ; 945               ;
 ;                                             ;                   ;
-; Total registers                             ; 13                ;
-;     -- Dedicated logic registers            ; 13                ;
+; Total registers                             ; 49                ;
+;     -- Dedicated logic registers            ; 49                ;
 ;     -- I/O registers                        ; 0                 ;
 ;                                             ;                   ;
-; I/O pins                                    ; 42                ;
+; I/O pins                                    ; 157               ;
 ;                                             ;                   ;
 ; Embedded Multiplier 9-bit elements          ; 0                 ;
 ;                                             ;                   ;
-; Maximum fan-out node                        ; divisor1[3]~input ;
-; Maximum fan-out                             ; 20                ;
-; Total fan-out                               ; 466               ;
-; Average fan-out                             ; 2.24              ;
+; Maximum fan-out node                        ; divisor1[0]~input ;
+; Maximum fan-out                             ; 81                ;
+; Total fan-out                               ; 5493              ;
+; Average fan-out                             ; 2.78              ;
 +---------------------------------------------+-------------------+
 
 
@@ -223,19 +255,52 @@ https://fpgasoftware.intel.com/eula.
 +--------------------------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------------------------------------------+-----------------+--------------+
 ; Compilation Hierarchy Node                             ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                                                              ; Entity Name     ; Library Name ;
 +--------------------------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------------------------------------------+-----------------+--------------+
-; |display_divider                                       ; 111 (0)             ; 13 (0)                    ; 0           ; 0            ; 0       ; 0         ; 42   ; 0            ; |display_divider                                                                 ; display_divider ; work         ;
-;    |divider:divider1|                                  ; 90 (7)              ; 13 (13)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1                                                ; divider         ; work         ;
-;       |comparator:\subtractor:0:firstslice:comp_first| ; 9 (9)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:0:firstslice:comp_first ; comparator      ; work         ;
-;       |comparator:\subtractor:1:midslice:comp_mid|     ; 13 (13)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:1:midslice:comp_mid     ; comparator      ; work         ;
-;       |comparator:\subtractor:2:midslice:comp_mid|     ; 13 (13)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:2:midslice:comp_mid     ; comparator      ; work         ;
-;       |comparator:\subtractor:3:midslice:comp_mid|     ; 11 (11)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:3:midslice:comp_mid     ; comparator      ; work         ;
-;       |comparator:\subtractor:4:midslice:comp_mid|     ; 11 (11)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:4:midslice:comp_mid     ; comparator      ; work         ;
-;       |comparator:\subtractor:5:midslice:comp_mid|     ; 11 (11)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:5:midslice:comp_mid     ; comparator      ; work         ;
-;       |comparator:\subtractor:6:midslice:comp_mid|     ; 11 (11)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:6:midslice:comp_mid     ; comparator      ; work         ;
-;       |comparator:\subtractor:7:lastslice:comp_last|   ; 4 (4)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:7:lastslice:comp_last   ; comparator      ; work         ;
+; |display_divider                                       ; 1612 (0)            ; 49 (0)                    ; 0           ; 0            ; 0       ; 0         ; 157  ; 0            ; |display_divider                                                                 ; display_divider ; work         ;
+;    |divider:divider1|                                  ; 1528 (23)           ; 49 (49)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1                                                ; divider         ; work         ;
+;       |comparator:\subtractor:0:firstslice:comp_first| ; 32 (32)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:0:firstslice:comp_first ; comparator      ; work         ;
+;       |comparator:\subtractor:10:midslice:comp_mid|    ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:10:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:11:midslice:comp_mid|    ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:11:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:12:midslice:comp_mid|    ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:12:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:13:midslice:comp_mid|    ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:13:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:14:midslice:comp_mid|    ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:14:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:15:midslice:comp_mid|    ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:15:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:16:midslice:comp_mid|    ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:16:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:17:midslice:comp_mid|    ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:17:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:18:midslice:comp_mid|    ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:18:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:19:midslice:comp_mid|    ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:19:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:1:midslice:comp_mid|     ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:1:midslice:comp_mid     ; comparator      ; work         ;
+;       |comparator:\subtractor:20:midslice:comp_mid|    ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:20:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:21:midslice:comp_mid|    ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:21:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:22:midslice:comp_mid|    ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:22:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:23:midslice:comp_mid|    ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:23:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:24:midslice:comp_mid|    ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:24:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:25:midslice:comp_mid|    ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:25:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:26:midslice:comp_mid|    ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:26:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:27:midslice:comp_mid|    ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:27:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:28:midslice:comp_mid|    ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:28:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:29:midslice:comp_mid|    ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:29:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:2:midslice:comp_mid|     ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:2:midslice:comp_mid     ; comparator      ; work         ;
+;       |comparator:\subtractor:30:midslice:comp_mid|    ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:30:midslice:comp_mid    ; comparator      ; work         ;
+;       |comparator:\subtractor:31:lastslice:comp_last|  ; 17 (17)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:31:lastslice:comp_last  ; comparator      ; work         ;
+;       |comparator:\subtractor:3:midslice:comp_mid|     ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:3:midslice:comp_mid     ; comparator      ; work         ;
+;       |comparator:\subtractor:4:midslice:comp_mid|     ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:4:midslice:comp_mid     ; comparator      ; work         ;
+;       |comparator:\subtractor:5:midslice:comp_mid|     ; 49 (49)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:5:midslice:comp_mid     ; comparator      ; work         ;
+;       |comparator:\subtractor:6:midslice:comp_mid|     ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:6:midslice:comp_mid     ; comparator      ; work         ;
+;       |comparator:\subtractor:7:midslice:comp_mid|     ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:7:midslice:comp_mid     ; comparator      ; work         ;
+;       |comparator:\subtractor:8:midslice:comp_mid|     ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:8:midslice:comp_mid     ; comparator      ; work         ;
+;       |comparator:\subtractor:9:midslice:comp_mid|     ; 48 (48)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|divider:divider1|comparator:\subtractor:9:midslice:comp_mid     ; comparator      ; work         ;
 ;    |leddcd:\quot:0:quot_dcd|                           ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\quot:0:quot_dcd                                         ; leddcd          ; work         ;
 ;    |leddcd:\quot:1:quot_dcd|                           ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\quot:1:quot_dcd                                         ; leddcd          ; work         ;
+;    |leddcd:\quot:2:quot_dcd|                           ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\quot:2:quot_dcd                                         ; leddcd          ; work         ;
+;    |leddcd:\quot:3:quot_dcd|                           ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\quot:3:quot_dcd                                         ; leddcd          ; work         ;
+;    |leddcd:\quot:4:quot_dcd|                           ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\quot:4:quot_dcd                                         ; leddcd          ; work         ;
+;    |leddcd:\quot:5:quot_dcd|                           ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\quot:5:quot_dcd                                         ; leddcd          ; work         ;
+;    |leddcd:\quot:6:quot_dcd|                           ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\quot:6:quot_dcd                                         ; leddcd          ; work         ;
+;    |leddcd:\quot:7:quot_dcd|                           ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\quot:7:quot_dcd                                         ; leddcd          ; work         ;
 ;    |leddcd:\remain:0:rem_dcd|                          ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\remain:0:rem_dcd                                        ; leddcd          ; work         ;
+;    |leddcd:\remain:1:rem_dcd|                          ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\remain:1:rem_dcd                                        ; leddcd          ; work         ;
+;    |leddcd:\remain:2:rem_dcd|                          ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\remain:2:rem_dcd                                        ; leddcd          ; work         ;
+;    |leddcd:\remain:3:rem_dcd|                          ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |display_divider|leddcd:\remain:3:rem_dcd                                        ; leddcd          ; work         ;
 +--------------------------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------------------------------------------+-----------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
@@ -245,9 +310,9 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 13    ;
+; Total registers                              ; 49    ;
 ; Number of registers using Synchronous Clear  ; 0     ;
-; Number of registers using Synchronous Load   ; 4     ;
+; Number of registers using Synchronous Load   ; 16    ;
 ; Number of registers using Asynchronous Clear ; 0     ;
 ; Number of registers using Asynchronous Load  ; 0     ;
 ; Number of registers using Clock Enable       ; 0     ;
@@ -260,7 +325,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------+-------+-------------------------------------------------------------------------------------+
 ; Parameter Name ; Value ; Type                                                                                ;
 +----------------+-------+-------------------------------------------------------------------------------------+
-; data_width     ; 4     ; Signed Integer                                                                      ;
+; data_width     ; 16    ; Signed Integer                                                                      ;
 +----------------+-------+-------------------------------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
@@ -270,7 +335,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+-------+---------------------------------------------------------------------------------+
 ; Parameter Name ; Value ; Type                                                                            ;
 +----------------+-------+---------------------------------------------------------------------------------+
-; data_width     ; 4     ; Signed Integer                                                                  ;
+; data_width     ; 16    ; Signed Integer                                                                  ;
 +----------------+-------+---------------------------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
@@ -280,7 +345,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+-------+---------------------------------------------------------------------------------+
 ; Parameter Name ; Value ; Type                                                                            ;
 +----------------+-------+---------------------------------------------------------------------------------+
-; data_width     ; 4     ; Signed Integer                                                                  ;
+; data_width     ; 16    ; Signed Integer                                                                  ;
 +----------------+-------+---------------------------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
@@ -290,7 +355,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+-------+---------------------------------------------------------------------------------+
 ; Parameter Name ; Value ; Type                                                                            ;
 +----------------+-------+---------------------------------------------------------------------------------+
-; data_width     ; 4     ; Signed Integer                                                                  ;
+; data_width     ; 16    ; Signed Integer                                                                  ;
 +----------------+-------+---------------------------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
@@ -300,7 +365,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+-------+---------------------------------------------------------------------------------+
 ; Parameter Name ; Value ; Type                                                                            ;
 +----------------+-------+---------------------------------------------------------------------------------+
-; data_width     ; 4     ; Signed Integer                                                                  ;
+; data_width     ; 16    ; Signed Integer                                                                  ;
 +----------------+-------+---------------------------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
@@ -310,7 +375,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+-------+---------------------------------------------------------------------------------+
 ; Parameter Name ; Value ; Type                                                                            ;
 +----------------+-------+---------------------------------------------------------------------------------+
-; data_width     ; 4     ; Signed Integer                                                                  ;
+; data_width     ; 16    ; Signed Integer                                                                  ;
 +----------------+-------+---------------------------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
@@ -320,18 +385,258 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+-------+---------------------------------------------------------------------------------+
 ; Parameter Name ; Value ; Type                                                                            ;
 +----------------+-------+---------------------------------------------------------------------------------+
-; data_width     ; 4     ; Signed Integer                                                                  ;
+; data_width     ; 16    ; Signed Integer                                                                  ;
 +----------------+-------+---------------------------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
-+------------------------------------------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:7:lastslice:comp_last ;
-+----------------+-------+-----------------------------------------------------------------------------------+
-; Parameter Name ; Value ; Type                                                                              ;
-+----------------+-------+-----------------------------------------------------------------------------------+
-; data_width     ; 4     ; Signed Integer                                                                    ;
-+----------------+-------+-----------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:7:midslice:comp_mid ;
++----------------+-------+---------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                            ;
++----------------+-------+---------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                  ;
++----------------+-------+---------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:8:midslice:comp_mid ;
++----------------+-------+---------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                            ;
++----------------+-------+---------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                  ;
++----------------+-------+---------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:9:midslice:comp_mid ;
++----------------+-------+---------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                            ;
++----------------+-------+---------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                  ;
++----------------+-------+---------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:10:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:11:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:12:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:13:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:14:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:15:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:16:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:17:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:18:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:19:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:20:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:21:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:22:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:23:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:24:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:25:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:26:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:27:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:28:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:29:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:30:midslice:comp_mid ;
++----------------+-------+----------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                             ;
++----------------+-------+----------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                   ;
++----------------+-------+----------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: divider:divider1|comparator:\subtractor:31:lastslice:comp_last ;
++----------------+-------+------------------------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                               ;
++----------------+-------+------------------------------------------------------------------------------------+
+; data_width     ; 16    ; Signed Integer                                                                     ;
++----------------+-------+------------------------------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
@@ -346,11 +651,21 @@ Note: In order to hide this table in the UI and the text report file, please set
 
 +---------------------------------------------------------------------------------------------+
 ; Port Connectivity Checks: "divider:divider1|comparator:\subtractor:0:firstslice:comp_first" ;
-+------------+-------+----------+-------------------------------------------------------------+
-; Port       ; Type  ; Severity ; Details                                                     ;
-+------------+-------+----------+-------------------------------------------------------------+
-; dinl[4..1] ; Input ; Info     ; Stuck at GND                                                ;
-+------------+-------+----------+-------------------------------------------------------------+
++-------------+-------+----------+------------------------------------------------------------+
+; Port        ; Type  ; Severity ; Details                                                    ;
++-------------+-------+----------+------------------------------------------------------------+
+; dinl[16..1] ; Input ; Info     ; Stuck at GND                                               ;
++-------------+-------+----------+------------------------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "divider:divider1"                                                                                          ;
++--------+--------+----------+----------------------------------------------------------------------------------------------------------+
+; Port   ; Type   ; Severity ; Details                                                                                                  ;
++--------+--------+----------+----------------------------------------------------------------------------------------------------------+
+; done   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed.                      ;
+; cycles ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
++--------+--------+----------+----------------------------------------------------------------------------------------------------------+
 
 
 +-----------------------------------------------------+
@@ -358,23 +673,23 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; boundary_port         ; 42                          ;
-; cycloneiii_ff         ; 13                          ;
-;     SLD               ; 4                           ;
-;     plain             ; 9                           ;
-; cycloneiii_lcell_comb ; 119                         ;
-;     arith             ; 24                          ;
-;         2 data inputs ; 2                           ;
-;         3 data inputs ; 22                          ;
-;     normal            ; 95                          ;
+; boundary_port         ; 157                         ;
+; cycloneiii_ff         ; 49                          ;
+;     SLD               ; 16                          ;
+;     plain             ; 33                          ;
+; cycloneiii_lcell_comb ; 1640                        ;
+;     arith             ; 945                         ;
+;         2 data inputs ; 14                          ;
+;         3 data inputs ; 931                         ;
+;     normal            ; 695                         ;
 ;         0 data inputs ; 2                           ;
-;         1 data inputs ; 8                           ;
-;         2 data inputs ; 9                           ;
-;         3 data inputs ; 29                          ;
-;         4 data inputs ; 47                          ;
+;         1 data inputs ; 28                          ;
+;         2 data inputs ; 76                          ;
+;         3 data inputs ; 215                         ;
+;         4 data inputs ; 374                         ;
 ;                       ;                             ;
-; Max LUT depth         ; 29.30                       ;
-; Average LUT depth     ; 19.19                       ;
+; Max LUT depth         ; 123.40                      ;
+; Average LUT depth     ; 109.58                      ;
 +-----------------------+-----------------------------+
 
 
@@ -383,7 +698,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:00     ;
+; Top            ; 00:00:01     ;
 +----------------+--------------+
 
 
@@ -393,29 +708,30 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 22.1std.0 Build 915 10/25/2022 SC Lite Edition
-    Info: Processing started: Wed Oct 25 16:44:03 2023
+    Info: Processing started: Mon Nov  6 20:59:17 2023
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off display_divider -c display_divider
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 10 of the 10 processors detected
-Info (12021): Found 2 design units, including 1 entities, in source file divider_tb.vhd
-    Info (12022): Found design unit 1: testbench1-behavioral File: C:/Users/laptop/Documents/lab2/divider_tb.vhd Line: 13
-    Info (12023): Found entity 1: testbench1 File: C:/Users/laptop/Documents/lab2/divider_tb.vhd Line: 10
-Info (12021): Found 2 design units, including 0 entities, in source file divider_const.vhd
+Info (12021): Found 2 design units, including 0 entities, in source file /users/laptop/documents/lab2/divider_const.vhd
     Info (12022): Found design unit 1: divider_const File: C:/Users/laptop/Documents/lab2/divider_const.vhd Line: 6
-    Info (12022): Found design unit 2: divider_const-body File: C:/Users/laptop/Documents/lab2/divider_const.vhd Line: 11
-Info (12021): Found 3 design units, including 1 entities, in source file divider.vhd
-    Info (12022): Found design unit 1: divider-behavioral_sequential File: C:/Users/laptop/Documents/lab2/divider.vhd Line: 22
-    Info (12022): Found design unit 2: divider-structural_combinational File: C:/Users/laptop/Documents/lab2/divider.vhd Line: 115
-    Info (12023): Found entity 1: divider File: C:/Users/laptop/Documents/lab2/divider.vhd Line: 8
+    Info (12022): Found design unit 2: divider_const-body File: C:/Users/laptop/Documents/lab2/divider_const.vhd Line: 13
+Info (12021): Found 2 design units, including 1 entities, in source file divider_tb.vhd
+    Info (12022): Found design unit 1: testbench1-behavioral File: C:/Users/laptop/Documents/lab4/divider_tb.vhd Line: 13
+    Info (12023): Found entity 1: testbench1 File: C:/Users/laptop/Documents/lab4/divider_tb.vhd Line: 10
+Info (12021): Found 4 design units, including 1 entities, in source file divider.vhd
+    Info (12022): Found design unit 1: divider-fsm_behavior File: C:/Users/laptop/Documents/lab4/divider.vhd Line: 25
+    Info (12022): Found design unit 2: divider-behavioral_sequential File: C:/Users/laptop/Documents/lab4/divider.vhd Line: 239
+    Info (12022): Found design unit 3: divider-structural_combinational File: C:/Users/laptop/Documents/lab4/divider.vhd Line: 327
+    Info (12023): Found entity 1: divider File: C:/Users/laptop/Documents/lab4/divider.vhd Line: 8
 Info (12021): Found 2 design units, including 1 entities, in source file comparator_tb.vhd
-    Info (12022): Found design unit 1: testbench-behavioral File: C:/Users/laptop/Documents/lab2/comparator_tb.vhd Line: 10
-    Info (12023): Found entity 1: testbench File: C:/Users/laptop/Documents/lab2/comparator_tb.vhd Line: 7
+    Info (12022): Found design unit 1: testbench-behavioral File: C:/Users/laptop/Documents/lab4/comparator_tb.vhd Line: 10
+    Info (12023): Found entity 1: testbench File: C:/Users/laptop/Documents/lab4/comparator_tb.vhd Line: 7
 Info (12021): Found 2 design units, including 1 entities, in source file comparator.vhd
-    Info (12022): Found design unit 1: comparator-behavioral File: C:/Users/laptop/Documents/lab2/comparator.vhd Line: 19
-    Info (12023): Found entity 1: comparator File: C:/Users/laptop/Documents/lab2/comparator.vhd Line: 6
+    Info (12022): Found design unit 1: comparator-behavioral File: C:/Users/laptop/Documents/lab4/comparator.vhd Line: 19
+    Info (12023): Found entity 1: comparator File: C:/Users/laptop/Documents/lab4/comparator.vhd Line: 6
 Info (12021): Found 2 design units, including 1 entities, in source file display_divider.vhd
-    Info (12022): Found design unit 1: display_divider-structural File: C:/Users/laptop/Documents/lab2/display_divider.vhd Line: 20
-    Info (12023): Found entity 1: display_divider File: C:/Users/laptop/Documents/lab2/display_divider.vhd Line: 6
+    Info (12022): Found design unit 1: display_divider-structural File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 26
+    Info (12023): Found entity 1: display_divider File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 8
 Info (12021): Found 2 design units, including 1 entities, in source file /users/laptop/documents/leddcd.vhd
     Info (12022): Found design unit 1: leddcd-data_flow File: C:/Users/laptop/Documents/leddcd.vhd Line: 12
     Info (12023): Found entity 1: leddcd File: C:/Users/laptop/Documents/leddcd.vhd Line: 4
@@ -423,26 +739,45 @@ Info (12021): Found 2 design units, including 0 entities, in source file /users/
     Info (12022): Found design unit 1: decoder File: C:/Users/laptop/Documents/decoder.vhd Line: 5
     Info (12022): Found design unit 2: decoder-body File: C:/Users/laptop/Documents/decoder.vhd Line: 21
 Info (12127): Elaborating entity "display_divider" for the top level hierarchy
-Info (12128): Elaborating entity "divider" for hierarchy "divider:divider1" File: C:/Users/laptop/Documents/lab2/display_divider.vhd Line: 51
-Info (12128): Elaborating entity "comparator" for hierarchy "divider:divider1|comparator:\subtractor:0:firstslice:comp_first" File: C:/Users/laptop/Documents/lab2/divider.vhd Line: 153
-Info (12128): Elaborating entity "leddcd" for hierarchy "leddcd:\quot:0:quot_dcd" File: C:/Users/laptop/Documents/lab2/display_divider.vhd Line: 66
+Warning (10541): VHDL Signal Declaration warning at display_divider.vhd(20): used implicit default value for signal "done1" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations. File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 20
+Warning (10036): Verilog HDL or VHDL warning at display_divider.vhd(58): object "done_hl" assigned a value but never read File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 58
+Info (12128): Elaborating entity "divider" for hierarchy "divider:divider1" File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 62
+Warning (10873): Using initial value X (don't care) for net "cycles" at divider.vhd(21) File: C:/Users/laptop/Documents/lab4/divider.vhd Line: 21
+Warning (10873): Using initial value X (don't care) for net "done" at divider.vhd(20) File: C:/Users/laptop/Documents/lab4/divider.vhd Line: 20
+Info (12128): Elaborating entity "comparator" for hierarchy "divider:divider1|comparator:\subtractor:0:firstslice:comp_first" File: C:/Users/laptop/Documents/lab4/divider.vhd Line: 365
+Info (12128): Elaborating entity "leddcd" for hierarchy "leddcd:\quot:0:quot_dcd" File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 88
+Warning (12241): 1 hierarchies have connectivity warnings - see the Connectivity Checks report folder
 Warning (13024): Output pins are stuck at VCC or GND
-    Warning (13410): Pin "overflow1[1]" is stuck at GND File: C:/Users/laptop/Documents/lab2/display_divider.vhd Line: 16
-    Warning (13410): Pin "overflow1[2]" is stuck at GND File: C:/Users/laptop/Documents/lab2/display_divider.vhd Line: 16
-    Warning (13410): Pin "overflow1[6]" is stuck at VCC File: C:/Users/laptop/Documents/lab2/display_divider.vhd Line: 16
+    Warning (13410): Pin "overflow1[1]" is stuck at GND File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 19
+    Warning (13410): Pin "overflow1[2]" is stuck at GND File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 19
+    Warning (13410): Pin "overflow1[6]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 19
+    Warning (13410): Pin "done1" is stuck at GND File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 20
+    Warning (13410): Pin "quot_sign[0]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 21
+    Warning (13410): Pin "quot_sign[1]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 21
+    Warning (13410): Pin "quot_sign[2]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 21
+    Warning (13410): Pin "quot_sign[3]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 21
+    Warning (13410): Pin "quot_sign[4]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 21
+    Warning (13410): Pin "quot_sign[5]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 21
+    Warning (13410): Pin "rem_sign[0]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 22
+    Warning (13410): Pin "rem_sign[1]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 22
+    Warning (13410): Pin "rem_sign[2]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 22
+    Warning (13410): Pin "rem_sign[3]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 22
+    Warning (13410): Pin "rem_sign[4]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 22
+    Warning (13410): Pin "rem_sign[5]" is stuck at VCC File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 22
 Info (286030): Timing-Driven Synthesis is running
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Warning (21074): Design contains 1 input pin(s) that do not drive logic
-    Warning (15610): No output dependent on input pin "clk1" File: C:/Users/laptop/Documents/lab2/display_divider.vhd Line: 9
-Info (21057): Implemented 160 device resources after synthesis - the final resource count might be different
-    Info (21058): Implemented 14 input pins
-    Info (21059): Implemented 28 output pins
-    Info (21061): Implemented 118 logic cells
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 7 warnings
-    Info: Peak virtual memory: 4835 megabytes
-    Info: Processing ended: Wed Oct 25 16:44:11 2023
+Warning (21074): Design contains 2 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "reset1" File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 11
+    Warning (15610): No output dependent on input pin "clk1" File: C:/Users/laptop/Documents/lab4/display_divider.vhd Line: 12
+Info (21057): Implemented 1787 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 51 input pins
+    Info (21059): Implemented 106 output pins
+    Info (21061): Implemented 1630 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 26 warnings
+    Info: Peak virtual memory: 4842 megabytes
+    Info: Processing ended: Mon Nov  6 20:59:25 2023
     Info: Elapsed time: 00:00:08
-    Info: Total CPU time (on all processors): 00:00:17
+    Info: Total CPU time (on all processors): 00:00:16
 
 

@@ -22,7 +22,8 @@ ARCHITECTURE behavioral OF testbench1 IS
             divisor : IN STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0);
             quotient : OUT STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0);
             remainder : OUT STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0);
-            overflow : OUT STD_LOGIC
+            overflow : OUT STD_LOGIC;
+            cycles: OUT STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0)
         );
     END COMPONENT divider;
     --specify which architecture to use
@@ -40,6 +41,7 @@ ARCHITECTURE behavioral OF testbench1 IS
     SIGNAL quotient_tb : STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL remainder_tb : STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL overflow_tb : STD_LOGIC := '0';
+    signal cycles_tb : STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0) := (OTHERS => '0');
 
 BEGIN
     --     --component declaration and stimuli processes go here
@@ -52,7 +54,8 @@ BEGIN
         divisor => divisor_tb,
         quotient => quotient_tb,
         remainder => remainder_tb,
-        overflow => overflow_tb
+        overflow => overflow_tb,
+        cycles => cycles_tb
     );
 
     --instantiate clock
@@ -118,6 +121,8 @@ BEGIN
                 -- write operand two
                 write(write_line, temp2);
                 write(write_line, STRING'(" = "));
+                
+
 
                 --or do you raise start here?
                 -- start_tb <= '1';
@@ -131,6 +136,10 @@ BEGIN
             write(write_line, to_integer(signed(quotient_tb)));
             write(write_line, STRING'(" -- "));       
             write(write_line, to_integer(signed(remainder_tb)));
+            writeline (outfile, write_line);
+            -- print the number of cycles
+            write(write_line, string'("total cycles: "));
+            write(write_line, to_integer(unsigned(cycles_tb)));
             writeline (outfile, write_line);
             -- start_tb <= '0';
             -- WAIT FOR PERIOD;

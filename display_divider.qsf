@@ -60,14 +60,6 @@ set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_RO
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
-set_global_assignment -name VHDL_FILE divider_tb.vhd
-set_global_assignment -name VHDL_FILE divider_const.vhd
-set_global_assignment -name VHDL_FILE divider.vhd
-set_global_assignment -name VHDL_FILE comparator_tb.vhd
-set_global_assignment -name VHDL_FILE comparator.vhd
-set_global_assignment -name VHDL_FILE display_divider.vhd
-set_global_assignment -name VHDL_FILE ../leddcd.vhd
-set_global_assignment -name VHDL_FILE ../decoder.vhd
 set_location_assignment PIN_Y23 -to dividend1[7]
 set_location_assignment PIN_Y24 -to dividend1[6]
 set_location_assignment PIN_AA22 -to dividend1[5]
@@ -110,4 +102,12 @@ set_location_assignment PIN_AB15 -to remainder1[4]
 set_location_assignment PIN_AA15 -to remainder1[5]
 set_location_assignment PIN_AC17 -to remainder1[6]
 set_location_assignment PIN_Y2 -to clk1
+set_global_assignment -name VHDL_FILE ../lab2/divider_const.vhd
+set_global_assignment -name VHDL_FILE divider_tb.vhd
+set_global_assignment -name VHDL_FILE divider.vhd
+set_global_assignment -name VHDL_FILE comparator_tb.vhd
+set_global_assignment -name VHDL_FILE comparator.vhd
+set_global_assignment -name VHDL_FILE display_divider.vhd
+set_global_assignment -name VHDL_FILE ../leddcd.vhd
+set_global_assignment -name VHDL_FILE ../decoder.vhd
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

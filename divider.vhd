@@ -17,7 +17,8 @@ ENTITY divider IS
         quotient : OUT STD_LOGIC_VECTOR (DIVIDEND_WIDTH - 1 DOWNTO 0);
         remainder : OUT STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0);
         overflow : OUT STD_LOGIC;
-        done : out STD_LOGIC
+        done : out STD_LOGIC;
+        cycles : out std_logic_vector(DIVIDEND_WIDTH - 1 DOWNTO 0)
     );
 END ENTITY divider;
 
@@ -29,6 +30,8 @@ ARCHITECTURE fsm_behavior OF divider IS
     SIGNAL r : STD_LOGIC_VECTOR (DIVISOR_WIDTH - 1 DOWNTO 0);
     SIGNAL o : STD_LOGIC;
     SIGNAL done_o : STD_LOGIC;
+
+    signal cycles_t : std_logic_vector(DIVIDEND_WIDTH - 1 DOWNTO 0);
 
     -- clocked signals
     SIGNAL a_c : STD_LOGIC_VECTOR(DIVIDEND_WIDTH - 1 DOWNTO 0);
@@ -64,21 +67,30 @@ ARCHITECTURE fsm_behavior OF divider IS
     END FUNCTION get_msb_pos;
 
     FUNCTION get_msb_pos_recursive (SIGNAL s : STD_LOGIC_VECTOR) RETURN INTEGER IS
-    -- declarative region
-BEGIN
-    FOR i IN s'high DOWNTO s'low LOOP
-        IF s(i) = '1' THEN
-            REPORT "input = " & INTEGER'image(to_integer(signed(s)));
-            REPORT "msb = " & INTEGER'image(i);
-            RETURN i;
-        END IF;
-    END LOOP;
-    --if vector is 0
-    REPORT "input = " & INTEGER'image(to_integer(signed(s)));
-    REPORT "msb = 0";
-    RETURN 0;
+        --declarative region
+        variable msb : integer := 0;
+        -- variable s_int : integer;
+    begin
+        -- s_int := to_integer(unsigned(s));
 
-END FUNCTION get_msb_pos_recursive;
+        -- --base case
+        -- if (s_int = 0) then 
+        --     return 0;
+        -- end if;
+
+        -- s_int = s_int/2;
+        -- while (s /= 0) loop
+        --     s = s/2;
+        --     msb := msb + 1;
+        -- end loop;
+
+        return msb;
+        
+
+    end function get_msb_pos_recursive;
+
+
+    -- declarative region
 
 BEGIN
     done <= done_o;
@@ -112,6 +124,7 @@ BEGIN
         VARIABLE p : INTEGER := 0;
         VARIABLE sign_q : STD_LOGIC := '0';
         VARIABLE one : STD_LOGIC_VECTOR(DIVIDEND_WIDTH - 1 DOWNTO 0) := (0 => '1', OTHERS => '0');
+
 
     BEGIN
         done_c <= done_o;
@@ -154,12 +167,16 @@ BEGIN
                     o_c <= '0';
                 END IF;
 
+                cycles_t <= (others => '0');
+
                 next_state <= s1;
 
                 -- division state
                 -- how do you use done signal?
             WHEN s1 =>
                 --increment state when done
+                cycles_t <= std_logic_vector(unsigned(cycles_t) + unsigned(one));
+
                 if (unsigned(b) = resize(unsigned(one), DIVISOR_WIDTH)) then 
                     q_c <= a;
                     a_c <= (others => '0');
@@ -172,13 +189,18 @@ BEGIN
                     ELSE
 
                     p := get_msb_pos(a) - get_msb_pos(b);
+                    report "p: " & integer'image(p);
+                    report "a: " & integer'image(to_integer(unsigned(a)));
+                    report "b: " & integer'image(to_integer(unsigned(b)));
                     IF (shift_left(unsigned(b), p) > unsigned(a)) THEN -- shouldn't matter if signed/unsigned right?
-                        REPORT "shift_left unsigned b_c: " & INTEGER'image(to_integer(shift_left(unsigned(b), p)));
-                        REPORT "unsigned a_c: " & INTEGER'image(to_integer(unsigned(a)));
                         p := (get_msb_pos(a) - get_msb_pos(b)) - 1;
                     END IF;
+                    report "p - post-if: " & integer'image(p);
+                    
                     q_c <= STD_LOGIC_VECTOR(unsigned(q) + (shift_left(unsigned(one), p)));
+                    report "q_c: " & integer'image(to_integer(unsigned(q_c)));
                     a_c <= STD_LOGIC_VECTOR(unsigned(a) - (shift_left(unsigned(b), p)));
+                    report "a_c: " & integer'image(to_integer(unsigned(a_c)));
                     END IF;
                 end if;
                 
@@ -199,6 +221,7 @@ BEGIN
 
                 --return to first state
                 next_state <= idle;
+                report "cycles: " & integer'image(to_integer(unsigned(cycles_t)));
                 -- done_c <= '1';
 
         END CASE;
@@ -209,6 +232,7 @@ BEGIN
     quotient <= q;
     remainder <= r;
     overflow <= o;
+    cycles <= cycles_t;
 
 END ARCHITECTURE fsm_behavior;
 
