@@ -67,7 +67,7 @@ ARCHITECTURE fsm_behavior OF divider IS
 
     END FUNCTION get_msb_pos;
 
-    FUNCTION get_msb_pos_recursive (SIGNAL s : integer) RETURN INTEGER IS
+    FUNCTION get_msb_pos_recursive (SIGNAL s : std_logic_vector) RETURN INTEGER IS
         --declarative region
         variable msb : integer := -1;
         variable l : integer := 0;
@@ -76,8 +76,8 @@ ARCHITECTURE fsm_behavior OF divider IS
         
     begin
         while (l <= r) loop
-            mid := floor((l+r)/2);
-            if ((shift_left(1, mid)) > s) then
+            mid := integer(floor((real(l)+real(r))/real(2)));
+            if (shift_left(to_unsigned(1, s'length), mid) > unsigned(s)) then
                 msb := mid - 1;
                 r := mid - 1;
             else
