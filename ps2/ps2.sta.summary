@@ -1,0 +1,149 @@
+------------------------------------------------------------
+Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1200mV 85C Model Setup 'ps2:ps2_1|keyboard:u1|keyboard_clk_filtered'
+Slack : -2.549
+TNS   : -36.693
+
+Type  : Slow 1200mV 85C Model Setup 'clock_50MHz'
+Slack : -2.304
+TNS   : -14.269
+
+Type  : Slow 1200mV 85C Model Setup 'ps2:ps2_1|keyboard:u1|scan_ready'
+Slack : -0.184
+TNS   : -2.805
+
+Type  : Slow 1200mV 85C Model Hold 'clock_50MHz'
+Slack : 0.391
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'ps2:ps2_1|keyboard:u1|keyboard_clk_filtered'
+Slack : 0.402
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'ps2:ps2_1|keyboard:u1|scan_ready'
+Slack : 0.451
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Recovery 'ps2:ps2_1|keyboard:u1|ready_set'
+Slack : -1.650
+TNS   : -1.650
+
+Type  : Slow 1200mV 85C Model Removal 'ps2:ps2_1|keyboard:u1|ready_set'
+Slack : 2.096
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'clock_50MHz'
+Slack : -3.000
+TNS   : -18.420
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'ps2:ps2_1|keyboard:u1|scan_ready'
+Slack : -1.285
+TNS   : -41.120
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'ps2:ps2_1|keyboard:u1|keyboard_clk_filtered'
+Slack : -1.285
+TNS   : -29.555
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'ps2:ps2_1|keyboard:u1|ready_set'
+Slack : -1.285
+TNS   : -1.285
+
+Type  : Slow 1200mV 0C Model Setup 'ps2:ps2_1|keyboard:u1|keyboard_clk_filtered'
+Slack : -2.264
+TNS   : -31.829
+
+Type  : Slow 1200mV 0C Model Setup 'clock_50MHz'
+Slack : -1.983
+TNS   : -12.261
+
+Type  : Slow 1200mV 0C Model Setup 'ps2:ps2_1|keyboard:u1|scan_ready'
+Slack : -0.063
+TNS   : -0.470
+
+Type  : Slow 1200mV 0C Model Hold 'clock_50MHz'
+Slack : 0.350
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'ps2:ps2_1|keyboard:u1|keyboard_clk_filtered'
+Slack : 0.354
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'ps2:ps2_1|keyboard:u1|scan_ready'
+Slack : 0.416
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Recovery 'ps2:ps2_1|keyboard:u1|ready_set'
+Slack : -1.338
+TNS   : -1.338
+
+Type  : Slow 1200mV 0C Model Removal 'ps2:ps2_1|keyboard:u1|ready_set'
+Slack : 1.836
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'clock_50MHz'
+Slack : -3.000
+TNS   : -18.420
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'ps2:ps2_1|keyboard:u1|scan_ready'
+Slack : -1.285
+TNS   : -41.120
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'ps2:ps2_1|keyboard:u1|keyboard_clk_filtered'
+Slack : -1.285
+TNS   : -29.555
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'ps2:ps2_1|keyboard:u1|ready_set'
+Slack : -1.285
+TNS   : -1.285
+
+Type  : Fast 1200mV 0C Model Setup 'ps2:ps2_1|keyboard:u1|keyboard_clk_filtered'
+Slack : -0.805
+TNS   : -6.300
+
+Type  : Fast 1200mV 0C Model Setup 'clock_50MHz'
+Slack : -0.674
+TNS   : -1.969
+
+Type  : Fast 1200mV 0C Model Setup 'ps2:ps2_1|keyboard:u1|scan_ready'
+Slack : 0.424
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'clock_50MHz'
+Slack : 0.180
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'ps2:ps2_1|keyboard:u1|keyboard_clk_filtered'
+Slack : 0.181
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'ps2:ps2_1|keyboard:u1|scan_ready'
+Slack : 0.199
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Recovery 'ps2:ps2_1|keyboard:u1|ready_set'
+Slack : -0.389
+TNS   : -0.389
+
+Type  : Fast 1200mV 0C Model Removal 'ps2:ps2_1|keyboard:u1|ready_set'
+Slack : 1.091
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'clock_50MHz'
+Slack : -3.000
+TNS   : -18.614
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'ps2:ps2_1|keyboard:u1|scan_ready'
+Slack : -1.000
+TNS   : -32.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'ps2:ps2_1|keyboard:u1|keyboard_clk_filtered'
+Slack : -1.000
+TNS   : -23.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'ps2:ps2_1|keyboard:u1|ready_set'
+Slack : -1.000
+TNS   : -1.000
+
+------------------------------------------------------------

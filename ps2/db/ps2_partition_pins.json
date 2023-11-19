@@ -1,0 +1,249 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "h0_segments[0]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[1]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[2]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[3]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[4]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[5]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[6]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[7]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[8]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[9]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[10]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[11]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[12]",
+					"strict" : false
+				},
+				{
+					"name" : "h0_segments[13]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[0]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[1]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[2]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[3]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[4]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[5]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[6]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[7]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[8]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[9]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[10]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[11]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[12]",
+					"strict" : false
+				},
+				{
+					"name" : "h1_segments[13]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[0]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[1]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[2]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[3]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[4]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[5]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[6]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[7]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[8]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[9]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[10]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[11]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[12]",
+					"strict" : false
+				},
+				{
+					"name" : "h2_segments[13]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[0]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[1]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[2]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[3]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[4]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[5]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[6]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[7]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[8]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[9]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[10]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[11]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[12]",
+					"strict" : false
+				},
+				{
+					"name" : "h3_segments[13]",
+					"strict" : false
+				},
+				{
+					"name" : "reset",
+					"strict" : false
+				},
+				{
+					"name" : "clock_50MHz",
+					"strict" : false
+				},
+				{
+					"name" : "keyboard_data",
+					"strict" : false
+				},
+				{
+					"name" : "keyboard_clk",
+					"strict" : false
+				}
+			]
+		}
+	]
+}
