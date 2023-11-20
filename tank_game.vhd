@@ -1,4 +1,5 @@
 --This module controls the top-level VGA of the tank game
+-- _C is clocked signal
 
 LIBRARY IEEE;
 
@@ -38,37 +39,21 @@ ARCHITECTURE structural OF tank_game IS
 		);
 	END COMPONENT pixelGenerator;
 
-	COMPONENT tankA IS
+	COMPONENT tank IS
 		PORT (
 			clk, rst_n : IN STD_LOGIC;
 			pos_x, pos_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 			left_bound, right_bound, top_bound, bottom_bound : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
 		);
-	END COMPONENT tankA;
+	END COMPONENT tank;
 
-	COMPONENT tankB IS
-		PORT (
-			clk, rst_n : IN STD_LOGIC;
-			pos_x, pos_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-			left_bound, right_bound, top_bound, bottom_bound : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
-		);
-	END COMPONENT tankB;
-
-	COMPONENT bulletA IS
+	COMPONENT bullet IS
 		PORT (
 			clk, rst_n : IN STD_LOGIC;
 			pos_x, pos_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 			x1, x2, y1, y2 : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
 		);
-	END COMPONENT bulletA;
-
-	COMPONENT bulletB IS
-		PORT (
-			clk, rst_n : IN STD_LOGIC;
-			pos_x, pos_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-			x1, x2, y1, y2 : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
-		);
-	END COMPONENT bulletB;
+	END COMPONENT bullet;
 
 	-- COMPONENT tankA_pos IS
 	-- PORT (
@@ -126,7 +111,6 @@ ARCHITECTURE structural OF tank_game IS
 
 	-- bullet position signals, bullet A (315, 410)
 	-- (x,y) := (tank_X + 15, tank_X - 25)
-	-- _C is clocked signal
 	SIGNAL A_BULLET_POS_X : STD_LOGIC_VECTOR(9 DOWNTO 0) := (8 => '1', 5 => '1', 4 => '1', 3 => '1', 1 => '1', 0 => '1',OTHERS => '0');
 	SIGNAL A_BULLET_POS_Y : STD_LOGIC_VECTOR(9 DOWNTO 0) := (8 => '1', 7 => '1', 4 => '1', 3 => '1', 1 => '1', OTHERS => '0');
 	SIGNAL A_BULLET_POS_X_C : STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -180,7 +164,7 @@ BEGIN
 		blue_out => VGA_BLUE
 	);
 
-	tankA_Draw : tankA
+	tankA_Draw : tank
 	PORT MAP(
 		clk => CLOCK_50,
 		rst_n => RESET_N,
@@ -192,7 +176,7 @@ BEGIN
 		bottom_bound => A_BOTTOM_BOUND
 	);
 
-	tankB_Draw : tankB
+	tankB_Draw : tank
 	PORT MAP(
 		clk => CLOCK_50,
 		rst_n => RESET_N,
@@ -204,7 +188,7 @@ BEGIN
 		bottom_bound => B_BOTTOM_BOUND
 	);
 
-	bulletA_pos : bulletA
+	bulletA_pos : bullet
 	PORT MAP(
 		clk => CLOCK_50,
 		rst_n => RESET_N,
@@ -216,7 +200,7 @@ BEGIN
 		y2 => A_Y2
 	);
 
-	bulletB_pos : bulletB
+	bulletB_pos : bullet
 	PORT MAP(
 		clk => CLOCK_50,
 		rst_n => RESET_N,
