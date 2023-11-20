@@ -7,6 +7,8 @@ entity pixelGenerator is
 	port(
 			clk, ROM_clk, rst_n, video_on, eof 				: in std_logic;
 			pixel_row, pixel_column						    : in std_logic_vector(9 downto 0);
+			A_lb, A_rb, A_tb, A_bb          : in std_logic_vector(9 downto 0);
+			B_lb, B_rb, B_tb, B_bb          : in std_logic_vector(9 downto 0);
 			red_out, green_out, blue_out					: out std_logic_vector(7 downto 0)
 		);
 end entity pixelGenerator;
@@ -35,6 +37,8 @@ signal colorAddress : std_logic_vector (2 downto 0);
 signal color        : std_logic_vector (23 downto 0);
 
 signal pixel_row_int, pixel_column_int : natural;
+signal A_lbound, A_rbound, A_tbound, A_bbound : natural;
+signal B_lbound, B_rbound, B_tbound, B_bbound : natural;
 
 begin
 
@@ -46,6 +50,16 @@ begin
 
 	pixel_row_int <= to_integer(unsigned(pixel_row));
 	pixel_column_int <= to_integer(unsigned(pixel_column));
+
+	A_lbound <= to_integer(unsigned(A_lb));
+	A_rbound <= to_integer(unsigned(A_rb));
+	A_tbound <= to_integer(unsigned(A_tb));
+	A_bbound <= to_integer(unsigned(A_bb));
+
+	B_lbound <= to_integer(unsigned(B_lb));
+	B_rbound <= to_integer(unsigned(B_rb));
+	B_tbound <= to_integer(unsigned(B_tb));
+	B_bbound <= to_integer(unsigned(B_bb));
 	
 --------------------------------------------------------------------------------------------	
 	
@@ -59,30 +73,16 @@ begin
 	begin
 			
 		if (rising_edge(clk)) then
-			-- if (not eof and not video_on) then  
-				if (pixel_row_int < 240 and pixel_column_int < 320) then
-					colorAddress <= color_green;
-					-- color <= (15 downto 8 => '1', others=> '0');
+				if (pixel_row_int >= A_tbound and pixel_row_int < A_bbound and pixel_column_int >= A_lbound and pixel_column_int < A_rbound) then
+                    colorAddress <= color_blue;
 
-				elsif (pixel_row_int >= 240 and pixel_column_int < 320) then
-					colorAddress <= color_yellow;
-					-- color <= (23 downto 8 => '1', others=> '0');
-
-				elsif (pixel_row_int < 240 and pixel_column_int >= 320) then
-					colorAddress <= color_red;
-					-- color <= (23 downto 16 => '1', others=> '0');
-
-				elsif (pixel_row_int >= 240 and pixel_column_int >= 320) then
-					colorAddress <= color_blue;
-					-- color <= (7 downto 0 => '1', others=> '0');
-
+                elsif (pixel_row_int >= B_tbound and pixel_row_int < B_bbound and pixel_column_int >= B_lbound and pixel_column_int < B_rbound) then
+                    colorAddress <= color_red;
 				else
-					colorAddress <= color_white;
-					-- color <= (others => '1');
+				    colorAddress <= color_white;
 
-				end if;
+				end if;			
 
-			-- end if;
 			
 		end if;
 		

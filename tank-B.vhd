@@ -1,4 +1,4 @@
---This module renders tank A on the screen via VGA (in blue)
+--This module renders tank B on the screen via VGA (in red)
 LIBRARY IEEE;
 
 USE IEEE.std_logic_1164.ALL;
@@ -7,16 +7,18 @@ USE IEEE.numeric_std.ALL;
 --inputs: clk, rst_n, center positions
 --outputs: left_bound, right_bound, top_bound, bottom_bound
 
-ENTITY tankA IS
+ENTITY tankB IS
 	PORT (
 		clk, rst_n : IN STD_LOGIC;
 		pos_x, pos_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 		left_bound, right_bound, top_bound, bottom_bound : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
 	);
-END ENTITY tankA;
+END ENTITY tankB;
 
-ARCHITECTURE behavioral_A OF tankA IS
+ARCHITECTURE behavioral_B OF tankB IS
 
+	-- SIGNAL pixel_row_int, pixel_column_int : NATURAL;
+	-- SIGNAL left_bound_B, right_bound_B, top_bound_B, bottom_bound_B : NATURAL;
 	SIGNAL pos_x_int, pos_y_int : NATURAL;
 
 BEGIN
@@ -28,7 +30,7 @@ BEGIN
 
 	--------------------------------------------------------------------------------------------	
 
-	tankA_Draw : PROCESS (clk, rst_n) IS
+	tankB_Draw : PROCESS (clk, rst_n) IS
 
 	BEGIN
 		--store center position of each tank
@@ -42,8 +44,8 @@ BEGIN
 			bottom_bound <= std_logic_vector(to_unsigned(pos_y_int + 35, 10));
 		END IF;
 
-	END PROCESS tankA_Draw;
+	END PROCESS tankB_Draw;
 
 	--------------------------------------------------------------------------------------------
 
-END ARCHITECTURE behavioral_A;
+END ARCHITECTURE behavioral_B;

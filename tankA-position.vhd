@@ -1,76 +1,70 @@
 --This module manipulates the horizontal position of tank A (pixel_column_A) on the screen
 
-library IEEE;
+LIBRARY IEEE;
 
-use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
+USE IEEE.std_logic_1164.ALL;
+USE IEEE.numeric_std.ALL;
 
---inputs: clock, reset, speed, direction
+--inputs: clock, reset, speed, direction, (x,y) of tankA
 --outputs: (x, y) aka (pixel_row, pixel_column) position of tankA
-entity tankA_pos is
-	port(
-			clk, rst_n, direction 				: in std_logic;
-            speed : in std_logic_vector(1 downto 0);
-			pixel_row_A, pixel_column_A						    : out std_logic_vector(9 downto 0)
-		);
-end entity tankA_pos;
-
---need a counter to increment position based on 50 Hz
---collision detection with screen boundaries
---modify pixel_column_A
---need the speed 
+--notes:
+--speed comes from keyboard input
+--direction = 0 moves right, direction = 1 moves left
+ENTITY tankA_pos IS
+    PORT (
+        clk, rst_n, direction : IN STD_LOGIC;
+        speed : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+        pos_x : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+        updated_pos_x : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+    );
+END ENTITY tankA_pos;
 
 --declare signals
-signal pixel_row_A_int, pixel_column_A_int : natural;
-signal left_bound : natural := 0;
-signal right_bound : natural := 640;
+SIGNAL pox_x_int : NATURAL;
+SIGNAL left_bound : NATURAL := 0;
+SIGNAL right_bound : NATURAL := 640-80;
 
+CONSTANT speed1 : STD_LOGIC_VECTOR := (OTHERS => '0');
+CONSTANT speed2 : STD_LOGIC_VECTOR := (0 => '1', OTHERS => '0');
+CONSTANT speed3 : STD_LOGIC_VECTOR := (1 => '1', OTHERS => '0');
 
--- constant speed1 : natural := 5;
--- constant speed2 : natural := 10;
--- constant speed3 : natural := 30;
+ARCHITECTURE behavioral OF tankA_pos IS
+    --declarative region
+    SIGNAL tank_speed : NATURAL;
 
-constant speed1 : std_logic_vector := (others => '0');
-constant speed2 : std_logic_vector := (0 => '1', others => '0');
-constant speed3 : std_logic_vector := (1 => '1', others => '0');
+BEGIN
+    pox_x_int <= to_integer(unsigned(pos_x));
 
-
-architecture behavioral of tankA_pos is 
---declarative region
-signal tank_speed : natural;
-
-begin
-    pixel_column_A_int <= to_integer(unsigned(pixel_column_A));
-
-    if (speed = speed1) then
+    IF (speed = speed1) THEN
         tank_speed <= 5;
-    elsif (speed = speed2) then
+    ELSIF (speed = speed2) THEN
         tank_speed <= 10;
-    elsif (speed = speed3) then
+    ELSIF (speed = speed3) THEN
         tank_speed <= 30;
-    else 
-        tank_speed <= 0;
-    end if;
+    ELSE
+        tank_speed <= 0; --if nothing is pressed
+    END IF;
 
-    if (direction = '1') then
-        tank_speed <= tank_speed * -1;
-    end if;
+    tankA_pos : PROCESS (clk, rst_n) IS
+    BEGIN
+        IF (rising_edge(clk)) THEN
+            IF (direction = '0') THEN
+                IF (pox_x_int + tank_speed <= right_bound) THEN
+                    pox_x_int <= pox_x_int + tank_speed;
+                ELSE
+                    direction <= NOT direction; --if tank exceeds right bound, flip direction
+                END IF;
+            ELSIF (direction = '1') THEN
+                IF (pox_x_int - tank_speed >= left_bound) THEN
+                    pox_x_int <= pox_x_int - tank_speed;
+                ELSE
+                    directon <= NOT direction; --if tank exceeds left bound, flip direction
+                END IF;
+            END IF;
+        END IF;
 
-    tankA_pos : process (clk, rst_n) is 
-    begin
-        if (rising_edge(clk)) then
-            --if tank is within screen boundaries
-            if (pixel_column_A_int >= left_bound and pixel_column_A_int < right_bound) then 
-                pixel_column_A_int <= pixel_column_A_int + tank_speed;
+    END PROCESS tankA_pos;
 
-            --if tank exceeds boundaries, flip direction
-            elsif (pixel_column_A_int < left_bound or pixel_column_A_int >= right_bound) then
-                direction <= not direction;
-            end if;
-        end if;
+    updated_pos_x <= STD_LOGIC_VECTOR(to_unsigned(pos_x_int,10));
 
-    end process tankA_pos;
-
-    pixel_column_A <= std_logic_vector(pixel_column_A_int);
-
-end architecture behavioral;
+END ARCHITECTURE behavioral;
