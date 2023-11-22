@@ -5,10 +5,12 @@ LIBRARY IEEE;
 
 USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
+
+
 ENTITY tank_game IS
 	PORT (
 		CLOCK_50 : IN STD_LOGIC;
-		RESET_N : IN STD_LOGIC;
+		RESET : IN STD_LOGIC;
 		--VGA 
 		VGA_RED, VGA_GREEN, VGA_BLUE : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		HORIZ_SYNC, VERT_SYNC, VGA_BLANK, VGA_CLK : OUT STD_LOGIC
@@ -19,12 +21,15 @@ END ENTITY tank_game;
 ARCHITECTURE structural OF tank_game IS
 	SIGNAL VGA_RED_temp, VGA_GREEN_temp, VGA_BLUE_temp : STD_LOGIC_VECTOR(7 DOWNTO 0);
 
-	COMPONENT clock_counter IS
-		PORT (
-			clk, rst_n : IN STD_LOGIC;
-			game_tick : OUT STD_LOGIC
-		);
-	END COMPONENT clock_counter;
+	component clock_counter is 
+	generic (
+		BITS :integer := 3
+	);
+	port (
+		clk, rst : in std_logic;
+		game_tick : out std_logic
+	);
+	end component clock_counter;
 
 	COMPONENT pixelGenerator IS
 		PORT (
@@ -55,14 +60,15 @@ ARCHITECTURE structural OF tank_game IS
 		);
 	END COMPONENT bullet;
 
-	-- COMPONENT tankA_pos IS
-	-- PORT (
-	--     clk, rst_n, direction : IN STD_LOGIC;
-	--     speed : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-	--     pos_x : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-	--     updated_pos_x : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
-	-- );
-	-- END COMPONENT tankA_pos;
+	COMPONENT tankA_pos IS
+    PORT (
+		clk, rst : IN STD_LOGIC;
+        start : IN STD_LOGIC;
+        speed : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+        pos_x : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+        updated_pos_x : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+    );
+	END COMPONENT tankA_pos;
 
 	COMPONENT VGA_SYNC IS
 		PORT (
@@ -74,7 +80,10 @@ ARCHITECTURE structural OF tank_game IS
 	END COMPONENT VGA_SYNC;
 
 	--Signals for screen position updates
-	SIGNAL game_ticks : STD_LOGIC;
+	signal game_ticks : std_logic;
+	signal GAME_START : std_logic;
+	signal GAME_DONE : std_logic;
+	signal RESET_P, RESET_N : std_logic;
 
 	--Signals for VGA sync
 	SIGNAL pixel_row_int : STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -123,15 +132,23 @@ ARCHITECTURE structural OF tank_game IS
 	SIGNAL B_BULLET_POS_X_C : STD_LOGIC_VECTOR(9 DOWNTO 0);
 	SIGNAL B_BULLET_POS_Y_C : STD_LOGIC_VECTOR(9 DOWNTO 0);
 
+	--tank speed
+	SIGNAL A_SPEED : std_logic_vector(1 downto 0) := (1 => '1', OTHERS => '0');
+
 BEGIN
 
+	RESET_N <= not RESET_P;
+
 	--------------------------------------------------------------------------------------------
-	-- clockCount : clock_counter
-	-- PORT MAP(
-	-- 	clk => CLOCK_50,
-	-- 	rst_n => RESET_N,
-	-- 	game_tick => game_ticks
-	-- );
+	clockCount : clock_counter
+	generic map(
+		BITS => 3
+	)
+	port map (
+		clk => CLOCK_50, 
+		rst => RESET_P,
+        game_tick => game_ticks
+	);
 
 	videoGen : pixelGenerator
 	PORT MAP(
@@ -166,7 +183,7 @@ BEGIN
 
 	tankA_Draw : tank
 	PORT MAP(
-		clk => CLOCK_50,
+		clk => game_ticks,
 		rst_n => RESET_N,
 		pos_x => A_POS_X,
 		pos_y => A_POS_Y,
@@ -178,7 +195,7 @@ BEGIN
 
 	tankB_Draw : tank
 	PORT MAP(
-		clk => CLOCK_50,
+		clk => game_ticks,
 		rst_n => RESET_N,
 		pos_x => B_POS_X,
 		pos_y => B_POS_Y,
@@ -212,15 +229,21 @@ BEGIN
 		y2 => B_Y2
 	);
 
-	-- tankA_Position : tankA_pos
-	-- PORT MAP(
-	-- 	clk => game_ticks,
-	-- 	rst_n => RESET_N,
-	-- 	direction => A_DIRECTION,
-	-- 	speed => A_SPEED,
-	-- 	pos_x => A_POS_X,
-	-- 	updated_pos_x => A_POS_X_C
-	-- );
+	tankA_Position : tankA_pos
+    PORT MAP(
+        clk => CLOCK_50,
+		start => game_ticks, 
+		rst => RESET_P, 
+        speed => A_SPEED,
+        pos_x => A_POS_X,
+        updated_pos_x => A_POS_X_C
+    );
+
+	clocked_proc : process (CLOCK_50) is 
+	begin
+		A_POS_X <= A_POS_X_C;
+
+	end process clocked_proc;
 
 	--------------------------------------------------------------------------------------------
 	--This section should not be modified in your design.  This section handles the VGA timing signals
