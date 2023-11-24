@@ -64,7 +64,7 @@ BEGIN
         END IF;
     END PROCESS clockProcess;
 
-    checkCollision : PROCESS (clk, rst_n) IS
+    checkCollision : PROCESS (A_tank_lb_int, A_tank_rb_int, A_tank_tb_int, A_tank_bb_int, B_tank_lb_int, B_tank_rb_int, B_tank_tb_int, B_tank_bb_int,A_bullet_tb_int, A_bullet_bb_int, B_bullet_tb, B_bullet_bb) IS
     BEGIN
         --initialize defaults
         next_state <= state;
