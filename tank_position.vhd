@@ -59,7 +59,7 @@ BEGIN
         END IF;
     END PROCESS clocked_process;
 
-    updateTankA_process : PROCESS (start, pos_x_int, direction, speed) IS
+    updateTank_process : PROCESS (start, pos_x_int, direction, speed) IS
     BEGIN
         --assign defaults
         new_direction <= direction;
