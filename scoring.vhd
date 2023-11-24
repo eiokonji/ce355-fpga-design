@@ -21,8 +21,9 @@ type states is (idle, play, win);
 signal state, next_state : states;
 
 --signals for score
-signal A_score_temp, B_score_temp : std_logic_vector(1 downto 0) := (others => '0');
 constant WIN_SCORE : std_logic_vector(1 downto 0) : (others => '1');
+signal A_score_temp, B_score_temp : std_logic_vector(1 downto 0) := (others => '0');
+signal A_win_c, B_win_c : std_logic := '0';
 
 begin
     clock_process : process (clk, rst_n) is 
@@ -34,11 +35,15 @@ begin
             state <= idle; 
         elsif (rising_edge(clk)) then 
             state <= next_state;
+            A_win <= A_win_c;
+            B_win <= B_win_c;
         end if;
     end process clock_process;
 
     comb_process : process (start, A_hit, B_hit) is
         next_state <= state;
+        A_win_c <= A_win;
+        B_win_c <= B_win;
 
         case state is
             when idle =>
@@ -62,17 +67,18 @@ begin
 
             when win =>
                 if (A_score_temp >= unsigned(WIN_SCORE)) then 
-                    A_win <= '1';
-                    B_win <= '0';
+                    A_win_c <= '1';
+                    B_win_c <= '0';
                 else 
-                    A_win <= '0';
-                    B_win <= '1';
+                    A_win_c <= '0';
+                    B_win_c <= '1';
                 end if;
 
         end case;
 
         A_score <= std_logic_vector(A_score_temp);
         B_score <= std_logic_vector(B_score_temp);
+        
     end process comb_process;
 
 end architecture behavioral_scoring;
