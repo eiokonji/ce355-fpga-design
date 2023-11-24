@@ -1,12 +1,10 @@
 --This module controls the top-level VGA of the tank game
--- _C is clocked signal
+-- _C is combinational signal
 
 LIBRARY IEEE;
 
 USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
-
-
 ENTITY tank_game IS
 	PORT (
 		CLOCK_50 : IN STD_LOGIC;
@@ -21,15 +19,15 @@ END ENTITY tank_game;
 ARCHITECTURE structural OF tank_game IS
 	SIGNAL VGA_RED_temp, VGA_GREEN_temp, VGA_BLUE_temp : STD_LOGIC_VECTOR(7 DOWNTO 0);
 
-	component clock_counter is 
-	generic (
-		BITS :integer := 3
-	);
-	port (
-		clk, rst : in std_logic;
-		game_tick : out std_logic
-	);
-	end component clock_counter;
+	COMPONENT clock_counter IS
+		GENERIC (
+			BITS : INTEGER := 3
+		);
+		PORT (
+			clk, rst : IN STD_LOGIC;
+			game_tick : OUT STD_LOGIC
+		);
+	END COMPONENT clock_counter;
 
 	COMPONENT pixelGenerator IS
 		PORT (
@@ -61,14 +59,43 @@ ARCHITECTURE structural OF tank_game IS
 	END COMPONENT bullet;
 
 	COMPONENT tank_pos IS
-    PORT (
-		clk, rst : IN STD_LOGIC;
-        start : IN STD_LOGIC;
-        speed : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-        pos_x : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-        updated_pos_x : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
-    );
+		PORT (
+			clk, rst : IN STD_LOGIC;
+			start : IN STD_LOGIC;
+			speed : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+			pos_x : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+			updated_pos_x : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+		);
 	END COMPONENT tank_pos;
+
+	COMPONENT collision IS
+		PORT (
+			clk, rst_n : IN STD_LOGIC;
+			A_tank_lb, A_tank_rb, A_tank_tb, A_tank_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+			B_tank_lb, B_tank_rb, B_tank_tb, B_tank_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+			A_bullet_lb, A_bullet_rb, A_bullet_tb, A_bullet_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+			B_bullet_lb, B_bullet_rb, B_bullet_tb, B_bullet_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+			A_hit, B_hit : OUT STD_LOGIC
+		);
+	END COMPONENT collision;
+
+	COMPONENT score IS
+		PORT (
+			clk, rst_n, start : IN STD_LOGIC;
+			A_hit, B_hit : IN STD_LOGIC;
+			A_score, B_score : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+			A_win, B_win : OUT STD_LOGIC
+		);
+	END COMPONENT score;
+
+	COMPONENT de2lcd IS
+		PORT (
+			reset, clk_50Mhz : IN STD_LOGIC;
+			win : IN STD_LOGIC;
+			LCD_RS, LCD_E, LCD_ON, RESET_LED, SEC_LED : OUT STD_LOGIC;
+			LCD_RW : BUFFER STD_LOGIC;
+			DATA_BUS : INOUT STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT de2lcd;
 
 	COMPONENT VGA_SYNC IS
 		PORT (
@@ -80,10 +107,10 @@ ARCHITECTURE structural OF tank_game IS
 	END COMPONENT VGA_SYNC;
 
 	--Signals for screen position updates
-	signal game_ticks : std_logic;
-	signal GAME_START : std_logic;
-	signal GAME_DONE : std_logic;
-	signal RESET_P, RESET_N : std_logic;
+	SIGNAL game_ticks : STD_LOGIC;
+	SIGNAL GAME_START : STD_LOGIC;
+	SIGNAL GAME_DONE : STD_LOGIC;
+	SIGNAL RESET_P, RESET_N : STD_LOGIC;
 
 	--Signals for VGA sync
 	SIGNAL pixel_row_int : STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -120,34 +147,42 @@ ARCHITECTURE structural OF tank_game IS
 
 	-- bullet position signals, bullet A (315, 410)
 	-- (x,y) := (tank_X + 15, tank_X - 25)
-	SIGNAL A_BULLET_POS_X : STD_LOGIC_VECTOR(9 DOWNTO 0) := (8 => '1', 5 => '1', 4 => '1', 3 => '1', 1 => '1', 0 => '1',OTHERS => '0');
+	SIGNAL A_BULLET_POS_X : STD_LOGIC_VECTOR(9 DOWNTO 0) := (8 => '1', 5 => '1', 4 => '1', 3 => '1', 1 => '1', 0 => '1', OTHERS => '0');
 	SIGNAL A_BULLET_POS_Y : STD_LOGIC_VECTOR(9 DOWNTO 0) := (8 => '1', 7 => '1', 4 => '1', 3 => '1', 1 => '1', OTHERS => '0');
 	SIGNAL A_BULLET_POS_X_C : STD_LOGIC_VECTOR(9 DOWNTO 0);
 	SIGNAL A_BULLET_POS_Y_C : STD_LOGIC_VECTOR(9 DOWNTO 0);
 
 	-- bullet position signals, bullet B (315, 50)
 	-- (x,y) := (tank_X + 15, tank_X + 40)
-	SIGNAL B_BULLET_POS_X : STD_LOGIC_VECTOR(9 DOWNTO 0) := (8 => '1', 5 => '1', 4 => '1', 3 => '1', 1 => '1', 0 => '1',OTHERS => '0');
+	SIGNAL B_BULLET_POS_X : STD_LOGIC_VECTOR(9 DOWNTO 0) := (8 => '1', 5 => '1', 4 => '1', 3 => '1', 1 => '1', 0 => '1', OTHERS => '0');
 	SIGNAL B_BULLET_POS_Y : STD_LOGIC_VECTOR(9 DOWNTO 0) := (5 => '1', 4 => '1', 1 => '1', OTHERS => '0');
 	SIGNAL B_BULLET_POS_X_C : STD_LOGIC_VECTOR(9 DOWNTO 0);
 	SIGNAL B_BULLET_POS_Y_C : STD_LOGIC_VECTOR(9 DOWNTO 0);
 
-	--tank speed
-	SIGNAL A_SPEED : std_logic_vector(1 downto 0) := (1 => '1', OTHERS => '0');
+	-- player tank, score, win signals
+	SIGNAL A_SPEED : STD_LOGIC_VECTOR(1 DOWNTO 0) := (1 => '1', OTHERS => '0');
+	signal A_TANK_HIT, B_TANK_HIT : std_logic;
+	signal A_SCORE, B_SCORE : std_logic_vector(1 downto 0) := (others => '0');
+	signal A_WINS, B_WINS : std_logic;
+
+	--LCD signals
+	signal LCD_RS1, LCD_E1, LCD_ON1, RESET_LED1, SEC_LED1 : STD_LOGIC;
+	signal LCD_RW1 : std_logic;
+	signal DATA_BUS1 : std_logic_vector(7 downto 0);
 
 BEGIN
 
-	RESET_N <= not RESET_P;
+	RESET_N <= NOT RESET_P;
 
 	--------------------------------------------------------------------------------------------
 	clockCount : clock_counter
-	generic map(
+	GENERIC MAP(
 		BITS => 3
 	)
-	port map (
-		clk => CLOCK_50, 
+	PORT MAP(
+		clk => CLOCK_50,
 		rst => RESET_P,
-        game_tick => game_ticks
+		game_tick => game_ticks
 	);
 
 	videoGen : pixelGenerator
@@ -230,20 +265,71 @@ BEGIN
 	);
 
 	tankA_position : tank_pos
-    PORT MAP(
-        clk => CLOCK_50,
-		start => game_ticks, 
-		rst => RESET_P, 
-        speed => A_SPEED,
-        pos_x => A_POS_X,
-        updated_pos_x => A_POS_X_C
-    );
+	PORT MAP(
+		clk => CLOCK_50,
+		start => game_ticks,
+		rst => RESET_P,
+		speed => A_SPEED,
+		pos_x => A_POS_X,
+		updated_pos_x => A_POS_X_C
+	);
 
-	clocked_proc : process (CLOCK_50) is 
-	begin
+	collision_check : collision
+	PORT MAP(
+		clk => CLOCK_50,
+		rst_n => RESET_P,
+		A_tank_lb => A_LEFT_BOUND,
+		A_tank_rb => A_RIGHT_BOUND,
+		A_tank_tb => A_RIGHT_BOUND,
+		A_tank_bb => A_BOTTOM_BOUND,
+		B_tank_lb => B_LEFT_BOUND,
+		B_tank_rb => B_RIGHT_BOUND,
+		B_tank_tb => B_TOP_BOUND,
+		B_tank_bb => B_BOTTOM_BOUND,
+		A_bullet_lb => A_X1,
+		A_bullet_rb => A_X2,
+		A_bullet_tb => A_Y1,
+		A_bullet_bb => A_Y2,
+		B_bullet_lb => B_X1,
+		B_bullet_rb => B_X2,
+		B_bullet_tb => B_Y1,
+		B_bullet_bb => B_Y2,
+		A_hit = > A_TANK_HIT,
+		B_hit => B_TANK_HIT
+	);
+
+	scoring : score 
+	PORT MAP(
+		clk => CLOCK_50, 
+		rst_n => RESET_P, 
+		start => game_ticks,
+		A_hit => A_TANK_HIT, 
+		B_hit => B_TANK_HIT,
+		A_score => A_SCORE, 
+		B_score => B_SCORE,
+		A_win => A_WINS, 
+		B_win => B_WINS
+	);
+
+	LCD_display : de2lcd IS
+	PORT MAP(
+		reset => RESET_P, 
+		clk_50Mhz => CLOCK_50,
+		win => 
+		LCD_RS => LCD_RS1, 
+		LCD_E => LCD_E1, 
+		LCD_ON => LCD_ON1, 
+		RESET_LED = RESET_LED1, 
+		SEC_LED => SEC_LED1,
+		LCD_RW => LCD_RW1,
+		DATA_BUS => DATA_BUS1
+	);
+
+	clocked_proc : PROCESS (CLOCK_50) IS
+	BEGIN
 		A_POS_X <= A_POS_X_C;
 
-	end process clocked_proc;
+	END PROCESS clocked_proc;
 
 	--------------------------------------------------------------------------------------------
 	--This section should not be modified in your design.  This section handles the VGA timing signals
