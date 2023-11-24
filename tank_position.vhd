@@ -10,16 +10,16 @@ USE IEEE.numeric_std.ALL;
 --notes:
 --speed comes from keyboard input
 --direction = 0 moves right, direction = 1 moves left
-ENTITY tankA_pos IS
+ENTITY tank_pos IS
     PORT (
         clk, rst, start : IN STD_LOGIC;
         speed : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
         pos_x : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
         updated_pos_x : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
     );
-END ENTITY tankA_pos;
+END ENTITY tank_pos;
 
-ARCHITECTURE behavioral OF tankA_pos IS
+ARCHITECTURE behavioral OF tank_pos IS
     --declarative region
     SIGNAL tank_speed : NATURAL;
 

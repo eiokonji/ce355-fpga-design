@@ -60,7 +60,7 @@ ARCHITECTURE structural OF tank_game IS
 		);
 	END COMPONENT bullet;
 
-	COMPONENT tankA_pos IS
+	COMPONENT tank_pos IS
     PORT (
 		clk, rst : IN STD_LOGIC;
         start : IN STD_LOGIC;
@@ -68,7 +68,7 @@ ARCHITECTURE structural OF tank_game IS
         pos_x : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
         updated_pos_x : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
     );
-	END COMPONENT tankA_pos;
+	END COMPONENT tank_pos;
 
 	COMPONENT VGA_SYNC IS
 		PORT (
@@ -229,7 +229,7 @@ BEGIN
 		y2 => B_Y2
 	);
 
-	tankA_Position : tankA_pos
+	tankA_position : tank_pos
     PORT MAP(
         clk => CLOCK_50,
 		start => game_ticks, 
