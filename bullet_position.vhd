@@ -5,18 +5,19 @@ LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
 
---inputs: clock, reset, speed, direction, collision A_hit or B_hit, (x,y) of TANK
---outputs: (x, y) aka (pixel_row, pixel_column) position of BULLET, active
---notes:
---speed comes from keyboard input
---direction = 0 moves up, direction = 1 moves down
---collision input is either A_hit or B_hit from collision module
---active output signal indicates whether or not to draw the bullet
+--Inputs: clock, reset, speed, direction, collision A_hit or B_hit, (x,y) of TANK
+--Outputs: (x, y) aka (pixel_row, pixel_column) position of BULLET, active
+
+--Notes:
+    --speed comes from keyboard input
+    --direction = 0 moves up, direction = 1 moves down
+    --collision input is either A_hit or B_hit from collision module
+    --active output signal indicates whether or not to draw the bullet
 
 ENTITY bullet_pos IS
     PORT (
         clk, rst, start : IN STD_LOGIC;
-        direction, collision : IN STD_LOGIC;
+        direction, collision, fired : IN STD_LOGIC;
         speed : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
         tank_x, tank_y, bullet_x, bullet_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
         updated_bullet_x, updated_bullet_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -63,7 +64,7 @@ BEGIN
         END IF;
     END PROCESS clocked_process;
 
-    update_bullet : PROCESS (start, collision) IS --start, pos_x_int, direction, speed
+    update_bullet : PROCESS (fired, collision) IS --start, pos_x_int, direction, speed
     BEGIN
         --assign defaults
         next_state <= state;
@@ -73,7 +74,7 @@ BEGIN
 
         CASE state IS
             WHEN idle =>
-                IF (start = '1') THEN
+                IF (fired = '1') THEN
                     next_state <= firing;
                     active_c <= '1';
                 END IF;
