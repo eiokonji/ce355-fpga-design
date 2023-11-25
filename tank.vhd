@@ -9,7 +9,7 @@ USE IEEE.numeric_std.ALL;
 
 ENTITY tank IS
 	PORT (
-		clk, rst_n : IN STD_LOGIC;
+		clk, rst_n, start : IN STD_LOGIC;
 		pos_x, pos_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 		left_bound, right_bound, top_bound, bottom_bound : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
 	);
@@ -19,6 +19,10 @@ ARCHITECTURE behavioral OF tank IS
 
 	SIGNAL pos_x_int, pos_y_int : NATURAL;
 
+	--initialize states
+	TYPE states IS (idle, move);
+    SIGNAL state, next_state : states;
+
 BEGIN
 
 	--------------------------------------------------------------------------------------------
@@ -26,21 +30,45 @@ BEGIN
 	pos_x_int <= to_integer(unsigned(pos_x));
 	pos_y_int <= to_integer(unsigned(pos_y));
 
-	--------------------------------------------------------------------------------------------	
+	--------------------------------------------------------------------------------------------
+	clockProcess : process (clk, rst_n) IS
+	begin 
+		if (rst_n = '1') then 
+			state <= idle;
+			left_bound <= std_logic_vector(to_unsigned(280, 10));
+			right_bound <= std_logic_vector(to_unsigned(360, 10));
+			top_bound <= std_logic_vector(to_unsigned(435, 10));
+			bottom_bound <= std_logic_vector(to_unsigned(470, 10));
 
-	tank_Draw : PROCESS (clk, rst_n) IS
+		elsif (start = '1') then
+			state <= next_state;
+		end if;
+	end process clockProcess;
 
+	tank_Draw : PROCESS (start, pos_x, pos_y) IS
 	BEGIN
 		--store center position of each tank
 		--return bounding box of the tank based on center position
 		--width: 80, height: 34
+		--assign default
+		next_state <= state;
 
-		IF (rising_edge(clk)) THEN
-			left_bound <= std_logic_vector(to_unsigned(pos_x_int, 10));
-			right_bound <= std_logic_vector(to_unsigned(pos_x_int + 80, 10));
-			top_bound <= std_logic_vector(to_unsigned(pos_y_int, 10));
-			bottom_bound <= std_logic_vector(to_unsigned(pos_y_int + 35, 10));
-		END IF;
+		case state is
+			when idle =>
+				if (start = '1') then
+					next_state <= move;
+				else 
+					left_bound <= std_logic_vector(to_unsigned(280, 10));
+					right_bound <= std_logic_vector(to_unsigned(360, 10));
+					top_bound <= std_logic_vector(to_unsigned(435, 10));
+					bottom_bound <= std_logic_vector(to_unsigned(470, 10));
+				end if;
+			when move =>
+				left_bound <= std_logic_vector(to_unsigned(pos_x_int, 10));
+				right_bound <= std_logic_vector(to_unsigned(pos_x_int + 80, 10));
+				top_bound <= std_logic_vector(to_unsigned(pos_y_int, 10));
+				bottom_bound <= std_logic_vector(to_unsigned(pos_y_int + 35, 10));
+		end case;
 
 	END PROCESS tank_Draw;
 

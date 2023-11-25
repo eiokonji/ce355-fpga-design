@@ -40,7 +40,7 @@ ARCHITECTURE behavioral OF tank_pos IS
     SIGNAL state, new_state : states;
 
 BEGIN
-    clocked_process : PROCESS (start, rst) IS --is this supposed to be clock or game tick?
+    clocked_process : PROCESS (clk, rst) IS --is this supposed to be clock or game tick?
     BEGIN
         IF (rst = '1') THEN
             --restore to defaults (x = 280, moving right)
@@ -48,7 +48,7 @@ BEGIN
             direction <= '0';
             state <= idle;
 
-        ELSIF (rising_edge(start)) THEN
+        ELSIF (rising_edge(clk)) THEN
             -- report "pos_x: " & integer'image(pos_x_int);
             -- report "new_pos_x: " & integer'image(new_pos_x_int);
             pos_x_int <= new_pos_x_int;
@@ -84,29 +84,31 @@ BEGIN
                     tank_speed <= 0; --if nothing is pressed
                 END IF;
 
-                IF (direction = '0') THEN
-                    REPORT "entered direction = '0'";
-                    IF (pos_x_int + tank_speed <= right_bound) THEN
-                        new_pos_x_int <= pos_x_int + tank_speed;
-                        REPORT "new_x-pos:" & INTEGER'image(new_pos_x_int);
-                    ELSE
-                        new_direction <= NOT direction; --if tank exceeds right bound, flip direction
+                if (rising_edge(start)) then 
+                    IF (direction = '0') THEN
+                        REPORT "entered direction = '0'";
+                        IF (pos_x_int + tank_speed <= right_bound) THEN
+                            new_pos_x_int <= pos_x_int + tank_speed;
+                            REPORT "new_x-pos:" & INTEGER'image(new_pos_x_int);
+                        ELSE
+                            new_direction <= NOT direction; --if tank exceeds right bound, flip direction
+                        END IF;
+                    ELSIF (direction = '1') THEN
+                        REPORT "entered direction = '0'";
+                        IF (pos_x_int - tank_speed >= left_bound) THEN
+                            new_pos_x_int <= pos_x_int - tank_speed;
+                            REPORT "new_x-pos:" & INTEGER'image(new_pos_x_int);
+                        ELSE
+                            new_direction <= NOT direction; --if tank exceeds left bound, flip direction
+                        END IF;
                     END IF;
-                ELSIF (direction = '1') THEN
-                    REPORT "entered direction = '0'";
-                    IF (pos_x_int - tank_speed >= left_bound) THEN
-                        new_pos_x_int <= pos_x_int - tank_speed;
-                        REPORT "new_x-pos:" & INTEGER'image(new_pos_x_int);
-                    ELSE
-                        new_direction <= NOT direction; --if tank exceeds left bound, flip direction
-                    END IF;
-                END IF;
+                else 
+                    new_pos_x_int <= pos_x_int;
+                end if;
+        end case;
 
-                new_state <= move;
-            end case;
+    END PROCESS updateTank_process;
 
-        END PROCESS updateTank_process;
+    updated_pos_x <= STD_LOGIC_VECTOR(to_unsigned(pos_x_int, 10));
 
-        updated_pos_x <= STD_LOGIC_VECTOR(to_unsigned(pos_x_int, 10));
-
-    END ARCHITECTURE behavioral;
+END ARCHITECTURE behavioral;
