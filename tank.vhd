@@ -1,11 +1,12 @@
---This module renders tank A on the screen via VGA (in blue)
+--This module renders the tanks on the screen via VGA (in blue and red)
 LIBRARY IEEE;
 
 USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
 
 --inputs: clk, rst_n, center positions
---outputs: left_bound, right_bound, top_bound, bottom_bound
+--outputs: left_bound, right_bound, top_bound, bottom_bound based on top left position
+--width: 80, height: 34
 
 ENTITY tank IS
 	PORT (
@@ -54,10 +55,6 @@ BEGIN
 
 	tank_Draw : PROCESS (start, pos_x, pos_y) IS
 	BEGIN
-		--store center position of each tank
-		--return bounding box of the tank based on center position
-		--width: 80, height: 34
-
 		--assign defaults
 		next_state <= state;
 		left_bound_c <= left_bound;

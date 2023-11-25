@@ -1,4 +1,4 @@
---This module manipulates the horizontal position of tank A (pixel_column_A) on the screen
+--This module manipulates the horizontal position of the tank on the screen
 
 LIBRARY IEEE;
 
