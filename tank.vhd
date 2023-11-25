@@ -40,7 +40,7 @@ BEGIN
 			top_bound <= std_logic_vector(to_unsigned(435, 10));
 			bottom_bound <= std_logic_vector(to_unsigned(470, 10));
 
-		elsif (start = '1') then
+		elsif (rising_edge(clk)) then
 			state <= next_state;
 		end if;
 	end process clockProcess;

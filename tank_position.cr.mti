@@ -1,11 +1,12 @@
-C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/tank.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/tank.vhd
+C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/tank_position.vhd {2 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/tank_position.vhd
 Questa Intel Starter FPGA Edition-64 vcom 2021.2 Compiler 2021.04 Apr 14 2021
 -- Loading package STANDARD
 -- Loading package TEXTIO
 -- Loading package std_logic_1164
 -- Loading package NUMERIC_STD
--- Compiling entity tank
--- Compiling architecture behavioral of tank
+-- Compiling entity tank_pos
+-- Compiling architecture behavioral of tank_pos
+** Warning: C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/tank_position.vhd(32): (vcom-1013) Initial value of "pos_x_int" depends on value of signal "pos_x".
 
 } {} {}} C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/clock_counter.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/clock_counter.vhd
 Questa Intel Starter FPGA Edition-64 vcom 2021.2 Compiler 2021.04 Apr 14 2021
