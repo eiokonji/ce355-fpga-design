@@ -23,6 +23,9 @@ ARCHITECTURE behavioral OF tank IS
 	TYPE states IS (idle, move);
     SIGNAL state, next_state : states;
 
+	--clocking signals
+	signal left_bound_c, right_bound_c, top_bound_c, bottom_bound_c : std_logic_vector(9 downto 0);
+
 BEGIN
 
 	--------------------------------------------------------------------------------------------
@@ -42,6 +45,10 @@ BEGIN
 
 		elsif (rising_edge(clk)) then
 			state <= next_state;
+			left_bound <= left_bound_c;
+			right_bound <= right_bound_c;
+			top_bound <= top_bound_c;
+			bottom_bound <= bottom_bound_c;
 		end if;
 	end process clockProcess;
 
@@ -50,24 +57,30 @@ BEGIN
 		--store center position of each tank
 		--return bounding box of the tank based on center position
 		--width: 80, height: 34
-		--assign default
+
+		--assign defaults
 		next_state <= state;
+		left_bound_c <= left_bound;
+		right_bound_c <= right_bound;
+		top_bound_c <= top_bound;
+		bottom_bound_c <= bottom_bound;s
+
 
 		case state is
 			when idle =>
 				if (start = '1') then
 					next_state <= move;
 				else 
-					left_bound <= std_logic_vector(to_unsigned(280, 10));
-					right_bound <= std_logic_vector(to_unsigned(360, 10));
-					top_bound <= std_logic_vector(to_unsigned(435, 10));
-					bottom_bound <= std_logic_vector(to_unsigned(470, 10));
+					left_bound_c <= std_logic_vector(to_unsigned(280, 10));
+					right_bound_c <= std_logic_vector(to_unsigned(360, 10));
+					top_bound_c <= std_logic_vector(to_unsigned(435, 10));
+					bottom_bound_c <= std_logic_vector(to_unsigned(470, 10));
 				end if;
 			when move =>
-				left_bound <= std_logic_vector(to_unsigned(pos_x_int, 10));
-				right_bound <= std_logic_vector(to_unsigned(pos_x_int + 80, 10));
-				top_bound <= std_logic_vector(to_unsigned(pos_y_int, 10));
-				bottom_bound <= std_logic_vector(to_unsigned(pos_y_int + 35, 10));
+				left_bound_c <= std_logic_vector(to_unsigned(pos_x_int, 10));
+				right_bound_c <= std_logic_vector(to_unsigned(pos_x_int + 80, 10));
+				top_bound_c <= std_logic_vector(to_unsigned(pos_y_int, 10));
+				bottom_bound_c <= std_logic_vector(to_unsigned(pos_y_int + 35, 10));
 		end case;
 
 	END PROCESS tank_Draw;
