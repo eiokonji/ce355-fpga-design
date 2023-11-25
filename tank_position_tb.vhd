@@ -16,26 +16,25 @@ ARCHITECTURE behavioral OF testbench IS
     );
     END COMPONENT clock_counter;
 
-    COMPONENT tankA_pos IS
+    COMPONENT tank_pos IS
         PORT (
             clk, rst, start : IN STD_LOGIC;
             speed : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
             pos_x : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
             updated_pos_x : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
         );
-    END COMPONENT tankA_pos;
+    END COMPONENT tank_pos;
 
     CONSTANT PERIOD : TIME := 20 ns; --50 mhz clock
 
-    SIGNAL clk_tb : STD_LOGIC;
-    signal game_tick_tb, rst_tb : std_logic;
+    SIGNAL clk_tb, rst_tb, game_tick_tb: std_logic;
     signal speed_tb : std_logic_vector(1 downto 0) := (1 => '1', 0=> '0');
     signal pos_x_tb : std_logic_vector(9 downto 0) := (3 => '1', 4 => '1', 8 => '1', OTHERS => '0');
     signal updated_pos_x_tb : std_logic_vector(9 downto 0) := (3 => '1', 4 => '1', 8 => '1', OTHERS => '0');
 
 BEGIN
 
-    dut : tankA_pos
+    dut : tank_pos
     PORT MAP(
         clk => clk_tb,
         start => game_tick_tb,
