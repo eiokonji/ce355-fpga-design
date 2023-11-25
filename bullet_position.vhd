@@ -6,11 +6,12 @@ USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
 
 --inputs: clock, reset, speed, direction, collision A_hit or B_hit, (x,y) of TANK
---outputs: (x, y) aka (pixel_row, pixel_column) position of BULLET
+--outputs: (x, y) aka (pixel_row, pixel_column) position of BULLET, active
 --notes:
 --speed comes from keyboard input
 --direction = 0 moves up, direction = 1 moves down
 --collision input is either A_hit or B_hit from collision module
+--active output signal indicates whether or not to draw the bullet
 
 ENTITY bullet_pos IS
     PORT (
@@ -18,7 +19,8 @@ ENTITY bullet_pos IS
         direction, collision : IN STD_LOGIC;
         speed : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
         tank_x, tank_y, bullet_x, bullet_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-        updated_bullet_x, updated_bullet_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+        updated_bullet_x, updated_bullet_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
+        active : out std_logic;
     );
 END ENTITY bullet_pos;
 
@@ -52,10 +54,12 @@ BEGIN
             state <= idle;
             bullet_x_int <= to_integer(unsigned(tank_x)) + 40; --add 40 to left bound of tank to get center of the tank
             bullet_y_int <= to_integer(unsigned(tank_y)); --top or bottom bound of tank depending on which bullet
+            active <= '0';
         ELSIF (rising_edge(clk)) THEN
             state <= new_state;
             bullet_x_int <= new_bullet_x_int;
             bullet_y_int <= new_bullet_y_int;
+            active <= active_c;
         END IF;
     END PROCESS clocked_process;
 
@@ -65,13 +69,15 @@ BEGIN
         next_state <= state;
         new_bullet_x_int <= bullet_x_int;
         new_bullet_y_int <= bullet_y_int;
+        active <= active_c;
 
         CASE state IS
             WHEN idle =>
                 IF (start = '1') THEN
-                    state <= firing;
+                    next_state <= firing;
+                    active_c <= '1';
                 END IF;
-                --default bullet position
+                --default bullet position to the tank's starting value
                 new_bullet_x_int <= to_integer(unsigned(tank_x)) + 40; --add 40 to left bound of tank to get center of the tank
                 new_bullet_y_int <= to_integer(unsigned(tank_y)); --top or bottom bound of tank depending on which bullet
 
@@ -79,6 +85,7 @@ BEGIN
                 IF (collision = '1') THEN
                     --restore bullet to position based on tank
                     next_state <= idle;
+                    active_c <= '0';
                 END IF;
 
                 --check which direction the bullet is moving
