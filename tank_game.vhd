@@ -68,34 +68,34 @@ ARCHITECTURE structural OF tank_game IS
 		);
 	END COMPONENT tank_pos;
 
-	COMPONENT collision IS
-		PORT (
-			clk, rst_n : IN STD_LOGIC;
-			A_tank_lb, A_tank_rb, A_tank_tb, A_tank_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-			B_tank_lb, B_tank_rb, B_tank_tb, B_tank_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-			A_bullet_lb, A_bullet_rb, A_bullet_tb, A_bullet_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-			B_bullet_lb, B_bullet_rb, B_bullet_tb, B_bullet_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-			A_hit, B_hit : OUT STD_LOGIC
-		);
-	END COMPONENT collision;
+	-- COMPONENT collision IS
+	-- 	PORT (
+	-- 		clk, rst_n : IN STD_LOGIC;
+	-- 		A_tank_lb, A_tank_rb, A_tank_tb, A_tank_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+	-- 		B_tank_lb, B_tank_rb, B_tank_tb, B_tank_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+	-- 		A_bullet_lb, A_bullet_rb, A_bullet_tb, A_bullet_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+	-- 		B_bullet_lb, B_bullet_rb, B_bullet_tb, B_bullet_bb : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+	-- 		A_hit, B_hit : OUT STD_LOGIC
+	-- 	);
+	-- END COMPONENT collision;
 
-	COMPONENT score IS
-		PORT (
-			clk, rst_n, start : IN STD_LOGIC;
-			A_hit, B_hit : IN STD_LOGIC;
-			A_score, B_score : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-			A_win, B_win : OUT STD_LOGIC
-		);
-	END COMPONENT score;
+	-- COMPONENT score IS
+	-- 	PORT (
+	-- 		clk, rst_n, start : IN STD_LOGIC;
+	-- 		A_hit, B_hit : IN STD_LOGIC;
+	-- 		A_score, B_score : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+	-- 		A_win, B_win : OUT STD_LOGIC
+	-- 	);
+	-- END COMPONENT score;
 
-	COMPONENT de2lcd IS
-		PORT (
-			reset, clk_50Mhz : IN STD_LOGIC;
-			win : IN STD_LOGIC;
-			LCD_RS, LCD_E, LCD_ON, RESET_LED, SEC_LED : OUT STD_LOGIC;
-			LCD_RW : BUFFER STD_LOGIC;
-			DATA_BUS : INOUT STD_LOGIC_VECTOR(7 DOWNTO 0));
-	END COMPONENT de2lcd;
+	-- COMPONENT de2lcd IS
+	-- 	PORT (
+	-- 		reset, clk_50Mhz : IN STD_LOGIC;
+	-- 		win : IN STD_LOGIC;
+	-- 		LCD_RS, LCD_E, LCD_ON, RESET_LED, SEC_LED : OUT STD_LOGIC;
+	-- 		LCD_RW : BUFFER STD_LOGIC;
+	-- 		DATA_BUS : INOUT STD_LOGIC_VECTOR(7 DOWNTO 0));
+	-- END COMPONENT de2lcd;
 
 	COMPONENT VGA_SYNC IS
 		PORT (
@@ -274,56 +274,56 @@ BEGIN
 		updated_pos_x => A_POS_X_C
 	);
 
-	collision_check : collision
-	PORT MAP(
-		clk => CLOCK_50,
-		rst_n => RESET_P,
-		A_tank_lb => A_LEFT_BOUND,
-		A_tank_rb => A_RIGHT_BOUND,
-		A_tank_tb => A_RIGHT_BOUND,
-		A_tank_bb => A_BOTTOM_BOUND,
-		B_tank_lb => B_LEFT_BOUND,
-		B_tank_rb => B_RIGHT_BOUND,
-		B_tank_tb => B_TOP_BOUND,
-		B_tank_bb => B_BOTTOM_BOUND,
-		A_bullet_lb => A_X1,
-		A_bullet_rb => A_X2,
-		A_bullet_tb => A_Y1,
-		A_bullet_bb => A_Y2,
-		B_bullet_lb => B_X1,
-		B_bullet_rb => B_X2,
-		B_bullet_tb => B_Y1,
-		B_bullet_bb => B_Y2,
-		A_hit = > A_TANK_HIT,
-		B_hit => B_TANK_HIT
-	);
+	-- collision_check : collision
+	-- PORT MAP(
+	-- 	clk => CLOCK_50,
+	-- 	rst_n => RESET_P,
+	-- 	A_tank_lb => A_LEFT_BOUND,
+	-- 	A_tank_rb => A_RIGHT_BOUND,
+	-- 	A_tank_tb => A_RIGHT_BOUND,
+	-- 	A_tank_bb => A_BOTTOM_BOUND,
+	-- 	B_tank_lb => B_LEFT_BOUND,
+	-- 	B_tank_rb => B_RIGHT_BOUND,
+	-- 	B_tank_tb => B_TOP_BOUND,
+	-- 	B_tank_bb => B_BOTTOM_BOUND,
+	-- 	A_bullet_lb => A_X1,
+	-- 	A_bullet_rb => A_X2,
+	-- 	A_bullet_tb => A_Y1,
+	-- 	A_bullet_bb => A_Y2,
+	-- 	B_bullet_lb => B_X1,
+	-- 	B_bullet_rb => B_X2,
+	-- 	B_bullet_tb => B_Y1,
+	-- 	B_bullet_bb => B_Y2,
+	-- 	A_hit = > A_TANK_HIT,
+	-- 	B_hit => B_TANK_HIT
+	-- );
 
-	scoring : score 
-	PORT MAP(
-		clk => CLOCK_50, 
-		rst_n => RESET_P, 
-		start => game_ticks,
-		A_hit => A_TANK_HIT, 
-		B_hit => B_TANK_HIT,
-		A_score => A_SCORE, 
-		B_score => B_SCORE,
-		A_win => A_WINS, 
-		B_win => B_WINS
-	);
+	-- scoring : score 
+	-- PORT MAP(
+	-- 	clk => CLOCK_50, 
+	-- 	rst_n => RESET_P, 
+	-- 	start => game_ticks,
+	-- 	A_hit => A_TANK_HIT, 
+	-- 	B_hit => B_TANK_HIT,
+	-- 	A_score => A_SCORE, 
+	-- 	B_score => B_SCORE,
+	-- 	A_win => A_WINS, 
+	-- 	B_win => B_WINS
+	-- );
 
-	LCD_display : de2lcd IS
-	PORT MAP(
-		reset => RESET_P, 
-		clk_50Mhz => CLOCK_50,
-		win => 
-		LCD_RS => LCD_RS1, 
-		LCD_E => LCD_E1, 
-		LCD_ON => LCD_ON1, 
-		RESET_LED = RESET_LED1, 
-		SEC_LED => SEC_LED1,
-		LCD_RW => LCD_RW1,
-		DATA_BUS => DATA_BUS1
-	);
+	-- LCD_display : de2lcd IS
+	-- PORT MAP(
+	-- 	reset => RESET_P, 
+	-- 	clk_50Mhz => CLOCK_50,
+	-- 	win => 
+	-- 	LCD_RS => LCD_RS1, 
+	-- 	LCD_E => LCD_E1, 
+	-- 	LCD_ON => LCD_ON1, 
+	-- 	RESET_LED = RESET_LED1, 
+	-- 	SEC_LED => SEC_LED1,
+	-- 	LCD_RW => LCD_RW1,
+	-- 	DATA_BUS => DATA_BUS1
+	-- );
 
 	clocked_proc : PROCESS (CLOCK_50) IS
 	BEGIN

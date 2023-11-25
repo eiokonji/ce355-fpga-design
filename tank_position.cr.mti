@@ -1,0 +1,30 @@
+C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/tank.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/tank.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2021.2 Compiler 2021.04 Apr 14 2021
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity tank
+-- Compiling architecture behavioral of tank
+
+} {} {}} C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/clock_counter.vhd {1 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/clock_counter.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2021.2 Compiler 2021.04 Apr 14 2021
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity clock_counter
+-- Compiling architecture behavioral_counter of clock_counter
+
+} {} {}} C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/tank_position_tb.vhd {2 {vcom -work work -2002 -explicit -vopt -stats=none C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/tank_position_tb.vhd
+Questa Intel Starter FPGA Edition-64 vcom 2021.2 Compiler 2021.04 Apr 14 2021
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity testbench
+-- Compiling architecture behavioral of testbench
+** Warning: C:/Users/laptop/Documents/new-final-project/ce355-fpga-design/tank_position_tb.vhd(47): (vcom-1624) Component instance testbench(behavioral).clockCount has a generic map clause and the component clock_counter has no generics.
+Generic map will be ignored.
+
+} {} {}}
