@@ -40,9 +40,7 @@ ARCHITECTURE behavioral OF tank_pos IS
     SIGNAL state, new_state : states;
 
 BEGIN
-    -- pos_x_int <= to_integer(unsigned(pos_x));
-
-    clocked_process : PROCESS (clk, rst) IS
+    clocked_process : PROCESS (start, rst) IS --is this supposed to be clock or game tick?
     BEGIN
         IF (rst = '1') THEN
             --restore to defaults (x = 280, moving right)
@@ -50,7 +48,7 @@ BEGIN
             direction <= '0';
             state <= idle;
 
-        ELSIF (rising_edge(clk)) THEN
+        ELSIF (rising_edge(start)) THEN
             -- report "pos_x: " & integer'image(pos_x_int);
             -- report "new_pos_x: " & integer'image(new_pos_x_int);
             pos_x_int <= new_pos_x_int;
@@ -59,7 +57,7 @@ BEGIN
         END IF;
     END PROCESS clocked_process;
 
-    updateTank_process : PROCESS (start, pos_x_int, direction, speed) IS
+    updateTank_process : PROCESS (start) IS --start, pos_x_int, direction, speed
     BEGIN
         --assign defaults
         new_direction <= direction;
@@ -107,7 +105,7 @@ BEGIN
                 new_state <= move;
             end case;
 
-        END PROCESS updateTankA_process;
+        END PROCESS updateTank_process;
 
         updated_pos_x <= STD_LOGIC_VECTOR(to_unsigned(pos_x_int, 10));
 
