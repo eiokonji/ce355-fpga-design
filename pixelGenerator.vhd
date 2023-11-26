@@ -55,21 +55,6 @@ BEGIN
 
 	pixel_row_int <= to_integer(unsigned(pixel_row));
 	pixel_column_int <= to_integer(unsigned(pixel_column));
-
-	--check if pixel is on tankA
-	IF (pixel_row_int >= tank_A_tbound AND pixel_row_int < tank_A_bbound AND pixel_column_int >= tank_A_lbound AND pixel_column_int < tank_A_rbound) THEN
-		tankA_on = '1';
-	else 
-		tankA_on = '0';
-	end if;
-
-
-	--check if pixel is on tankB
-	if (pixel_row_int >= tank_B_tbound AND pixel_row_int < tank_B_bbound AND pixel_column_int >= tank_B_lbound AND pixel_column_int < tank_B_rbound) THEN
-		tankB_on = '1';
-	else 
-		tankB_on = '0';
-	end if;
 	
 
 	--------------------------------------------------------------------------------------------	
@@ -91,40 +76,60 @@ BEGIN
 		
 	END PROCESS findBounds;
 
-	pixelDraw : PROCESS (clk, rst_n) IS
+	pixelDraw : PROCESS (clk, rst_n, tankA_on, tankB_on) IS
 
 	BEGIN
 
-		if (rising_edge(clk)) then 
-			if (video_on = '0') then 
-				colorAddress <= color_black;
-			elsif (tankA_on = '1') then
+		IF (rising_edge(clk)) THEN
+			IF (pixel_row_int >= tank_A_tbound AND pixel_row_int < tank_A_bbound AND pixel_column_int >= tank_A_lbound AND pixel_column_int < tank_A_rbound) THEN
 				colorAddress <= color_blue;
-			elsif (tankB_on = '1') THEN
+
+			ELSIF (pixel_row_int >= tank_B_tbound AND pixel_row_int < tank_B_bbound AND pixel_column_int >= tank_B_lbound AND pixel_column_int < tank_B_rbound) THEN
 				colorAddress <= color_red;
-			else 
+
+			-- ELSIF (pixel_row_int >= bullet_A_tbound AND pixel_row_int < bullet_A_bbound AND pixel_column_int >= bullet_A_lbound AND pixel_column_int < bullet_A_rbound) THEN
+			-- 	colorAddress <= color_blue;
+
+			-- ELSIF (pixel_row_int >= bullet_B_tbound AND pixel_row_int < bullet_B_bbound AND pixel_column_int >= bullet_B_lbound AND pixel_column_int < bullet_B_rbound) THEN
+			-- 	colorAddress <= color_red;
+
+			ELSE
 				colorAddress <= color_black;
-			end if;
-		end if;
 
-		-- IF (rising_edge(clk) and eof = '1') THEN
-		-- 	IF (pixel_row_int >= tank_A_tbound AND pixel_row_int < tank_A_bbound AND pixel_column_int >= tank_A_lbound AND pixel_column_int < tank_A_rbound) THEN
-		-- 		colorAddress <= color_blue;
+			END IF;
+		END IF;
+		
+	---other stuff that didn't work:
 
-		-- 	ELSIF (pixel_row_int >= tank_B_tbound AND pixel_row_int < tank_B_bbound AND pixel_column_int >= tank_B_lbound AND pixel_column_int < tank_B_rbound) THEN
-		-- 		colorAddress <= color_red;
-
-		-- 	-- ELSIF (pixel_row_int >= bullet_A_tbound AND pixel_row_int < bullet_A_bbound AND pixel_column_int >= bullet_A_lbound AND pixel_column_int < bullet_A_rbound) THEN
-		-- 	-- 	colorAddress <= color_blue;
-
-		-- 	-- ELSIF (pixel_row_int >= bullet_B_tbound AND pixel_row_int < bullet_B_bbound AND pixel_column_int >= bullet_B_lbound AND pixel_column_int < bullet_B_rbound) THEN
-		-- 	-- 	colorAddress <= color_red;
-
-		-- 	ELSE
+		-- if (rising_edge(clk)) then 
+		-- 	if (video_on = '0') then 
 		-- 		colorAddress <= color_black;
+		-- 	elsif (tankA_on = '1') then
+		-- 		colorAddress <= color_blue;
+		-- 	elsif (tankB_on = '1') THEN
+		-- 		colorAddress <= color_red;
+		-- 	else 
+		-- 		colorAddress <= color_black;
+		-- 	end if;
+		-- end if;
 
-		-- 	END IF;
-		-- END IF;
+		-- checkPixel : process (clk, rst_n) is
+	-- begin
+	-- 	--check if pixel is on tankA
+	-- 	IF (pixel_row_int >= tank_A_tbound AND pixel_row_int < tank_A_bbound AND pixel_column_int >= tank_A_lbound AND pixel_column_int < tank_A_rbound) THEN
+	-- 		tankA_on <= '1';
+	-- 	else 
+	-- 		tankA_on <= '0';
+	-- 	end if;
+
+
+	-- 	--check if pixel is on tankB
+	-- 	if (pixel_row_int >= tank_B_tbound AND pixel_row_int < tank_B_bbound AND pixel_column_int >= tank_B_lbound AND pixel_column_int < tank_B_rbound) THEN
+	-- 		tankB_on <= '1';
+	-- 	else 
+	-- 		tankB_on <= '0';
+	-- 	end if;
+	-- end process;
 
 	END PROCESS pixelDraw;
 

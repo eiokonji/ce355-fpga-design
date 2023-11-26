@@ -54,7 +54,7 @@ BEGIN
     END PROCESS clockProcess;
 
     --update positions
-    tankProcess : PROCESS (start) IS
+    tankProcess : PROCESS (start, state, pos_x1, pos_y1, direction, tank_speed) IS
     BEGIN
         --assign defaults
         next_state <= state;

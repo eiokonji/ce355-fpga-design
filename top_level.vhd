@@ -104,7 +104,6 @@ BEGIN
         rst_n => RESET_N,
         video_on => video_on_int,
         eof => eof,
-        vert_sync => VERT_SYNC,
         pixel_row => pixel_row_int,
         pixel_column => pixel_column_int,
 
