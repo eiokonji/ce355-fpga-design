@@ -21,7 +21,7 @@ END ENTITY inc_scoreA;
 
 ARCHITECTURE behavioralScore OF inc_scoreA IS
     --initialize states
-    TYPE states IS (idle, play);
+    TYPE states IS (idle, play, win);
     SIGNAL state, next_state : states;
 
     --clocking signals
@@ -72,20 +72,30 @@ BEGIN
                 END IF;
 
             WHEN play =>
-                --check for collision (has bullet A hit tank B?)
+                --check if player has already won
                 IF (A_score1 = WIN_SCORE) THEN
                     next_state <= win;
-                    dead_c <= '1';
+                    dead_c <= '1'; --deactivate bullet
                 ELSE
                     IF (A_bullet_tb <= B_tank_bb) THEN
+                        --check for collision (has bullet A hit tank B?)
                         IF (A_bullet_lb >= B_tank_lb AND A_bullet_rb <= B_tank_rb) THEN
                             A_score_c <= STD_LOGIC_VECTOR(unsigned(A_score1) + 1);
+                            dead_c <= '1';
                         ELSIF (A_bullet_lb >= B_tank_lb AND ((A_bullet_lb + 10) <= (B_tank_rb + 9))) THEN
                             A_score_c <= STD_LOGIC_VECTOR(unsigned(A_score1) + 1);
+                            dead_c <= '1';
                         ELSIF ((A_bullet_rb <= B_tank_rb) AND ((A_bullet_rb - 10) >= (B_tank_lb - 9))) THEN
                             A_score_c <= STD_LOGIC_VECTOR(unsigned(A_score1) + 1);
+                            dead_c <= '1';
+                            
+                        --check if bullet is off screen
+                        ELSIF (A_bullet_lb <= 0) then 
+                            A_score_c <= A_score1;
+                            dead_c <= '1';
                         ELSE
                             A_score_c <= A_score1; --score stays the same
+                            dead_c <= '0';
                         END IF;
                     END IF;
                 END IF;

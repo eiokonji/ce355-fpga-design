@@ -59,21 +59,23 @@ BEGIN
 
         CASE state IS
             WHEN idle =>
-                IF (start = '1' and fired = '1') THEN
+                IF (start = '1' AND fired = '1') THEN
                     next_state <= firing;
-                ELSE
-                    pos_x_c <= tank_x;
-                    pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 50);
                 END IF;
 
             WHEN firing =>
-                if (dead = '0') then 
-                    IF (unsigned(pos_y1) - BULLET_SPEED >= unsigned(tank_y) + 17) THEN
+                IF (start = '1') THEN
+                    IF (dead = '0') THEN
                         pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) - BULLET_SPEED);
+                        -- IF (unsigned(pos_y1) - BULLET_SPEED >= unsigned(tank_y) + 17) THEN
+                        --     pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) - BULLET_SPEED);
+                        -- END IF;
+                    ELSIF (dead = '1') THEN
+                        next_state <= idle;
+                        pos_x_c <= tank_x; --center based on tank position
+                        pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 50); -- 40 + 10 = 50 
                     END IF;
-                elsif (dead = '1') then 
-                    next_state <= idle;
-                end if;
+                END IF;
         END CASE;
 
     END PROCESS bulletProcess;
