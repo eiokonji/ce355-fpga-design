@@ -21,7 +21,7 @@ ARCHITECTURE structural OF top_level IS
 
     COMPONENT clock_counter IS
         GENERIC (
-            BITS : INTEGER := 3
+            BITS : INTEGER := 21
         );
         PORT (
             clk, rst : IN STD_LOGIC;
@@ -31,7 +31,7 @@ ARCHITECTURE structural OF top_level IS
 
     COMPONENT pixelGenerator IS
         PORT (
-            clk, ROM_clk, rst_n, video_on, eof, vert_sync: IN STD_LOGIC;
+            clk, ROM_clk, rst_n, video_on, eof: IN STD_LOGIC;
             pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
             tankA_x, tankA_y, tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
             -- bulletA_x, bulletA_y, bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
