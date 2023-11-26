@@ -6,6 +6,8 @@ USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
 
 --Inputs: clock, reset, speed, direction, collision A_hit or B_hit, (x,y) of TANK
+    --(x,y) of both tanks
+    
 --Outputs: (x, y) aka (pixel_row, pixel_column) position of BULLET, active
 
 --Notes:

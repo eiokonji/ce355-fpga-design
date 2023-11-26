@@ -23,7 +23,7 @@ ARCHITECTURE behavioral OF tank_pos IS
     --declarative region
     SIGNAL tank_speed : NATURAL;
 
-    --declare signals
+    --declare constant bounds
     CONSTANT left_bound : NATURAL := 0;
     CONSTANT right_bound : NATURAL := 640 - 80;
 
