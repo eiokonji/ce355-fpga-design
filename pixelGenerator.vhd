@@ -59,7 +59,7 @@ BEGIN
 	PORT MAP(colorAddress, ROM_clk, color);
 
 	--------------------------------------------------------------------------------------------	
-	findBounds : PROCESS (clk, rst_n) IS
+	findBounds : PROCESS (clk, rst_n, tankA_x, tankA_y, tankB_x, tankB_y) IS
 	BEGIN
 		tank_A_lbound <= to_integer(unsigned(tankA_x) - 40);
 		tank_A_rbound <= to_integer(unsigned(tankA_x) + 40);

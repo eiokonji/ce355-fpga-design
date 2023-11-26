@@ -88,7 +88,7 @@ BEGIN
     --------------------------------------------------------------------------------------------
     clockCount : clock_counter
     GENERIC MAP(
-        BITS => 21
+        BITS => 20
     )
     PORT MAP(
         clk => CLOCK_50,
