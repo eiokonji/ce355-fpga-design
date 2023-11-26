@@ -26,14 +26,14 @@ ARCHITECTURE behavioral_A OF tankA IS
 
     --signal for direction (0= right, 1 = left)
     SIGNAL direction : STD_LOGIC := '0';
-    signal direction_c : std_logic;
+    SIGNAL direction_c : STD_LOGIC;
 
-     --declare constant bounds
+    --declare constant bounds
     CONSTANT left_bound : NATURAL := 0 + 40;
     CONSTANT right_bound : NATURAL := 640 - 40;
 
     --signal for speed
-    signal tank_speed : integer := 5;
+    SIGNAL tank_speed : INTEGER := 5;
 
 BEGIN
 
@@ -54,7 +54,7 @@ BEGIN
     END PROCESS clockProcess;
 
     --update positions
-    tankProcess : PROCESS (start) IS
+    tankProcess : PROCESS (start, state, pos_x1, pos_y1, direction) IS
     BEGIN
         --assign defaults
         next_state <= state;
@@ -70,18 +70,23 @@ BEGIN
                     next_state <= idle;
                 END IF;
             WHEN move =>
-                IF (direction = '0') THEN
-                    IF (unsigned(pos_x1) + tank_speed <= right_bound) THEN
-                        pos_x_c <= std_logic_vector(unsigned(pos_x1) + tank_speed);
-                    ELSE
-                        direction_c <= NOT direction; --if tank exceeds right bound, flip direction
-                    END IF;
-                ELSIF (direction = '1') THEN
-                    IF (unsigned(pos_x1) - tank_speed >= left_bound) THEN
-                        pos_x_c <= std_logic_vector(unsigned(pos_x1) - tank_speed);
-                    ELSE
-                        direction_c <= NOT direction; --if tank exceeds left bound, flip direction
-                    END IF;
+                -- IF (direction = '0') THEN
+                --     IF (unsigned(pos_x1) + tank_speed <= right_bound) THEN
+                --         pos_x_c <= std_logic_vector(unsigned(pos_x1) + tank_speed);
+                --     ELSE
+                --         direction_c <= '1'; --if tank exceeds right bound, flip direction
+                --     END IF;
+                -- ELSIF (direction = '1') THEN
+                --     IF (unsigned(pos_x1) - tank_speed >= left_bound) THEN
+                --         pos_x_c <= std_logic_vector(unsigned(pos_x1) - tank_speed);
+                --     ELSE
+                --         direction_c <= '0'; --if tank exceeds left bound, flip direction
+                --     END IF;
+                -- END IF;
+                pos_x_c <= STD_LOGIC_VECTOR(unsigned(pos_x1) + tank_speed);
+
+                IF (unsigned(pos_x1) + tank_speed > right_bound) THEN
+                    pos_x_c <= STD_LOGIC_VECTOR(to_unsigned(40, 10));
                 END IF;
 
         END CASE;
