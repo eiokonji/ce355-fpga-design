@@ -33,7 +33,7 @@ ARCHITECTURE behavioral_A OF tankA IS
     CONSTANT right_bound : NATURAL := 640 - 40;
 
     --signal for speed
-    SIGNAL tank_speed : INTEGER := 5;
+    -- SIGNAL tank_speed : INTEGER := 5;
 
 BEGIN
 
@@ -54,7 +54,7 @@ BEGIN
     END PROCESS clockProcess;
 
     --update positions
-    tankProcess : PROCESS (start, state, pos_x1, pos_y1, direction, tank_speed) IS
+    tankProcess : PROCESS (start, state, pos_x1, pos_y1, direction, speed) IS
     BEGIN
         --assign defaults
         next_state <= state;
@@ -74,14 +74,14 @@ BEGIN
             WHEN move =>
                 if (start = '1') then 
                     IF (direction = '0') THEN
-                        IF (unsigned(pos_x1) + tank_speed <= right_bound) THEN
-                            pos_x_c <= std_logic_vector(unsigned(pos_x1) + tank_speed);
+                        IF (unsigned(pos_x1) + unsigned(speed) <= right_bound) THEN
+                            pos_x_c <= std_logic_vector(unsigned(pos_x1) + unsigned(speed));
                         ELSE
                             direction_c <= '1'; --if tank exceeds right bound, flip direction
                         END IF;
                     ELSIF (direction = '1') THEN
-                        IF (unsigned(pos_x1) - tank_speed >= left_bound) THEN
-                            pos_x_c <= std_logic_vector(unsigned(pos_x1) - tank_speed);
+                        IF (unsigned(pos_x1) - unsigned(speed) >= left_bound) THEN
+                            pos_x_c <= std_logic_vector(unsigned(pos_x1) - unsigned(speed));
                         ELSE
                             direction_c <= '0'; --if tank exceeds left bound, flip direction
                         END IF;

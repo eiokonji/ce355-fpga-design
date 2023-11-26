@@ -9,6 +9,7 @@ ENTITY top_level IS
     PORT (
         CLOCK_50 : IN STD_LOGIC;
         RESET : IN STD_LOGIC;
+        KEYBOARD_CLK, KEYBOARD_DATA : IN STD_LOGIC;
         --VGA 
         VGA_RED, VGA_GREEN, VGA_BLUE : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
         HORIZ_SYNC, VERT_SYNC, VGA_BLANK, VGA_CLK : OUT STD_LOGIC
@@ -31,7 +32,7 @@ ARCHITECTURE structural OF top_level IS
 
     COMPONENT pixelGenerator IS
         PORT (
-            clk, ROM_clk, rst_n, video_on, eof: IN STD_LOGIC;
+            clk, ROM_clk, rst_n, video_on, eof : IN STD_LOGIC;
             pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
             tankA_x, tankA_y, tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
             -- bulletA_x, bulletA_y, bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -64,6 +65,28 @@ ARCHITECTURE structural OF top_level IS
         );
     END COMPONENT VGA_SYNC;
 
+    COMPONENT ps2 IS
+        PORT (
+            keyboard_clk, keyboard_data, clock_50MHz,
+            reset : IN STD_LOGIC;--, read : in std_logic;
+            scan_code : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+            scan_readyo : OUT STD_LOGIC;
+            hist3 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+            hist2 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+            hist1 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+            hist0 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+        );
+    END COMPONENT ps2;
+
+    COMPONENT keypresses IS
+        PORT (
+            clock_50MHz, reset, start : IN STD_LOGIC;
+            hist1, hist0 : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+            speedA, speedB : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+            bulletA, bulletB : OUT STD_LOGIC
+        );
+    END COMPONENT keypresses;
+
     --Signals for screen position updates
     SIGNAL game_ticks : STD_LOGIC;
     SIGNAL GAME_START : STD_LOGIC;
@@ -80,8 +103,18 @@ ARCHITECTURE structural OF top_level IS
 
     --signals for tank positions
     SIGNAL TANKA_X, TANKA_Y, TANKB_X, TANKB_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
+
     --signals for tank speed
-    SIGNAL TANKA_SPEED, TANKB_SPEED : STD_LOGIC_VECTOR(3 DOWNTO 0) := (0 => '1', others => '0');
+    SIGNAL TANKA_SPEED, TANKB_SPEED : STD_LOGIC_VECTOR(3 DOWNTO 0) := (0 => '1', OTHERS => '0');
+
+    -- signals for bullet positions
+
+    -- signals for bullet fired
+    SIGNAL BULLETA_FIRED, BULLETB_FIRED : STD_LOGIC;
+
+    -- signals for ps2
+    SIGNAL scan_ready : STD_LOGIC;
+    SIGNAL scan_code, hist3, hist2, hist1, hist0 : STD_LOGIC_VECTOR(7 DOWNTO 0);
 
 BEGIN
     RESET_N <= NOT RESET; -- if reset is 1, because RESET is '0'
@@ -128,7 +161,7 @@ BEGIN
         pos_y => TANKA_Y
     );
 
-    tankBModule : tankB 
+    tankBModule : tankB
     PORT MAP(
         clk => CLOCK_50,
         rst_n => RESET_N,
@@ -136,6 +169,33 @@ BEGIN
         speed => TANKB_SPEED,
         pos_x => TANKB_X,
         pos_y => TANKB_Y
+    );
+
+    ps2_1 : ps2
+    PORT MAP(
+        keyboard_clk => KEYBOARD_CLK,
+        keyboard_data => KEYBOARD_DATA,
+        clock_50MHz => CLOCK_50,
+        reset => RESET,
+        scan_code => scan_code,
+        scan_readyo => scan_ready,
+        hist3 => hist3,
+        hist2 => hist2,
+        hist1 => hist1,
+        hist0 => hist0
+    );
+
+    keypress_1 : keypresses
+    PORT MAP(
+        clock_50MHz => CLOCK_50,
+        reset => RESET_N,
+        start => scan_ready,
+        hist1 => hist1,
+        hist0 => hist0,
+        speedA => TANKA_SPEED,
+        speedB => TANKB_SPEED,
+        bulletA => BULLETA_FIRED,
+        bulletB => BULLETB_FIRED
     );
 
     --------------------------------------------------------------------------------------------
