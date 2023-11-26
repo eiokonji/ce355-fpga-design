@@ -72,24 +72,26 @@ BEGIN
                     next_state <= idle;
                 END IF;
             WHEN move =>
-                -- IF (direction = '0') THEN
-                --     IF (unsigned(pos_x1) + tank_speed <= right_bound) THEN
-                --         pos_x_c <= std_logic_vector(unsigned(pos_x1) + tank_speed);
-                --     ELSE
-                --         direction_c <= '1'; --if tank exceeds right bound, flip direction
-                --     END IF;
-                -- ELSIF (direction = '1') THEN
-                --     IF (unsigned(pos_x1) - tank_speed >= left_bound) THEN
-                --         pos_x_c <= std_logic_vector(unsigned(pos_x1) - tank_speed);
-                --     ELSE
-                --         direction_c <= '0'; --if tank exceeds left bound, flip direction
-                --     END IF;
+                if (start = '1') then 
+                    IF (direction = '0') THEN
+                        IF (unsigned(pos_x1) + tank_speed <= right_bound) THEN
+                            pos_x_c <= std_logic_vector(unsigned(pos_x1) + tank_speed);
+                        ELSE
+                            direction_c <= '1'; --if tank exceeds right bound, flip direction
+                        END IF;
+                    ELSIF (direction = '1') THEN
+                        IF (unsigned(pos_x1) - tank_speed >= left_bound) THEN
+                            pos_x_c <= std_logic_vector(unsigned(pos_x1) - tank_speed);
+                        ELSE
+                            direction_c <= '0'; --if tank exceeds left bound, flip direction
+                        END IF;
+                    END IF;
+                end if;
+                -- pos_x_c <= STD_LOGIC_VECTOR(unsigned(pos_x1) + tank_speed);
+                -- --pos_x_c <= pos_x1;
+                -- IF (unsigned(pos_x1) + tank_speed > right_bound) THEN
+                --     pos_x_c <= STD_LOGIC_VECTOR(to_unsigned(40, 10));
                 -- END IF;
-                pos_x_c <= STD_LOGIC_VECTOR(unsigned(pos_x1) + tank_speed);
-                --pos_x_c <= pos_x1;
-                IF (unsigned(pos_x1) + tank_speed > right_bound) THEN
-                    pos_x_c <= STD_LOGIC_VECTOR(to_unsigned(40, 10));
-                END IF;
 
         END CASE;
 
