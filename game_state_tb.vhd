@@ -77,7 +77,26 @@ BEGIN
 
     score_generate : process IS
     begin
-        --ah
+        wait for PERIOD;
+        wait for PERIOD;
+        A_score_tb <= (others <= '0');
+        B_score_tb <= (others <= '0');
+        wait for PERIOD;
+        A_score_tb <= (1 => '1', 0 => '0');
+        B_score_tb <= (1 => '0', 0 => '1');
+         ait for PERIOD;
+        A_score_tb <= (1 => '1', 0 => '1');
+        B_score_tb <= (1 => '1', 0 => '0');
+        wait for PERIOD;
+        A_score_tb <= (others <= '0');
+        B_score_tb <= (others <= '0');
+        wait for PERIOD;
+        A_score_tb <= (1 => '0', 0 => '0');
+        B_score_tb <= (1 => '0', 0 => '1');
+        wait for PERIOD;
+        A_score_tb <= (1 => '0', 0 => '0');
+        B_score_tb <= (1 => '1', 0 => '1');
+        wait;
     end process;
 
 END ARCHITECTURE behavioral;
