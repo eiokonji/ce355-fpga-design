@@ -120,7 +120,7 @@ BEGIN
 
     tankAModule : tankA
     PORT MAP(
-        clk => CLOCK_50,
+        clk => VGA_clk_int,
         rst_n => RESET_N,
         start => game_ticks,
         speed => TANKA_SPEED,

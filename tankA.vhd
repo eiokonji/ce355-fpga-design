@@ -67,6 +67,8 @@ BEGIN
                 IF (start = '1') THEN
                     next_state <= move;
                 ELSE
+                    --pos_x1 <= STD_LOGIC_VECTOR(to_unsigned(320, 10));
+                    --pos_y1 <= STD_LOGIC_VECTOR(to_unsigned(452, 10));
                     next_state <= idle;
                 END IF;
             WHEN move =>
@@ -84,7 +86,7 @@ BEGIN
                 --     END IF;
                 -- END IF;
                 pos_x_c <= STD_LOGIC_VECTOR(unsigned(pos_x1) + tank_speed);
-
+                --pos_x_c <= pos_x1;
                 IF (unsigned(pos_x1) + tank_speed > right_bound) THEN
                     pos_x_c <= STD_LOGIC_VECTOR(to_unsigned(40, 10));
                 END IF;
