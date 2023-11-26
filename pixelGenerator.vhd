@@ -5,7 +5,7 @@ USE IEEE.numeric_std.ALL;
 
 ENTITY pixelGenerator IS
 	PORT (
-		clk, ROM_clk, rst_n, video_on, eof, vert_sync: IN STD_LOGIC;
+		clk, ROM_clk, rst_n, video_on, eof: IN STD_LOGIC;
 		pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 		tankA_x, tankA_y, tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 		-- bulletA_x, bulletA_y, bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -76,7 +76,7 @@ BEGIN
 
 	BEGIN
 
-		IF (rising_edge(clk) and vert_sync = '1') THEN
+		IF (rising_edge(clk) and eof = '1') THEN
 			IF (pixel_row_int >= tank_A_tbound AND pixel_row_int < tank_A_bbound AND pixel_column_int >= tank_A_lbound AND pixel_column_int < tank_A_rbound) THEN
 				colorAddress <= color_blue;
 
