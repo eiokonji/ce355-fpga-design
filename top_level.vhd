@@ -16,7 +16,7 @@ ENTITY top_level IS
     );
 END ENTITY top_level;
 
-ARCHITECTURE structural OF tank_game IS
+ARCHITECTURE structural OF top_level IS
     SIGNAL VGA_RED_temp, VGA_GREEN_temp, VGA_BLUE_temp : STD_LOGIC_VECTOR(7 DOWNTO 0);
 
     COMPONENT clock_counter IS
@@ -80,7 +80,7 @@ ARCHITECTURE structural OF tank_game IS
     --signals for tank positions
     SIGNAL TANKA_X, TANKA_Y, TANKB_X, TANKB_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
     --signals for tank speed
-    SIGNAL TANKA_SPEED, TANKB_SPEED : STD_LOGIC_VECTOR(3 DOWNTO 0) := (0 = '1', others => '0');
+    SIGNAL TANKA_SPEED, TANKB_SPEED : STD_LOGIC_VECTOR(3 DOWNTO 0) := (0 => '1', others => '0');
 
 BEGIN
     RESET_N <= NOT RESET; -- if reset is 1, because RESET is '0'
@@ -117,7 +117,7 @@ BEGIN
         blue_out => VGA_BLUE
     );
 
-    tankAModule : tankA IS
+    tankAModule : tankA
     PORT MAP(
         clk => CLOCK_50,
         rst_n => RESET_N,
@@ -127,7 +127,7 @@ BEGIN
         pos_y => TANKA_Y
     );
 
-    tankBModule : tankB IS
+    tankBModule : tankB 
     PORT MAP(
         clk => CLOCK_50,
         rst_n => RESET_N,

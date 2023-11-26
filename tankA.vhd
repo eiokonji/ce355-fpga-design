@@ -72,13 +72,13 @@ BEGIN
             WHEN move =>
                 IF (direction = '0') THEN
                     IF (unsigned(pos_x1) + tank_speed <= right_bound) THEN
-                        pos_x_c <= pos_x1 + tank_speed;
+                        pos_x_c <= std_logic_vector(unsigned(pos_x1) + tank_speed);
                     ELSE
                         direction_c <= NOT direction; --if tank exceeds right bound, flip direction
                     END IF;
                 ELSIF (direction = '1') THEN
                     IF (unsigned(pos_x1) - tank_speed >= left_bound) THEN
-                        pos_x_c <= pos_x1 - tank_speed;
+                        pos_x_c <= std_logic_vector(unsigned(pos_x1) - tank_speed);
                     ELSE
                         direction_c <= NOT direction; --if tank exceeds left bound, flip direction
                     END IF;
