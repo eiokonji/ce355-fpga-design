@@ -102,7 +102,7 @@ ARCHITECTURE structural OF top_level IS
     COMPONENT keypresses IS
         PORT (
             clock_50MHz, reset, start : IN STD_LOGIC;
-            hist1, hist0 : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+            hist2, hist1, hist0 : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
             speedA, speedB : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
             bulletA, bulletB : OUT STD_LOGIC
         );
@@ -244,6 +244,7 @@ BEGIN
         clock_50MHz => CLOCK_50,
         reset => RESET_N,
         start => scan_ready,
+        hist2 => hist2,
         hist1 => hist1,
         hist0 => hist0,
         speedA => TANKA_SPEED,

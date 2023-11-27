@@ -9,7 +9,7 @@ USE ieee.numeric_std.ALL;
 ENTITY keypresses IS
   PORT (
     clock_50MHz, reset, start : IN STD_LOGIC;
-    hist1, hist0 : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+    hist2, hist1, hist0 : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
     speedA, speedB : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
     bulletA, bulletB : OUT STD_LOGIC
   );
@@ -88,7 +88,7 @@ BEGIN
           END IF;
 
           -- fire bullet A
-          IF (unsigned(hist0) = unsigned(l_bullet) AND unsigned(hist1) = unsigned(break)) THEN
+          IF (unsigned(hist0) = unsigned(l_bullet) AND unsigned(hist1) = unsigned(break) and unsigned(hist2) = unsigned(l_bullet)) THEN
             bulletA_temp_n <= '1';
           ELSE
             bulletA_temp_n <= '0';
