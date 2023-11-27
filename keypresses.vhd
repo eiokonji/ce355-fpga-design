@@ -88,7 +88,7 @@ BEGIN
           END IF;
 
           -- fire bullet A
-          IF (unsigned(hist0) = unsigned(l_bullet) AND unsigned(hist1) = unsigned(break) and start'event = True) THEN
+          IF (unsigned(hist0) = unsigned(l_bullet) AND unsigned(hist1) = unsigned(break) and unsigned(hist2) = unsigned(l_bullet)) THEN
             bulletA_temp_n <= '1';
           ELSE
             bulletA_temp_n <= '0';
