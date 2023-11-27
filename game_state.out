@@ -1,0 +1,14 @@
+A: 0 -- B:  0
+Game over: NO! -- Winner: No winner yet
+A: 2 -- B:  1
+Game over: NO! -- Winner: No winner yet
+A: 3 -- B:  2
+Game over: YES! -- Winner: No winner yet
+A: 0 -- B:  0
+Game over: YES! -- Winner: No winner yet
+A: 0 -- B:  1
+Game over: YES! -- Winner: Player B
+A: 0 -- B:  3
+Game over: YES! -- Winner: Player B
+A: 2 -- B:  2
+Game over: YES! -- Winner: No winner yet

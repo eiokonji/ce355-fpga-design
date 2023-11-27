@@ -10,7 +10,7 @@ END ENTITY testbench;
 ARCHITECTURE behavioral OF testbench IS
     COMPONENT clock_counter IS
         PORT (
-            clk, rst_n : IN STD_LOGIC;
+            clk, rst : IN STD_LOGIC;
             game_tick : OUT STD_LOGIC
         );
     END COMPONENT clock_counter;
@@ -25,7 +25,7 @@ BEGIN
     dut : clock_counter
     PORT MAP(
         clk => clk_tb,
-        rst_n => rst_n_tb,
+        rst => rst_n_tb,
         game_tick => game_tick_tb
     );
 
