@@ -58,24 +58,24 @@ ARCHITECTURE structural OF top_level IS
     END COMPONENT tankB;
 
     COMPONENT bulletA IS
-    PORT (
-        clk, rst_n, start : IN STD_LOGIC;
-        fired, dead : IN STD_LOGIC;
-        tank_x, tank_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-        pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
-    );
+        PORT (
+            clk, rst_n, start : IN STD_LOGIC;
+            fired, dead : IN STD_LOGIC;
+            tank_x, tank_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+            pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+        );
     END COMPONENT bulletA;
 
     COMPONENT inc_scoreA IS
-    PORT (
-        clk, rst_n, start : IN STD_LOGIC;
-        bulletA_x, bulletA_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-        tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-        A_score : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-        dead : OUT STD_LOGIC
+        PORT (
+            clk, rst_n, start : IN STD_LOGIC;
+            bulletA_x, bulletA_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+            tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+            A_score : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+            dead : OUT STD_LOGIC
 
-    );
-    end component inc_scoreA;
+        );
+    END COMPONENT inc_scoreA;
 
     COMPONENT VGA_SYNC IS
         PORT (
@@ -108,6 +108,13 @@ ARCHITECTURE structural OF top_level IS
         );
     END COMPONENT keypresses;
 
+    COMPONENT leddcd IS
+        PORT (
+            data_in : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+            segments_out : OUT STD_LOGIC_VECTOR(6 DOWNTO 0)
+        );
+    END COMPONENT leddcd;
+
     --Signals for screen position updates
     SIGNAL game_ticks : STD_LOGIC;
     SIGNAL GAME_START : STD_LOGIC;
@@ -129,14 +136,15 @@ ARCHITECTURE structural OF top_level IS
     SIGNAL TANKA_SPEED, TANKB_SPEED : STD_LOGIC_VECTOR(3 DOWNTO 0) := (0 => '1', OTHERS => '0');
 
     -- signals for bullet positions
-    SIGNAL BULLETA_X, BULLETA_Y : std_logic_vector(9 downto 0);
+    SIGNAL BULLETA_X, BULLETA_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
 
     -- signals for bullet fired and dead
     SIGNAL BULLETA_FIRED, BULLETB_FIRED : STD_LOGIC;
-    signal A_DEAD, B_DEAD : std_logic;
-	 
-	 --signals for scoring
-	 SIGNAL A_SCORE, B_SCORE : std_logic_vector(3 downto 0);
+    SIGNAL A_DEAD, B_DEAD : STD_LOGIC;
+
+    --signals for scoring
+    SIGNAL A_SCORE, B_SCORE : STD_LOGIC_VECTOR(3 DOWNTO 0);
+    signal SHOW_A_SCORE, SHOW_B_SCORE : STD_LOGIC_VECTOR(6 DOWNTO 0):
 
     -- signals for ps2
     SIGNAL scan_ready : STD_LOGIC;
@@ -170,8 +178,8 @@ BEGIN
         tankA_y => TANKA_Y,
         tankB_x => TANKB_X,
         tankB_y => TANKB_Y,
-        bulletA_x => BULLETA_X, 
-        bulletA_y => BULLETA_Y, 
+        bulletA_x => BULLETA_X,
+        bulletA_y => BULLETA_Y,
         --bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 
         red_out => VGA_RED,
@@ -200,7 +208,7 @@ BEGIN
     );
 
     bulletAModule : bulletA
-    PORT MAP (
+    PORT MAP(
         clk => CLOCK_50,
         start => game_ticks,
         rst_n => RESET_N,
@@ -213,13 +221,13 @@ BEGIN
     );
 
     scoreA : inc_scoreA
-    PORT MAP (
+    PORT MAP(
         clk => CLOCK_50,
         start => game_ticks,
         rst_n => RESET_N,
         bulletA_x => BULLETA_X,
         bulletA_y => BULLETA_Y,
-        tankB_x => TANKB_X, 
+        tankB_x => TANKB_X,
         tankB_y => TANKB_Y,
         A_score => A_SCORE,
         dead => A_DEAD
@@ -252,6 +260,12 @@ BEGIN
         bulletA => BULLETA_FIRED,
         bulletB => BULLETB_FIRED
     );
+
+    current_Ascore : leddcd 
+	PORT (
+		data_in => A_SCORE,
+		segments_out => SHOW_A_SCORE
+	);
 
     --------------------------------------------------------------------------------------------
     --This section should not be modified in your design.  This section handles the VGA timing signals
