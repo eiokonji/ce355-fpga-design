@@ -56,7 +56,7 @@ BEGIN
     END IF;
   END PROCESS;
 
-  change_speed_process : PROCESS (start, hist0, hist1) IS
+  change_speed_process : PROCESS (start, hist0, hist1, hist2, state, speedA_temp, speedB_temp, bulletA_temp, bulletB_temp ) IS
   BEGIN
     -- default values for changing signals
     new_state <= state;

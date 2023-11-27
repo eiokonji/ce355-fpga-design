@@ -49,8 +49,7 @@ BEGIN
 		VARIABLE init : STD_LOGIC := '0';
 	BEGIN
 		LCD_ON <= '1';
-		IF init = '0' THEN
-			init := '1';
+		if ( reset = '0' ) then
 			state <= RESET1;
 			DATA_BUS_VALUE <= X"38";
 			next_command <= RESET2;

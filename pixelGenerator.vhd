@@ -8,8 +8,7 @@ ENTITY pixelGenerator IS
 		clk, ROM_clk, rst_n, video_on, eof : IN STD_LOGIC;
 		pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 		tankA_x, tankA_y, tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-		bulletA_x, bulletA_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-		--bulletB_x, bulletB_y : 
+		bulletA_x, bulletA_y, bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 		red_out, green_out, blue_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
 	);
 END ENTITY pixelGenerator;
@@ -41,7 +40,7 @@ ARCHITECTURE behavioral OF pixelGenerator IS
 	SIGNAL tank_A_lbound, tank_A_rbound, tank_A_tbound, tank_A_bbound : NATURAL;
 	SIGNAL tank_B_lbound, tank_B_rbound, tank_B_tbound, tank_B_bbound : NATURAL;
 	SIGNAL bullet_A_lbound, bullet_A_rbound, bullet_A_tbound, bullet_A_bbound : NATURAL;
-	-- SIGNAL bullet_B_lbound, bullet_B_rbound, bullet_B_tbound, bullet_B_bbound : NATURAL;
+	SIGNAL bullet_B_lbound, bullet_B_rbound, bullet_B_tbound, bullet_B_bbound : NATURAL;
 
 	SIGNAL tankA_on, tankB_on : STD_LOGIC;
 	SIGNAL bulletA_on, bulletB_on : STD_LOGIC;
@@ -77,10 +76,14 @@ BEGIN
 		bullet_A_rbound <= to_integer(unsigned(bulletA_x) + 5);
 		bullet_A_tbound <= to_integer(unsigned(bulletA_y) - 10);
 		bullet_A_bbound <= to_integer(unsigned(bulletA_y) + 10);
+		bullet_B_lbound <= to_integer(unsigned(bulletB_x) - 5);
+		bullet_B_rbound <= to_integer(unsigned(bulletB_x) + 5);
+		bullet_B_tbound <= to_integer(unsigned(bulletB_y) - 10);
+		bullet_B_bbound <= to_integer(unsigned(bulletB_y) + 10);
 
 	END PROCESS findBounds;
 
-	pixelDraw : PROCESS (clk, rst_n, tankA_on, tankB_on) IS
+	pixelDraw : PROCESS (clk, rst_n, tankA_on, tankB_on, bulletA_on, bulletB_on) IS
 
 	BEGIN
 
@@ -94,8 +97,8 @@ BEGIN
 					colorAddress <= color_red;
 				elsif (bulletA_on = '1') then 
 					colorAddress <= color_blue;
-				-- elsif (bulletB_on = '1') then 
-				-- 	colorAddress <= color_red;
+				elsif (bulletB_on = '1') then 
+					colorAddress <= color_red;
 				ELSE
 					colorAddress <= color_black;
 				end if;
@@ -104,7 +107,7 @@ BEGIN
 
 	END PROCESS pixelDraw;
 
-	checkPixel : PROCESS (clk, rst_n,tank_A_tbound,tank_A_bbound,tank_A_lbound,tank_A_rbound,tank_B_tbound,tank_B_bbound,tank_B_lbound,tank_B_rbound,bullet_A_tbound,bullet_A_bbound,bullet_A_lbound,bullet_A_rbound) IS
+	checkPixel : PROCESS (clk, rst_n,tank_A_tbound,tank_A_bbound,tank_A_lbound,tank_A_rbound,tank_B_tbound,tank_B_bbound,tank_B_lbound,tank_B_rbound,bullet_A_tbound,bullet_A_bbound,bullet_A_lbound,bullet_A_rbound,bullet_B_tbound,bullet_B_bbound,bullet_B_lbound,bullet_B_rbound) IS
 		BEGIN
 			--check if pixel is on tankA
 			IF (pixel_row_int >= tank_A_tbound AND pixel_row_int < tank_A_bbound AND pixel_column_int >= tank_A_lbound AND pixel_column_int < tank_A_rbound) THEN
@@ -125,11 +128,11 @@ BEGIN
 				bulletA_on <= '0';
 			end if;
 			--check if pixel is on bulletB
-			-- if (pixel_row_int >= bullet_B_tbound AND pixel_row_int < bullet_B_bbound AND pixel_column_int >= bullet_B_lbound AND pixel_column_int < bullet_B_rbound) THEN
-			-- 	bulletB_on <= '1';
-			-- else 
-			-- 	bulletB_on <= '0';
-			-- end if;
+			if (pixel_row_int >= bullet_B_tbound AND pixel_row_int < bullet_B_bbound AND pixel_column_int >= bullet_B_lbound AND pixel_column_int < bullet_B_rbound) THEN
+				bulletB_on <= '1';
+			else 
+				bulletB_on <= '0';
+			end if;
 
 	END PROCESS checkPixel;
 

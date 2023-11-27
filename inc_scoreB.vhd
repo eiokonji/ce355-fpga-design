@@ -29,7 +29,7 @@ ARCHITECTURE behavioralScore OF inc_scoreB IS
 
     --signals for collision check
     SIGNAL B_bullet_lb, B_bullet_rb, B_bullet_tb, B_bullet_bb : STD_LOGIC_VECTOR(9 DOWNTO 0);
-    SIGNAL A_tank_lb, A_tank_rb, A_tank_bb : STD_LOGIC_VECTOR(9 DOWNTO 0);
+    SIGNAL A_tank_lb, A_tank_rb, A_tank_tb : STD_LOGIC_VECTOR(9 DOWNTO 0);
 
     --constant for comparison
     CONSTANT WIN_SCORE : STD_LOGIC_VECTOR(3 DOWNTO 0) := (0 => '1', 1 => '1', OTHERS => '0');
@@ -42,7 +42,7 @@ BEGIN
     B_bullet_bb <= STD_LOGIC_VECTOR(unsigned(bulletB_y) + 10);
     A_tank_lb <= STD_LOGIC_VECTOR(unsigned(tankA_x) - 40);
     A_tank_rb <= STD_LOGIC_VECTOR(unsigned(tankA_x) + 40);
-    A_tank_bb <= STD_LOGIC_VECTOR(unsigned(tankA_y) + 17);
+    A_tank_tb <= STD_LOGIC_VECTOR(unsigned(tankA_y) + 17);
 
     clockProcess : PROCESS (clk, rst_n) IS
     BEGIN

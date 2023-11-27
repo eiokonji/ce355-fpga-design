@@ -27,7 +27,7 @@ END ENTITY bulletA;
 
 ARCHITECTURE behavioral OF bulletA IS
     --initialize states
-    TYPE states IS (idle, firing);
+    TYPE states IS (WAIT_ON_FIRE, idle, firing);
     SIGNAL state, next_state : states;
 
     --clocking signals for position
@@ -51,38 +51,37 @@ BEGIN
         END IF;
     END PROCESS clockProcess;
 
-    bulletProcess : PROCESS (start, fired, dead, tank_x, tank_y, pos_y1) IS
+    bulletProcess : PROCESS (start, fired, dead, tank_x, tank_y, pos_y1, pos_x1) IS
     BEGIN
         next_state <= state;
         pos_x_c <= pos_x1;
         pos_y_c <= pos_y1;
 
         CASE state IS
+            WHEN WAIT_ON_FIRE =>
+                pos_x_c <= tank_x;
+                pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27);
+                IF (fired = '1') THEN
+                    next_state <= idle;
+                end if; 
+
             WHEN idle =>
-                IF (start = '1' AND fired = '1') THEN
+                IF (start = '1') THEN
                     next_state <= firing;
-                else 
-                    pos_x_c <= tank_x;
-                    pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27);
                 END IF;
     
 
             WHEN firing =>
-                IF (start = '1') THEN
-                    IF (dead = '0') THEN
-                        if ((unsigned(pos_y1) - BULLET_SPEED) >= 10) then
-                            pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) - BULLET_SPEED);
-                        else 
-                            next_state <= idle;
-                            pos_x_c <= tank_x; --center based on tank position
-                            pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27); 
-                        end if;
-                    ELSIF (dead = '1') THEN
-                        next_state <= idle;
-                        pos_x_c <= tank_x; --center based on tank position
-                        pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27); 
-                    END IF;
-                END IF;
+                if ((unsigned(pos_y1) >= BULLET_SPEED)) then
+                    pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) - BULLET_SPEED);
+                    next_state <= idle;
+                else
+                    next_state <= WAIT_ON_FIRE;
+                end if; 
+
+            when others =>
+                    next_state <= WAIT_ON_FIRE;
+
         END CASE;
 
     END PROCESS bulletProcess;
