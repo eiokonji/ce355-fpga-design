@@ -18,7 +18,7 @@ END ENTITY tankB;
 
 ARCHITECTURE behavioral_B OF tankB IS
     --initialize states
-    TYPE states IS (init,idle, move);
+    TYPE states IS (init,idle, move, game_over);
     SIGNAL state, next_state : states;
 
     --signals for position
@@ -89,7 +89,12 @@ BEGIN
                             direction_c <= NOT direction; --if tank exceeds left bound, flip direction
                         END IF;
                     END IF;
+                    if (winner not "00") then
+                        next_state <= game_over;
+                    end if;
                 END IF;
+            when game_over =>
+                next_state <= game_over;
         END CASE;
 
     END PROCESS tankProcess;

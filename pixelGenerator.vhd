@@ -9,6 +9,7 @@ ENTITY pixelGenerator IS
 		pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 		tankA_x, tankA_y, tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 		bulletA_x, bulletA_y, bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+		winner : in std_logic_vector(1 downto 0);
 		red_out, green_out, blue_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
 	);
 END ENTITY pixelGenerator;
@@ -83,7 +84,7 @@ BEGIN
 
 	END PROCESS findBounds;
 
-	pixelDraw : PROCESS (clk, rst_n, tankA_on, tankB_on, bulletA_on, bulletB_on) IS
+	pixelDraw : PROCESS (clk, rst_n, tankA_on, tankB_on, bulletA_on, bulletB_on, winner) IS
 
 	BEGIN
 
@@ -92,14 +93,14 @@ BEGIN
 				colorAddress <= color_black;
 				--color <= X"000000";
 			else 
-				if (tankA_on = '1') THEN
+				if (tankA_on = '1' and winner not "10") THEN
 					colorAddress <= color_blue;
 					--color <= X"0000FF";
-				ELSIF (tankB_on = '1') THEN
+				ELSIF (tankB_on = '1' and winner not "01") THEN
 					colorAddress <= color_red;
-				elsif (bulletA_on = '1') then 
+				elsif (bulletA_on = '1' and winner = "00") then 
 					colorAddress <= color_blue;
-				elsif (bulletB_on = '1') then 
+				elsif (bulletB_on = '1' and winner = "00") then 
 					colorAddress <= color_red;
 				ELSE
 					colorAddress <= color_black;

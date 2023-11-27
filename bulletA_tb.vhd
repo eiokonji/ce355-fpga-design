@@ -44,10 +44,6 @@ ARCHITECTURE behavioral OF testbench IS
 
     signal fired_tb, dead_tb : std_logic;
 
-    --constant speed 
-    --CONSTANT TANK_SPEED0 : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); --stationary
-    constant zeros : std_logic_vector(9 downto 0) := (others => '0');
-
 BEGIN
     dut : bulletA
     PORT MAP (
@@ -110,20 +106,24 @@ BEGIN
         WAIT UNTIL (clk_tb = '0');
         WAIT UNTIL (clk_tb = '1');
         fired_tb <= '1';
-        -- WAIT UNTIL (clk_tb = '0');
-        -- WAIT UNTIL (clk_tb = '1');
-        -- fired_tb <= '0';
+        WAIT UNTIL (dead_tb = '1');
+        fired_tb <= '0';
+        WAIT UNTIL (clk_tb = '0');
+        WAIT UNTIL (clk_tb = '1');
+        fired_tb <= '1';
+
         WAIT;
     end process;
 
-    -- dead_process : process is 
-    -- begin 
-    --     if (unsigned(bullet_pos_y_tb) < to_unsigned(0,10)) then 
-    --         dead_tb <= '1';
-    --     else 
-    --         dead_tb <= '0';
-    --     end if;
-    -- end process;
+    tank_process : process (dead_tb) is 
+    begin 
+        wait until (dead_tb = '1');
+        --move tank to different position so that bullet goes off screen
+        tank_pos_x_tb <= (others => '0');
+        -- wait until (dead_tb = '1');
+        -- tank_pos_x_tb <=
+        wait;
+    end process;
 
 
 

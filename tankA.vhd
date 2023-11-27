@@ -12,13 +12,14 @@ ENTITY tankA IS
     PORT (
         clk, rst_n, start : IN STD_LOGIC;
         speed : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+        winner : IN STD_LOGIC_VECTOR(1 downto 0);
         pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
     );
 END ENTITY tankA;
 
 ARCHITECTURE behavioral_A OF tankA IS
     --initialize states
-    TYPE states IS (init, idle, move);
+    TYPE states IS (init, idle, move, game_over);
     SIGNAL state, next_state : states;
 
     --signals for position
@@ -63,7 +64,7 @@ BEGIN
         direction_c <= direction;
 
         CASE state IS
-				WHEN init =>
+			WHEN init =>
 					pos_x_c <= STD_LOGIC_VECTOR(to_unsigned(320, 10));
 					pos_y_c <= STD_LOGIC_VECTOR(to_unsigned(452, 10));
 					next_state <= idle;
@@ -78,7 +79,7 @@ BEGIN
                 END IF;
             WHEN move =>
                 if (start = '1') then 
-                    IF (direction = '0') THEN
+                    IF (direction = '0' and ) THEN
                         IF (unsigned(pos_x1) + unsigned(speed) <= right_bound) THEN
                             pos_x_c <= std_logic_vector(unsigned(pos_x1) + unsigned(speed));
                         ELSE
@@ -91,12 +92,13 @@ BEGIN
                             direction_c <= '0'; --if tank exceeds left bound, flip direction
                         END IF;
                     END IF;
+                    if (winner not "00") then 
+                        next_state <= game_over;
+                    end if;
                 end if;
-                -- pos_x_c <= STD_LOGIC_VECTOR(unsigned(pos_x1) + tank_speed);
-                -- --pos_x_c <= pos_x1;
-                -- IF (unsigned(pos_x1) + tank_speed > right_bound) THEN
-                --     pos_x_c <= STD_LOGIC_VECTOR(to_unsigned(40, 10));
-                -- END IF;
+
+            WHEN game_over =>
+                next_state <= game_over;
 
         END CASE;
 

@@ -42,6 +42,7 @@ ARCHITECTURE structural OF top_level IS
             pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
             tankA_x, tankA_y, tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
             bulletA_x, bulletA_y, bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);     
+            winner : in std_logic_vector(1 downto 0);
             red_out, green_out, blue_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
         );
     END COMPONENT pixelGenerator;
@@ -222,6 +223,8 @@ BEGIN
         bulletA_y => BULLETA_Y,
         bulletB_x => BULLETB_X, 
         bulletB_y => BULLETB_Y, 
+
+        winner => WINNER,
 
         red_out => VGA_RED,
         green_out => VGA_GREEN,
