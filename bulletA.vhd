@@ -18,10 +18,10 @@ USE IEEE.numeric_std.ALL;
 
 ENTITY bulletA IS
     PORT (
-        clk, rst, start : IN STD_LOGIC;
+        clk, rst_n, start : IN STD_LOGIC;
         fired, dead : IN STD_LOGIC;
         tank_x, tank_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-        pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
+        pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
     );
 END ENTITY bulletA;
 
@@ -51,7 +51,7 @@ BEGIN
         END IF;
     END PROCESS clockProcess;
 
-    bulletProcess : PROCESS (start, fired, dead, tank_x, tank_y) IS
+    bulletProcess : PROCESS (start, fired, dead, tank_x, tank_y, pos_y1) IS
     BEGIN
         next_state <= state;
         pos_x_c <= pos_x1;

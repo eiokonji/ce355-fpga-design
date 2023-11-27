@@ -56,6 +56,26 @@ ARCHITECTURE structural OF top_level IS
         );
     END COMPONENT tankB;
 
+    COMPONENT bulletA IS
+    PORT (
+        clk, rst_n, start : IN STD_LOGIC;
+        fired, dead : IN STD_LOGIC;
+        tank_x, tank_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+        pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+    );
+    END COMPONENT bulletA;
+
+    COMPONENT inc_scoreA IS
+    PORT (
+        clk, rst_n, start : IN STD_LOGIC;
+        bulletA_x, bulletA_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+        tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+        A_score : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        dead : OUT STD_LOGIC
+
+    );
+    end component inc_scoreA;
+
     COMPONENT VGA_SYNC IS
         PORT (
             clock_50Mhz : IN STD_LOGIC;
@@ -101,16 +121,21 @@ ARCHITECTURE structural OF top_level IS
     SIGNAL eof : STD_LOGIC;
     --signal vert_sync1 : std_logic;
 
-    --signals for tank positions
+    --signals for tank and bullet positions
     SIGNAL TANKA_X, TANKA_Y, TANKB_X, TANKB_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
 
     --signals for tank speed
     SIGNAL TANKA_SPEED, TANKB_SPEED : STD_LOGIC_VECTOR(3 DOWNTO 0) := (0 => '1', OTHERS => '0');
 
     -- signals for bullet positions
+    SIGNAL BULLETA_X, BULLETA_Y : std_logic_vector(9 downto 0);
 
-    -- signals for bullet fired
+    -- signals for bullet fired and dead
     SIGNAL BULLETA_FIRED, BULLETB_FIRED : STD_LOGIC;
+    signal A_DEAD, B_DEAD : std_logic;
+	 
+	 --signals for scoring
+	 SIGNAL A_SCORE, B_SCORE : std_logic_vector(3 downto 0);
 
     -- signals for ps2
     SIGNAL scan_ready : STD_LOGIC;
@@ -153,7 +178,7 @@ BEGIN
 
     tankAModule : tankA
     PORT MAP(
-        clk => VGA_clk_int,
+        clk => CLOCK_50,
         rst_n => RESET_N,
         start => game_ticks,
         speed => TANKA_SPEED,
@@ -169,6 +194,32 @@ BEGIN
         speed => TANKB_SPEED,
         pos_x => TANKB_X,
         pos_y => TANKB_Y
+    );
+
+    bulletAModule : bulletA
+    PORT MAP (
+        clk => CLOCK_50,
+        start => game_ticks,
+        rst_n => RESET_N,
+        fired => BULLETA_FIRED,
+        dead => A_DEAD,
+        tank_x => TANKA_X,
+        tank_y => TANKA_Y,
+        pos_x => BULLETA_X,
+        pos_y => BULLETA_Y
+    );
+
+    scoreA : inc_scoreA
+    PORT MAP (
+        clk => CLOCK_50,
+        start => game_ticks,
+        rst_n => RESET_N,
+        bulletA_x => BULLETA_X,
+        bulletA_y => BULLETA_Y,
+        tankB_x => TANKB_X, 
+        tankB_y => TANKB_Y,
+        A_score => A_SCORE,
+        dead => A_DEAD
     );
 
     ps2_1 : ps2

@@ -26,10 +26,10 @@ ARCHITECTURE behavioral OF testbench IS
 
     COMPONENT bulletA IS
         PORT (
-            clk, rst, start : IN STD_LOGIC;
+            clk, rst_n, start : IN STD_LOGIC;
             fired, dead : IN STD_LOGIC;
             tank_x, tank_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-            pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
+            pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
         );
     END COMPONENT bulletA;
 
@@ -40,12 +40,13 @@ ARCHITECTURE behavioral OF testbench IS
     SIGNAL speed_tb : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0');
     SIGNAL tank_pos_x_tb : STD_LOGIC_VECTOR(9 DOWNTO 0) := (3 => '1', 4 => '1', 8 => '1', OTHERS => '0');
     SIGNAL tank_pos_y_tb : STD_LOGIC_VECTOR(9 DOWNTO 0) := (3 => '1', 4 => '1', 8 => '1', OTHERS => '0');
-    SIGNAL bullet_pos_x_tb, bullet_pos_y_tb : STD_LOGIC_VECTOR(9 DOWNTO 0);
+    SIGNAL bullet_pos_x_tb, bullet_pos_y_tb : STD_LOGIC_VECTOR(9 DOWNTO 0) := (others=> '0');
 
     signal fired_tb, dead_tb : std_logic;
 
     --constant speed 
     --CONSTANT TANK_SPEED0 : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); --stationary
+    constant zeros : std_logic_vector(9 downto 0) := (others => '0');
 
 BEGIN
     dut : bulletA
@@ -67,8 +68,8 @@ BEGIN
         start => game_tick_tb,
         rst_n => rst_tb,
         speed => speed_tb,
-        pos_x => pos_x_tb,
-        pos_y => pos_y_tb
+        pos_x => tank_pos_x_tb,
+        pos_y => tank_pos_y_tb
     );
 
     clockCount : clock_counter
@@ -101,5 +102,30 @@ BEGIN
         rst_tb <= '0';
         WAIT;
     END PROCESS reset_process;
+
+    fire_process : process is 
+    begin 
+        fired_tb <= '0';
+        dead_tb <= '0';
+        WAIT UNTIL (clk_tb = '0');
+        WAIT UNTIL (clk_tb = '1');
+        fired_tb <= '1';
+        -- WAIT UNTIL (clk_tb = '0');
+        -- WAIT UNTIL (clk_tb = '1');
+        -- fired_tb <= '0';
+        WAIT;
+    end process;
+
+    -- dead_process : process is 
+    -- begin 
+    --     if (unsigned(bullet_pos_y_tb) < to_unsigned(0,10)) then 
+    --         dead_tb <= '1';
+    --     else 
+    --         dead_tb <= '0';
+    --     end if;
+    -- end process;
+
+
+
 
 END ARCHITECTURE behavioral;
