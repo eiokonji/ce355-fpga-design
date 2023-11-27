@@ -6,7 +6,7 @@ USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 ENTITY de2lcd IS
 	PORT (
 		reset, clk_50Mhz : IN STD_LOGIC;
-		win : in std_logic;
+		winner : in std_logic_vector(1 downto 0);
 		LCD_RS, LCD_E, LCD_ON, RESET_LED, SEC_LED : OUT STD_LOGIC;
 		LCD_RW : BUFFER STD_LOGIC;
 		DATA_BUS : INOUT STD_LOGIC_VECTOR(7 DOWNTO 0));
@@ -123,7 +123,7 @@ BEGIN
 					DATA_BUS_VALUE <= X"06";
 					state <= TOGGLE_E;
 					--wait until win signal is set
-					if (win = '1') then 
+					if (winner = "01" or winner = "10") then 
 						next_command <= WRITE_CHAR1;
 					end if;
 					-- Write ASCII hex character in first LCD character location
@@ -187,7 +187,11 @@ BEGIN
 					LCD_E <= '1';
 					LCD_RS <= '1';
 					LCD_RW <= '0';
-					DATA_BUS_VALUE <= X"31"; --"1"
+					if (winner = "01") then 
+						DATA_BUS_VALUE <= X"31"; --"1"
+					else 
+						DATA_BUS_VALUE <= X"32"; --"2"
+					end if;
 					state <= TOGGLE_E;
 					next_command <= WRITE_CHAR9;
 				WHEN WRITE_CHAR9 =>

@@ -47,11 +47,12 @@ BEGIN
         END IF;
     END PROCESS clockProcess;
 
-    gameStateProcess : PROCESS (start, A_score, B_score) IS
+    gameStateProcess : PROCESS (start, A_score, B_score, game_over1, winner1) IS
     BEGIN
         -- defaults for combinational signals
         next_state <= state;
         game_over_c <= game_over1;
+        winner_c <= winner1;
 
         CASE state IS
             WHEN idle =>
@@ -66,6 +67,16 @@ BEGIN
                     IF ((A_score = WIN_SCORE) OR (B_score = WIN_SCORE)) THEN
                         next_state <= win;
                         game_over_c <= '1';
+                        IF (unsigned(A_score) > unsigned(B_score)) THEN
+                            winner_c <= "01";
+                        ELSIF (unsigned(B_score) > unsigned(A_score)) THEN
+                            winner_c <= "10";
+                        ELSE
+                            winner_c <= "00";
+                        END IF;
+                    ELSE
+                        next_state <= check;
+                        game_over_c <= '0';
                         winner_c <= winner1;
                     END IF;
                 END IF;
@@ -74,13 +85,6 @@ BEGIN
                 IF (start = '1') THEN
                     next_state <= win;
                     game_over_c <= '1';
-                    IF (unsigned(A_score) > unsigned(B_score)) THEN
-                        winner_c <= "01";
-                    ELSIF (unsigned(B_score) > unsigned(A_score)) THEN
-                        winner_c <= "10";
-                    ELSE
-                        winner_c <= "00";
-                    END IF;
                 END IF;
         END CASE;
 
