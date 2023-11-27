@@ -345,6 +345,12 @@ BEGIN
         segments_out => SHOW_A_SCORE
     );
 
+    current_Bscore : leddcd
+    PORT MAP(
+        data_in => B_SCORE,
+        segments_out => SHOW_B_SCORE
+    );
+
     show_winner : de2lcd
     PORT MAP(
         reset => RESET,
