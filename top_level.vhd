@@ -9,11 +9,15 @@ ENTITY top_level IS
     PORT (
         CLOCK_50 : IN STD_LOGIC;
         RESET : IN STD_LOGIC;
+        -- KEYBOARD
         KEYBOARD_CLK, KEYBOARD_DATA : IN STD_LOGIC;
         --VGA 
         VGA_RED, VGA_GREEN, VGA_BLUE : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
         HORIZ_SYNC, VERT_SYNC, VGA_BLANK, VGA_CLK : OUT STD_LOGIC
-
+        -- LCD
+        LCD_RS, LCD_E, LCD_ON, RESET_LED, SEC_LED : OUT STD_LOGIC;
+        LCD_RW : BUFFER STD_LOGIC;
+        DATA_BUS : INOUT STD_LOGIC_VECTOR(7 DOWNTO 0)
     );
 END ENTITY top_level;
 
@@ -108,6 +112,15 @@ ARCHITECTURE structural OF top_level IS
         );
     END COMPONENT keypresses;
 
+    COMPONENT de2lcd IS
+        PORT (
+            reset, clk_50Mhz : IN STD_LOGIC;
+            winner : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+            LCD_RS, LCD_E, LCD_ON, RESET_LED, SEC_LED : OUT STD_LOGIC;
+            LCD_RW : BUFFER STD_LOGIC;
+            DATA_BUS : INOUT STD_LOGIC_VECTOR(7 DOWNTO 0));
+    END COMPONENT de2lcd;
+
     COMPONENT leddcd IS
         PORT (
             data_in : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
@@ -144,7 +157,8 @@ ARCHITECTURE structural OF top_level IS
 
     --signals for scoring
     SIGNAL A_SCORE, B_SCORE : STD_LOGIC_VECTOR(3 DOWNTO 0);
-    signal SHOW_A_SCORE, SHOW_B_SCORE : STD_LOGIC_VECTOR(6 DOWNTO 0):
+    SIGNAL SHOW_A_SCORE, SHOW_B_SCORE : STD_LOGIC_VECTOR(6 DOWNTO 0);
+    signal WINNER : STD_LOGIC_VECTOR(3 DOWNTO 0);
 
     -- signals for ps2
     SIGNAL scan_ready : STD_LOGIC;
@@ -261,11 +275,25 @@ BEGIN
         bulletB => BULLETB_FIRED
     );
 
-    current_Ascore : leddcd 
-	PORT (
-		data_in => A_SCORE,
-		segments_out => SHOW_A_SCORE
-	);
+    current_Ascore : leddcd
+    PORT (
+        data_in => A_SCORE,
+        segments_out => SHOW_A_SCORE
+    );
+
+    show_winner : de2lcd
+    PORT MAP(
+        reset => RESET, 
+        clk_50Mhz => CLOCK_50,
+        winner => WINNER,
+        LCD_RS => LCD_RS, 
+        LCD_E => LCD_E, 
+        LCD_ON => LCD_ON, 
+        RESET_LED => RESET_LED, 
+        SEC_LED => SEC_LED,
+        LCD_RW => LCD_RW,
+        DATA_BUS => DATA_BUS
+    );
 
     --------------------------------------------------------------------------------------------
     --This section should not be modified in your design.  This section handles the VGA timing signals
