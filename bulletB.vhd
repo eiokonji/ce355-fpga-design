@@ -34,15 +34,15 @@ ARCHITECTURE behavioral OF bulletB IS
     SIGNAL pos_x1, pos_y1, pos_x_c, pos_y_c : STD_LOGIC_VECTOR(9 DOWNTO 0);
 
     --constant for position increments
-    SIGNAL BULLET_SPEED : NATURAL := 10;
+    CONSTANT BULLET_SPEED : NATURAL := 10;
 
 BEGIN
     clockProcess : PROCESS (clk, rst_n) IS
     BEGIN
         IF (rst_n = '1') THEN
             state <= idle;
-            pos_x1 <= tank_x; --center based on tank position
-            pos_y1 <= STD_LOGIC_VECTOR(unsigned(tank_y) + 27); -- 40 + 10 = 50 
+            pos_x1 <= (others => '0'); --center based on tank position
+            pos_y1 <= (others => '0'); -- 40 + 10 = 50 
 
         ELSIF (rising_edge(clk)) THEN
             state <= next_state;
@@ -51,7 +51,7 @@ BEGIN
         END IF;
     END PROCESS clockProcess;
 
-    bulletProcess : PROCESS (start, fired, dead, tank_x, tank_y, pos_y1) IS
+    bulletProcess : PROCESS (start, state, fired, dead, tank_x, tank_y, pos_x1, pos_y1) IS
     BEGIN
         next_state <= state;
         pos_x_c <= pos_x1;

@@ -41,8 +41,7 @@ ARCHITECTURE structural OF top_level IS
             clk, ROM_clk, rst_n, video_on, eof : IN STD_LOGIC;
             pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
             tankA_x, tankA_y, tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-            bulletA_x, bulletA_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-            --bulletB_x, bulletB_y :             
+            bulletA_x, bulletA_y, bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);     
             red_out, green_out, blue_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
         );
     END COMPONENT pixelGenerator;
@@ -124,7 +123,6 @@ ARCHITECTURE structural OF top_level IS
         PORT (
             keyboard_clk, keyboard_data, clock_50MHz,
             reset : IN STD_LOGIC;--, read : in std_logic;
-            scan_code : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
             scan_readyo : OUT STD_LOGIC;
             hist3 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
             hist2 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -190,7 +188,7 @@ ARCHITECTURE structural OF top_level IS
 
     -- signals for ps2
     SIGNAL scan_ready : STD_LOGIC;
-    SIGNAL scan_code, hist3, hist2, hist1, hist0 : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    SIGNAL hist2, hist1, hist0 : STD_LOGIC_VECTOR(7 DOWNTO 0);
 
 BEGIN
     RESET_N <= NOT RESET; -- if reset is 1, because RESET is '0'
@@ -222,7 +220,8 @@ BEGIN
         tankB_y => TANKB_Y,
         bulletA_x => BULLETA_X,
         bulletA_y => BULLETA_Y,
-        --bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+        bulletB_x => BULLETB_X, 
+        bulletB_y => BULLETB_Y, 
 
         red_out => VGA_RED,
         green_out => VGA_GREEN,
@@ -317,9 +316,8 @@ BEGIN
         keyboard_data => KEYBOARD_DATA,
         clock_50MHz => CLOCK_50,
         reset => RESET,
-        scan_code => scan_code,
         scan_readyo => scan_ready,
-        hist3 => hist3,
+        hist3 => open,
         hist2 => hist2,
         hist1 => hist1,
         hist0 => hist0

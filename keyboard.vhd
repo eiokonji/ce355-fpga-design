@@ -16,7 +16,7 @@ ARCHITECTURE a OF keyboard IS
 	SIGNAL SHIFTIN : STD_LOGIC_VECTOR( 8 DOWNTO 0 );
 	SIGNAL READ_CHAR, clock_enable : STD_LOGIC;
 	SIGNAL INFLAG, ready_set : STD_LOGIC;
-	SIGNAL keyboard_clk_filtered : STD_LOGIC;
+	SIGNAL kb_clk : STD_LOGIC;
 	SIGNAL filter : STD_LOGIC_VECTOR( 7 DOWNTO 0 );
 	BEGIN
 		PROCESS ( read, ready_set )
@@ -27,34 +27,35 @@ ARCHITECTURE a OF keyboard IS
 				scan_ready <= '1';
 			END IF;
 		END PROCESS;
+		
 	--This process filters the raw clock signal coming from the
 	-- keyboard using a shift register and two AND gates
-		Clock_filter:
-		PROCESS
+		Clock_filter: PROCESS (clock_50MHz)
 			BEGIN
-			WAIT UNTIL clock_50MHz'EVENT AND clock_50MHz = '1';
-			clock_enable <= NOT clock_enable;
-			IF clock_enable = '1' THEN
-				filter ( 6 DOWNTO 0 ) <= filter( 7 DOWNTO 1 ) ;
-				filter( 7 ) <= keyboard_clk;
-				IF filter = "11111111" THEN
-					keyboard_clk_filtered <= '1';
-				ELSIF filter = "00000000" THEN
-					keyboard_clk_filtered <= '0';
+			IF ( rising_edge(clock_50MHz) ) THEN
+				clock_enable <= NOT clock_enable;
+				IF clock_enable = '1' THEN
+					filter ( 6 DOWNTO 0 ) <= filter( 7 DOWNTO 1 ) ;
+					filter( 7 ) <= keyboard_clk;
+					IF filter = "11111111" THEN
+						kb_clk <= '1';
+					ELSIF filter = "00000000" THEN
+						kb_clk <= '0';
+					END IF;
 				END IF;
 			END IF;
 		END PROCESS Clock_filter;
 	--This process reads in serial scan code data coming from the keyboard
-		PROCESS
+	
+		PROCESS(kb_clk, RESET)
 		BEGIN
-			WAIT UNTIL (KEYBOARD_CLK_filtered'EVENT AND KEYBOARD_CLK_filtered = '1');
 			IF RESET = '0' THEN
 				INCNT <= "0000";
 				READ_CHAR <= '0';
-			ELSE
+			ELSIF ( rising_edge(kb_clk) ) THEN
 				IF KEYBOARD_DATA = '0' AND READ_CHAR = '0' THEN
-				READ_CHAR <= '1';
-				ready_set <= '0';
+					READ_CHAR <= '1';
+					ready_set <= '0';
 				ELSE
 					-- Shift in next 8 data bits to assemble a scan code
 					IF READ_CHAR = '1' THEN

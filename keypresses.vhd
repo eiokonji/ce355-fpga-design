@@ -19,8 +19,8 @@ ARCHITECTURE behavioral OF keypresses IS
   TYPE states IS (idle, change_state);
   SIGNAL state, new_state : states;
 
-  SIGNAL speedA_temp, speedB_temp : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0');
-  SIGNAL speedA_temp_n, speedB_temp_n : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0');
+  SIGNAL speedA_temp, speedB_temp : STD_LOGIC_VECTOR(3 DOWNTO 0);
+  SIGNAL speedA_temp_n, speedB_temp_n : STD_LOGIC_VECTOR(3 DOWNTO 0);
 
   SIGNAL bulletA_temp, bulletB_temp : STD_LOGIC;
   SIGNAL bulletA_temp_n, bulletB_temp_n : STD_LOGIC;
@@ -62,8 +62,8 @@ BEGIN
     new_state <= state;
     speedA_temp_n <= speedA_temp;
     speedB_temp_n <= speedB_temp;
-    bulletA_temp_n <= bulletA_temp;
-    bulletB_temp_n <= bulletB_temp;
+    bulletB_temp_n <= '0';
+ 	 bulletA_temp_n <= '0';
 
     CASE state IS
       WHEN idle =>
@@ -74,8 +74,6 @@ BEGIN
         END IF;
 
       WHEN change_state =>
-        IF (start = '1') THEN
-
           -- change speed of tank A
           IF (unsigned(hist0) = unsigned(a) AND unsigned(hist1) = unsigned(break)) THEN
             speedA_temp_n <= "0001";
@@ -83,15 +81,11 @@ BEGIN
             speedA_temp_n <= "0101";
           ELSIF (unsigned(hist0) = unsigned(d) AND unsigned(hist1) = unsigned(break)) THEN
             speedA_temp_n <= "1010";
-          ELSE
-            speedA_temp_n <= speedA_temp;
           END IF;
 
           -- fire bullet A
-          IF (unsigned(hist0) = unsigned(l_bullet) AND unsigned(hist1) = unsigned(break) and unsigned(hist2) = unsigned(l_bullet)) THEN
+          IF (unsigned(hist0) = unsigned(l_bullet) AND unsigned(hist1) = unsigned(break)) THEN -- and unsigned(hist2) = unsigned(l_bullet)) THEN
             bulletA_temp_n <= '1';
-          ELSE
-            bulletA_temp_n <= '0';
           END IF;
 
           -- change tank B speed
@@ -101,17 +95,14 @@ BEGIN
             speedB_temp_n <= "0101";
           ELSIF (unsigned(hist0) = unsigned(l) AND unsigned(hist1) = unsigned(break)) THEN
             speedB_temp_n <= "1010";
-          ELSE
-            speedB_temp_n <= speedB_temp;
           END IF;
 
           -- fire bullet B
           IF (unsigned(hist0) = unsigned(r_bullet) AND unsigned(hist1) = unsigned(break)) THEN
             bulletB_temp_n <= '1';
-          ELSE
-            bulletB_temp_n <= '0';
           END IF;
-        END IF;
+			 
+			 new_state <= idle;
 
     END CASE;
   END PROCESS;

@@ -34,15 +34,15 @@ ARCHITECTURE behavioral OF bulletA IS
     SIGNAL pos_x1, pos_y1, pos_x_c, pos_y_c : STD_LOGIC_VECTOR(9 DOWNTO 0);
 
     --constant for position increments
-    SIGNAL BULLET_SPEED : NATURAL := 10;
+    CONSTANT BULLET_SPEED : NATURAL := 10;
 
 BEGIN
     clockProcess : PROCESS (clk, rst_n) IS
     BEGIN
         IF (rst_n = '1') THEN
-            state <= idle;
-            pos_x1 <= tank_x; --center based on tank position
-            pos_y1 <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27); -- 40 + 10 = 50 
+            state <= WAIT_ON_FIRE;
+            pos_x1 <= (others => '0'); --center based on tank position
+            pos_y1 <= (others => '0');
 
         ELSIF (rising_edge(clk)) THEN
             state <= next_state;
@@ -51,7 +51,7 @@ BEGIN
         END IF;
     END PROCESS clockProcess;
 
-    bulletProcess : PROCESS (start, fired, dead, tank_x, tank_y, pos_y1, pos_x1) IS
+    bulletProcess : PROCESS (start, state, fired, dead, tank_x, tank_y, pos_y1, pos_x1) IS
     BEGIN
         next_state <= state;
         pos_x_c <= pos_x1;
@@ -63,24 +63,23 @@ BEGIN
                 pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27);
                 IF (fired = '1') THEN
                     next_state <= idle;
-                end if; 
+                END IF;
 
             WHEN idle =>
                 IF (start = '1') THEN
                     next_state <= firing;
                 END IF;
-    
 
             WHEN firing =>
-                if ((unsigned(pos_y1) >= BULLET_SPEED)) then
+                IF ((unsigned(pos_y1) >= BULLET_SPEED)) THEN
                     pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) - BULLET_SPEED);
                     next_state <= idle;
-                else
+                ELSE
                     next_state <= WAIT_ON_FIRE;
-                end if; 
+                END IF;
 
-            when others =>
-                    next_state <= WAIT_ON_FIRE;
+            WHEN OTHERS =>
+                next_state <= WAIT_ON_FIRE;
 
         END CASE;
 

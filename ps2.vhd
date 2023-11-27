@@ -7,7 +7,6 @@ ENTITY ps2 IS
 	PORT (
 		keyboard_clk, keyboard_data, clock_50MHz,
 		reset : IN STD_LOGIC;--, read : in std_logic;
-		scan_code : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		scan_readyo : OUT STD_LOGIC;
 		hist3 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		hist2 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -60,7 +59,6 @@ BEGIN
 	);
 
 	scan_readyo <= scan2;
-	scan_code <= scan_code2;
 
 	hist0 <= history0;
 	hist1 <= history1;

@@ -18,7 +18,7 @@ END ENTITY tankB;
 
 ARCHITECTURE behavioral_B OF tankB IS
     --initialize states
-    TYPE states IS (idle, move);
+    TYPE states IS (init,idle, move);
     SIGNAL state, next_state : states;
 
     --signals for position
@@ -40,9 +40,9 @@ BEGIN
     clockProcess : PROCESS (clk, rst_n) IS
     BEGIN
         IF (rst_n = '1') THEN
-            state <= idle;
-            pos_x1 <= STD_LOGIC_VECTOR(to_unsigned(320, 10));
-            pos_y1 <= STD_LOGIC_VECTOR(to_unsigned(27, 10));
+            state <= init;
+            pos_x1 <= (others => '0');
+            pos_y1 <= (others => '0');
 
         ELSIF (rising_edge(clk)) THEN
             state <= next_state;
@@ -63,6 +63,11 @@ BEGIN
         direction_c <= direction;
 
         CASE state IS
+				WHEN init =>
+					pos_x_c <= STD_LOGIC_VECTOR(to_unsigned(320, 10));
+					pos_y_c <= STD_LOGIC_VECTOR(to_unsigned(27, 10));
+					next_state <= idle;
+					
             WHEN idle =>
                 IF (start = '1') THEN
                     next_state <= move;

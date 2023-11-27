@@ -61,7 +61,7 @@ BEGIN
 	PORT MAP(colorAddress, ROM_clk, color);
 
 	--------------------------------------------------------------------------------------------	
-	findBounds : PROCESS (clk, rst_n, tankA_x, tankA_y, tankB_x, tankB_y) IS
+	findBounds : PROCESS (clk, rst_n, tankA_x, tankA_y, tankB_x, tankB_y, bulletA_x, bulletA_y, bulletB_x, bulletB_y) IS
 	BEGIN
 		tank_A_lbound <= to_integer(unsigned(tankA_x) - 40);
 		tank_A_rbound <= to_integer(unsigned(tankA_x) + 40);
@@ -90,9 +90,11 @@ BEGIN
 		IF (rising_edge(clk)) THEN
 			IF (video_on = '0') THEN
 				colorAddress <= color_black;
+				--color <= X"000000";
 			else 
 				if (tankA_on = '1') THEN
 					colorAddress <= color_blue;
+					--color <= X"0000FF";
 				ELSIF (tankB_on = '1') THEN
 					colorAddress <= color_red;
 				elsif (bulletA_on = '1') then 
@@ -107,7 +109,7 @@ BEGIN
 
 	END PROCESS pixelDraw;
 
-	checkPixel : PROCESS (clk, rst_n,tank_A_tbound,tank_A_bbound,tank_A_lbound,tank_A_rbound,tank_B_tbound,tank_B_bbound,tank_B_lbound,tank_B_rbound,bullet_A_tbound,bullet_A_bbound,bullet_A_lbound,bullet_A_rbound,bullet_B_tbound,bullet_B_bbound,bullet_B_lbound,bullet_B_rbound) IS
+	checkPixel : PROCESS (clk, rst_n, pixel_row_int, pixel_column_int, tank_A_tbound,tank_A_bbound,tank_A_lbound,tank_A_rbound,tank_B_tbound,tank_B_bbound,tank_B_lbound,tank_B_rbound,bullet_A_tbound,bullet_A_bbound,bullet_A_lbound,bullet_A_rbound,bullet_B_tbound,bullet_B_bbound,bullet_B_lbound,bullet_B_rbound) IS
 		BEGIN
 			--check if pixel is on tankA
 			IF (pixel_row_int >= tank_A_tbound AND pixel_row_int < tank_A_bbound AND pixel_column_int >= tank_A_lbound AND pixel_column_int < tank_A_rbound) THEN

@@ -27,6 +27,8 @@ BEGIN
 	-- BIDIRECTIONAL TRI STATE LCD DATA BUS
 	DATA_BUS <= DATA_BUS_VALUE WHEN LCD_RW = '0' ELSE
 		"ZZZZZZZZ";
+		
+	SEC_LED <= '0';
 
 	-- clock period adjustment for timing on lcd state diagram
 	PROCESS

@@ -47,7 +47,7 @@ BEGIN
         END IF;
     END PROCESS clockProcess;
 
-    gameStateProcess : PROCESS (start, A_score, B_score, game_over1, winner1) IS
+    gameStateProcess : PROCESS (start, state, A_score, B_score, game_over1, winner1) IS
     BEGIN
         -- defaults for combinational signals
         next_state <= state;
