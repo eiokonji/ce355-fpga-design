@@ -79,7 +79,7 @@ BEGIN
                 END IF;
             WHEN move =>
                 if (start = '1') then 
-                    IF (direction = '0' and ) THEN
+                    IF (direction = '0') THEN
                         IF (unsigned(pos_x1) + unsigned(speed) <= right_bound) THEN
                             pos_x_c <= std_logic_vector(unsigned(pos_x1) + unsigned(speed));
                         ELSE
@@ -92,7 +92,7 @@ BEGIN
                             direction_c <= '0'; --if tank exceeds left bound, flip direction
                         END IF;
                     END IF;
-                    if (winner not "00") then 
+                    if (winner = "01" or winner = "10") then 
                         next_state <= game_over;
                     end if;
                 end if;

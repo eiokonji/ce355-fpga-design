@@ -12,6 +12,7 @@ ENTITY tankB IS
     PORT (
         clk, rst_n, start : IN STD_LOGIC;
         speed : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+        winner : in std_logic_vector(1 downto 0);
         pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
     );
 END ENTITY tankB;
@@ -89,7 +90,7 @@ BEGIN
                             direction_c <= NOT direction; --if tank exceeds left bound, flip direction
                         END IF;
                     END IF;
-                    if (winner not "00") then
+                    if (winner = "10" or winner = "01") then
                         next_state <= game_over;
                     end if;
                 END IF;

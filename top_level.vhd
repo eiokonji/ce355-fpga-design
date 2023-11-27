@@ -51,6 +51,7 @@ ARCHITECTURE structural OF top_level IS
         PORT (
             clk, rst_n, start : IN STD_LOGIC;
             speed : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+            winner : IN std_logic_vector(1 downto 0);
             pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
         );
     END COMPONENT tankA;
@@ -59,6 +60,7 @@ ARCHITECTURE structural OF top_level IS
         PORT (
             clk, rst_n, start : IN STD_LOGIC;
             speed : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+            winner : in std_logic_vector(1 downto 0);
             pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
         );
     END COMPONENT tankB;
@@ -236,6 +238,7 @@ BEGIN
         clk => CLOCK_50,
         rst_n => RESET_N,
         start => game_ticks,
+        winner => WINNER,
         speed => TANKA_SPEED,
         pos_x => TANKA_X,
         pos_y => TANKA_Y
@@ -246,6 +249,7 @@ BEGIN
         clk => CLOCK_50,
         rst_n => RESET_N,
         start => game_ticks,
+        winner => WINNER,
         speed => TANKB_SPEED,
         pos_x => TANKB_X,
         pos_y => TANKB_Y

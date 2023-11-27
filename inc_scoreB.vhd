@@ -42,7 +42,7 @@ BEGIN
     B_bullet_bb <= STD_LOGIC_VECTOR(unsigned(bulletB_y) + 10);
     A_tank_lb <= STD_LOGIC_VECTOR(unsigned(tankA_x) - 40);
     A_tank_rb <= STD_LOGIC_VECTOR(unsigned(tankA_x) + 40);
-    A_tank_tb <= STD_LOGIC_VECTOR(unsigned(tankA_y) + 17);
+    A_tank_tb <= STD_LOGIC_VECTOR(unsigned(tankA_y) - 17);
 
     clockProcess : PROCESS (clk, rst_n) IS
     BEGIN

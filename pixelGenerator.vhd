@@ -93,10 +93,10 @@ BEGIN
 				colorAddress <= color_black;
 				--color <= X"000000";
 			else 
-				if (tankA_on = '1' and winner not "10") THEN
+				if (tankA_on = '1' and (winner /= "10")) THEN
 					colorAddress <= color_blue;
 					--color <= X"0000FF";
-				ELSIF (tankB_on = '1' and winner not "01") THEN
+				ELSIF (tankB_on = '1' and (winner /= "01")) THEN
 					colorAddress <= color_red;
 				elsif (bulletA_on = '1' and winner = "00") then 
 					colorAddress <= color_blue;

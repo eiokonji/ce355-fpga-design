@@ -30,7 +30,7 @@ ARCHITECTURE behavioralScore OF inc_scoreA IS
 
     --signals for collision check
     SIGNAL A_bullet_lb, A_bullet_rb, A_bullet_tb : STD_LOGIC_VECTOR(9 DOWNTO 0);
-    SIGNAL B_tank_lb, B_tank_rb, B_tank_bb : STD_LOGIC_VECTOR(9 DOWNTO 0);
+    SIGNAL B_tank_lb, B_tank_rb, B_tank_bb, B_tank_tb: STD_LOGIC_VECTOR(9 DOWNTO 0);
 
     --constant for comparison
     CONSTANT WIN_SCORE : STD_LOGIC_VECTOR(3 DOWNTO 0) := (0 => '1', 1 => '1', OTHERS => '0');
@@ -43,6 +43,7 @@ BEGIN
     B_tank_lb <= STD_LOGIC_VECTOR(unsigned(tankB_x) - 40);
     B_tank_rb <= STD_LOGIC_VECTOR(unsigned(tankB_x) + 40);
     B_tank_bb <= STD_LOGIC_VECTOR(unsigned(tankB_y) + 17);
+	 B_tank_tb <= STD_LOGIC_VECTOR(unsigned(tankB_y) - 17);
 
     clockProcess : PROCESS (clk, rst_n) IS
     BEGIN
@@ -58,7 +59,7 @@ BEGIN
         END IF;
     END PROCESS clockProcess;
 
-    incProcess : PROCESS (start, state, dead1, bulletA_x, bulletA_y, tankB_x, A_score1, A_bullet_lb, A_bullet_rb, A_bullet_tb, B_tank_lb, B_tank_rb, B_tank_bb) IS
+    incProcess : PROCESS (start, state, dead1, bulletA_x, bulletA_y, tankB_x, A_score1, A_bullet_lb, A_bullet_rb, A_bullet_tb, B_tank_lb, B_tank_rb, B_tank_bb, B_tank_tb) IS
     BEGIN
         next_state <= state;
         A_score_c <= A_score1;
@@ -113,12 +114,12 @@ BEGIN
                 END IF;
 
             WHEN collision =>
-                IF (start = '1') THEN
+                --IF (start = '1') THEN
                     IF (unsigned(A_bullet_tb) >= unsigned(B_tank_tb)) THEN
                         next_state <= play;
                         dead_c <= '0';
                     END IF;
-                END IF;
+                --END IF;
 
             WHEN win =>
                 --if (start ='1') then

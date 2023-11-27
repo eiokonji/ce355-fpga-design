@@ -71,7 +71,7 @@ BEGIN
                 END IF;
 
             WHEN firing =>
-                IF ((unsigned(pos_y1) >= BULLET_SPEED)) THEN
+                IF ((unsigned(pos_y1) >= BULLET_SPEED) and dead = '0') THEN
                     pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) - BULLET_SPEED);
                     next_state <= idle;
                 ELSE
