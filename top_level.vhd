@@ -13,11 +13,13 @@ ENTITY top_level IS
         KEYBOARD_CLK, KEYBOARD_DATA : IN STD_LOGIC;
         --VGA 
         VGA_RED, VGA_GREEN, VGA_BLUE : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-        HORIZ_SYNC, VERT_SYNC, VGA_BLANK, VGA_CLK : OUT STD_LOGIC
+        HORIZ_SYNC, VERT_SYNC, VGA_BLANK, VGA_CLK : OUT STD_LOGIC;
         -- LCD
         LCD_RS, LCD_E, LCD_ON, RESET_LED, SEC_LED : OUT STD_LOGIC;
         LCD_RW : BUFFER STD_LOGIC;
-        DATA_BUS : INOUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+        DATA_BUS : INOUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+        SHOW_A_SCORE : out std_logic_vector(6 downto 0);
+        SHOW_B_SCORE : out std_logic_vector(6 downto 0)
     );
 END ENTITY top_level;
 
@@ -80,6 +82,15 @@ ARCHITECTURE structural OF top_level IS
 
         );
     END COMPONENT inc_scoreA;
+
+    COMPONENT game_state IS
+    PORT (
+        clk, rst_n, start : IN STD_LOGIC;
+        A_score, B_score : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
+        game_over : OUT STD_LOGIC;
+        winner : OUT STD_LOGIC_VECTOR (1 DOWNTO 0)
+    );
+    END COMPONENT game_state;
 
     COMPONENT VGA_SYNC IS
         PORT (
@@ -157,8 +168,8 @@ ARCHITECTURE structural OF top_level IS
 
     --signals for scoring
     SIGNAL A_SCORE, B_SCORE : STD_LOGIC_VECTOR(3 DOWNTO 0);
-    SIGNAL SHOW_A_SCORE, SHOW_B_SCORE : STD_LOGIC_VECTOR(6 DOWNTO 0);
-    signal WINNER : STD_LOGIC_VECTOR(3 DOWNTO 0);
+    --SIGNAL SHOW_A_SCORE, SHOW_B_SCORE : STD_LOGIC_VECTOR(6 DOWNTO 0);
+    signal WINNER : STD_LOGIC_VECTOR(1 DOWNTO 0);
 
     -- signals for ps2
     SIGNAL scan_ready : STD_LOGIC;
@@ -247,6 +258,16 @@ BEGIN
         dead => A_DEAD
     );
 
+    gameState : game_state
+    PORT MAP(
+        clk => CLOCK_50,
+        start => game_ticks,
+        rst_n => RESET_N,
+        A_score => A_SCORE, 
+        B_score => B_SCORE,
+        winner => WINNER
+    );
+
     ps2_1 : ps2
     PORT MAP(
         keyboard_clk => KEYBOARD_CLK,
@@ -276,7 +297,7 @@ BEGIN
     );
 
     current_Ascore : leddcd
-    PORT (
+    PORT MAP(
         data_in => A_SCORE,
         segments_out => SHOW_A_SCORE
     );
