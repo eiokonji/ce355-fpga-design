@@ -18,8 +18,8 @@ ENTITY top_level IS
         LCD_RS, LCD_E, LCD_ON, RESET_LED, SEC_LED : OUT STD_LOGIC;
         LCD_RW : BUFFER STD_LOGIC;
         DATA_BUS : INOUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-        SHOW_A_SCORE : out std_logic_vector(6 downto 0);
-        SHOW_B_SCORE : out std_logic_vector(6 downto 0)
+        SHOW_A_SCORE : OUT STD_LOGIC_VECTOR(6 DOWNTO 0);
+        SHOW_B_SCORE : OUT STD_LOGIC_VECTOR(6 DOWNTO 0)
     );
 END ENTITY top_level;
 
@@ -72,6 +72,15 @@ ARCHITECTURE structural OF top_level IS
         );
     END COMPONENT bulletA;
 
+    COMPONENT bulletB IS
+        PORT (
+            clk, rst_n, start : IN STD_LOGIC;
+            fired, dead : IN STD_LOGIC;
+            tank_x, tank_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+            pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+        );
+    END COMPONENT bulletB;
+
     COMPONENT inc_scoreA IS
         PORT (
             clk, rst_n, start : IN STD_LOGIC;
@@ -83,13 +92,23 @@ ARCHITECTURE structural OF top_level IS
         );
     END COMPONENT inc_scoreA;
 
+    COMPONENT inc_scoreB IS
+        PORT (
+            clk, rst_n, start : IN STD_LOGIC;
+            bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+            tankA_x, tankA_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+            B_score : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+            dead : OUT STD_LOGIC
+        );
+    END COMPONENT inc_scoreB;
+
     COMPONENT game_state IS
-    PORT (
-        clk, rst_n, start : IN STD_LOGIC;
-        A_score, B_score : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
-        game_over : OUT STD_LOGIC;
-        winner : OUT STD_LOGIC_VECTOR (1 DOWNTO 0)
-    );
+        PORT (
+            clk, rst_n, start : IN STD_LOGIC;
+            A_score, B_score : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
+            game_over : OUT STD_LOGIC;
+            winner : OUT STD_LOGIC_VECTOR (1 DOWNTO 0)
+        );
     END COMPONENT game_state;
 
     COMPONENT VGA_SYNC IS
@@ -151,7 +170,6 @@ ARCHITECTURE structural OF top_level IS
     SIGNAL video_on_int : STD_LOGIC;
     SIGNAL VGA_clk_int : STD_LOGIC;
     SIGNAL eof : STD_LOGIC;
-    --signal vert_sync1 : std_logic;
 
     --signals for tank and bullet positions
     SIGNAL TANKA_X, TANKA_Y, TANKB_X, TANKB_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -160,7 +178,7 @@ ARCHITECTURE structural OF top_level IS
     SIGNAL TANKA_SPEED, TANKB_SPEED : STD_LOGIC_VECTOR(3 DOWNTO 0) := (0 => '1', OTHERS => '0');
 
     -- signals for bullet positions
-    SIGNAL BULLETA_X, BULLETA_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
+    SIGNAL BULLETA_X, BULLETA_Y, BULLETB_X, BULLETB_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
 
     -- signals for bullet fired and dead
     SIGNAL BULLETA_FIRED, BULLETB_FIRED : STD_LOGIC;
@@ -168,8 +186,7 @@ ARCHITECTURE structural OF top_level IS
 
     --signals for scoring
     SIGNAL A_SCORE, B_SCORE : STD_LOGIC_VECTOR(3 DOWNTO 0);
-    --SIGNAL SHOW_A_SCORE, SHOW_B_SCORE : STD_LOGIC_VECTOR(6 DOWNTO 0);
-    signal WINNER : STD_LOGIC_VECTOR(1 DOWNTO 0);
+    SIGNAL WINNER : STD_LOGIC_VECTOR(1 DOWNTO 0);
 
     -- signals for ps2
     SIGNAL scan_ready : STD_LOGIC;
@@ -245,6 +262,19 @@ BEGIN
         pos_y => BULLETA_Y
     );
 
+    bulletBModule : bulletB
+    PORT MAP(
+        clk => CLOCK_50,
+        start => game_ticks,
+        rst_n => RESET_N,
+        fired => BULLETB_FIRED,
+        dead => B_DEAD,
+        tank_x => TANKB_X,
+        tank_y => TANKB_Y,
+        pos_x => BULLETB_X,
+        pos_y => BULLETB_Y
+    );
+
     scoreA : inc_scoreA
     PORT MAP(
         clk => CLOCK_50,
@@ -258,12 +288,25 @@ BEGIN
         dead => A_DEAD
     );
 
+    scoreB : inc_scoreB
+    PORT MAP(
+        clk => CLOCK_50,
+        start => game_ticks,
+        rst_n => RESET_N,
+        bulletB_x => BULLETB_X,
+        bulletB_y => BULLETB_Y,
+        tankA_x => TANKA_X,
+        tankA_y => TANKA_Y,
+        B_score => B_SCORE,
+        dead => B_DEAD
+    );
+
     gameState : game_state
     PORT MAP(
         clk => CLOCK_50,
         start => game_ticks,
         rst_n => RESET_N,
-        A_score => A_SCORE, 
+        A_score => A_SCORE,
         B_score => B_SCORE,
         winner => WINNER
     );
@@ -304,13 +347,13 @@ BEGIN
 
     show_winner : de2lcd
     PORT MAP(
-        reset => RESET, 
+        reset => RESET,
         clk_50Mhz => CLOCK_50,
         winner => WINNER,
-        LCD_RS => LCD_RS, 
-        LCD_E => LCD_E, 
-        LCD_ON => LCD_ON, 
-        RESET_LED => RESET_LED, 
+        LCD_RS => LCD_RS,
+        LCD_E => LCD_E,
+        LCD_ON => LCD_ON,
+        RESET_LED => RESET_LED,
         SEC_LED => SEC_LED,
         LCD_RW => LCD_RW,
         DATA_BUS => DATA_BUS
