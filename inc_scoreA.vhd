@@ -84,15 +84,18 @@ BEGIN
                     ELSE
                         IF (unsigned(A_bullet_tb) <= unsigned(B_tank_bb)) THEN
                             --check for collision (has bullet A hit tank B?)
+                            -- in the center?
                             IF (unsigned(A_bullet_lb) >= unsigned(B_tank_lb) AND unsigned(A_bullet_rb) <= unsigned(B_tank_rb)) THEN
                                 A_score_c <= STD_LOGIC_VECTOR(unsigned(A_score1) + 1);
                                 dead_c <= '1';
                                 next_state <= collision;
-                            ELSIF ((unsigned(A_bullet_lb) >= unsigned(B_tank_lb)) AND ((unsigned(A_bullet_lb) + 10) <= (unsigned(B_tank_rb) + 9))) THEN
+                                -- on the right
+                            ELSIF ((unsigned(A_bullet_lb) >= unsigned(B_tank_lb)) AND ((unsigned(A_bullet_lb) + 1) < unsigned(B_tank_rb))) THEN
                                 A_score_c <= STD_LOGIC_VECTOR(unsigned(A_score1) + 1);
                                 dead_c <= '1';
                                 next_state <= collision;
-                            ELSIF ((unsigned(A_bullet_rb) <= unsigned(B_tank_rb)) AND ((unsigned(A_bullet_rb) - 10) >= (unsigned(B_tank_lb) - 9))) THEN
+                                -- on the left
+                            ELSIF ((unsigned(A_bullet_rb) <= unsigned(B_tank_rb)) AND ((unsigned(A_bullet_rb) - 1) > unsigned(B_tank_lb))) THEN
                                 A_score_c <= STD_LOGIC_VECTOR(unsigned(A_score1) + 1);
                                 dead_c <= '1';
                                 next_state <= collision;
@@ -110,18 +113,20 @@ BEGIN
                     END IF;
                 END IF;
 
-            when collision =>
-                if (start = '1') then 
-                    next_state <= play;
-                    dead_c <= '0';
-                end if;
+            WHEN collision =>
+                IF (start = '1') THEN
+                    IF (unsigned(A_bullet_tb) >= unsigned(B_tank_tb)) THEN
+                        next_state <= play;
+                        dead_c <= '0';
+                    END IF;
+                END IF;
 
             WHEN win =>
                 --if (start ='1') then
-                    --don't do anything?
-                    next_state <= win;
-                    dead_c <= '1';
-               -- end if;
+                --don't do anything?
+                next_state <= win;
+                dead_c <= '1';
+                -- end if;
 
         END CASE;
 
