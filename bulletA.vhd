@@ -42,7 +42,7 @@ BEGIN
         IF (rst_n = '1') THEN
             state <= idle;
             pos_x1 <= tank_x; --center based on tank position
-            pos_y1 <= STD_LOGIC_VECTOR(unsigned(tank_y) - 50); -- 40 + 10 = 50 
+            pos_y1 <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27); -- 40 + 10 = 50 
 
         ELSIF (rising_edge(clk)) THEN
             state <= next_state;
@@ -73,7 +73,7 @@ BEGIN
                     ELSIF (dead = '1') THEN
                         next_state <= idle;
                         pos_x_c <= tank_x; --center based on tank position
-                        pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 50); -- 40 + 10 = 50 
+                        pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27); -- 40 + 10 = 50 
                     END IF;
                 END IF;
         END CASE;
