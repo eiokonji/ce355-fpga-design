@@ -1,63 +1,63 @@
 -- This module returns the speed for each tank and if a bullet is fired based on keypresses.
 -- speed levels: slow->1pt, med->5pt, fast->10pt
 
-library STD;
-library IEEE;
-  use IEEE.std_logic_1164.all;
-  use ieee.numeric_std.all;
+LIBRARY STD;
+LIBRARY IEEE;
+USE IEEE.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-entity keypresses is
-  port (
-    clock_50MHz, reset, start : in  STD_LOGIC;
-    hist1, hist0              : in  STD_LOGIC_VECTOR(7 downto 0);
-    speedA, speedB            : out STD_LOGIC_VECTOR(3 downto 0);
-    bulletA, bulletB          : out std_logic
+ENTITY keypresses IS
+  PORT (
+    clock_50MHz, reset, start : IN STD_LOGIC;
+    hist1, hist0 : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+    speedA, speedB : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+    bulletA, bulletB : OUT STD_LOGIC
   );
-end entity;
+END ENTITY;
 
-architecture behavioral of keypresses is
-  type states is (idle, change_state);
-  signal state, new_state : states;
+ARCHITECTURE behavioral OF keypresses IS
+  TYPE states IS (idle, change_state);
+  SIGNAL state, new_state : states;
 
-  signal speedA_temp, speedB_temp     : STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
-  signal speedA_temp_n, speedB_temp_n : STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+  SIGNAL speedA_temp, speedB_temp : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0');
+  SIGNAL speedA_temp_n, speedB_temp_n : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0');
 
-  signal bulletA_temp, bulletB_temp     : std_logic;
-  signal bulletA_temp_n, bulletB_temp_n : std_logic;
+  SIGNAL bulletA_temp, bulletB_temp : STD_LOGIC;
+  SIGNAL bulletA_temp_n, bulletB_temp_n : STD_LOGIC;
 
-  constant a        : STD_LOGIC_VECTOR(7 downto 0) := "00011100"; -- 0x1C, 28
-  constant s        : STD_LOGIC_VECTOR(7 downto 0) := "00011011"; -- 0x1B, 27
-  constant d        : STD_LOGIC_VECTOR(7 downto 0) := "00100011"; -- 0x23, 35
-  constant j        : STD_LOGIC_VECTOR(7 downto 0) := "00111011"; -- 0x3B, 59
-  constant k        : STD_LOGIC_VECTOR(7 downto 0) := "01000010"; -- 0X42, 66
-  constant l        : STD_LOGIC_VECTOR(7 downto 0) := "01001011"; -- 0x4B, 75
-  constant break    : STD_LOGIC_VECTOR(7 downto 0) := "11110000"; -- 0xF0, 240
-  constant l_bullet : STD_LOGIC_VECTOR(7 downto 0) := "00010010"; -- 0x12, 18
-  constant r_bullet : STD_LOGIC_VECTOR(7 downto 0) := "01011001"; -- 0x59, 89
+  CONSTANT break : STD_LOGIC_VECTOR(7 DOWNTO 0) := "11110000"; -- 0xF0, 240
+  CONSTANT a : STD_LOGIC_VECTOR(7 DOWNTO 0) := "00011100"; -- 0x1C, 28
+  CONSTANT s : STD_LOGIC_VECTOR(7 DOWNTO 0) := "00011011"; -- 0x1B, 27
+  CONSTANT d : STD_LOGIC_VECTOR(7 DOWNTO 0) := "00100011"; -- 0x23, 35
+  CONSTANT l_bullet : STD_LOGIC_VECTOR(7 DOWNTO 0) := "00010010"; -- 0x12, 18
+  CONSTANT j : STD_LOGIC_VECTOR(7 DOWNTO 0) := "00111011"; -- 0x3B, 59
+  CONSTANT k : STD_LOGIC_VECTOR(7 DOWNTO 0) := "01000010"; -- 0X42, 66
+  CONSTANT l : STD_LOGIC_VECTOR(7 DOWNTO 0) := "01001011"; -- 0x4B, 75
+  CONSTANT r_bullet : STD_LOGIC_VECTOR(7 DOWNTO 0) := "01011001"; -- 0x59, 89
 
-begin
+BEGIN
 
-  clocked_process: process (clock_50MHz, reset) is
-  begin
-    if (reset = '1') then
+  clocked_process : PROCESS (clock_50MHz, reset) IS
+  BEGIN
+    IF (reset = '1') THEN
       state <= idle;
       speedA_temp <= "0001";
       speedB_temp <= "0001";
       bulletA_temp <= '0';
       bulletB_temp <= '0';
 
-    elsif (rising_edge(clock_50MHz)) then
+    ELSIF (rising_edge(clock_50MHz)) THEN
       state <= new_state;
       speedA_temp <= speedA_temp_n;
       speedB_temp <= speedB_temp_n;
       bulletA_temp <= bulletA_temp_n;
       bulletB_temp <= bulletB_temp_n;
 
-    end if;
-  end process;
+    END IF;
+  END PROCESS;
 
-  change_speed_process: process (start, hist0, hist1) is
-  begin
+  change_speed_process : PROCESS (start, hist0, hist1) IS
+  BEGIN
     -- default values for changing signals
     new_state <= state;
     speedA_temp_n <= speedA_temp;
@@ -65,60 +65,60 @@ begin
     bulletA_temp_n <= bulletA_temp;
     bulletB_temp_n <= bulletB_temp;
 
-    case state is
-      when idle =>
-        if (start = '1') then
+    CASE state IS
+      WHEN idle =>
+        IF (start = '1') THEN
           new_state <= change_state;
-        else
+        ELSE
           new_state <= idle;
-        end if;
+        END IF;
 
-      when change_state =>
-        if (start = '1') then
+      WHEN change_state =>
+        IF (start = '1') THEN
 
           -- change speed of tank A
-          if (unsigned(hist0) = unsigned(a) and unsigned(hist1) = unsigned(break)) then
+          IF (unsigned(hist0) = unsigned(a) AND unsigned(hist1) = unsigned(break)) THEN
             speedA_temp_n <= "0001";
-          elsif (unsigned(hist0) = unsigned(s) and unsigned(hist1) = unsigned(break)) then
+          ELSIF (unsigned(hist0) = unsigned(s) AND unsigned(hist1) = unsigned(break)) THEN
             speedA_temp_n <= "0101";
-          elsif (unsigned(hist0) = unsigned(d) and unsigned(hist1) = unsigned(break)) then
+          ELSIF (unsigned(hist0) = unsigned(d) AND unsigned(hist1) = unsigned(break)) THEN
             speedA_temp_n <= "1010";
-          else
+          ELSE
             speedA_temp_n <= speedA_temp;
-          end if;
+          END IF;
 
           -- fire bullet A
-          if (unsigned(hist0) = unsigned(l_bullet) and unsigned(hist1) = unsigned(break)) then
+          IF (unsigned(hist0) = unsigned(l_bullet) AND unsigned(hist1) = unsigned(break)) THEN
             bulletA_temp_n <= '1';
-          else
+          ELSE
             bulletA_temp_n <= '0';
-          end if;
+          END IF;
 
           -- change tank B speed
-          if (unsigned(hist0) = unsigned(j) and unsigned(hist1) = unsigned(break)) then
+          IF (unsigned(hist0) = unsigned(j) AND unsigned(hist1) = unsigned(break)) THEN
             speedB_temp_n <= "0001";
-          elsif (unsigned(hist0) = unsigned(k) and unsigned(hist1) = unsigned(break)) then
+          ELSIF (unsigned(hist0) = unsigned(k) AND unsigned(hist1) = unsigned(break)) THEN
             speedB_temp_n <= "0101";
-          elsif (unsigned(hist0) = unsigned(l) and unsigned(hist1) = unsigned(break)) then
+          ELSIF (unsigned(hist0) = unsigned(l) AND unsigned(hist1) = unsigned(break)) THEN
             speedB_temp_n <= "1010";
-          else
+          ELSE
             speedB_temp_n <= speedB_temp;
-          end if;
+          END IF;
 
           -- fire bullet B
-          if (unsigned(hist0) = unsigned(r_bullet) and unsigned(hist1) = unsigned(break)) then
+          IF (unsigned(hist0) = unsigned(r_bullet) AND unsigned(hist1) = unsigned(break)) THEN
             bulletB_temp_n <= '1';
-          else
+          ELSE
             bulletB_temp_n <= '0';
-          end if;
-        end if;
+          END IF;
+        END IF;
 
-    end case;
-  end process;
+    END CASE;
+  END PROCESS;
 
-  speedA  <= speedA_temp;
-  speedB  <= speedB_temp;
+  speedA <= speedA_temp;
+  speedB <= speedB_temp;
   bulletA <= bulletA_temp;
   bulletB <= bulletB_temp;
 
-end architecture;
+END ARCHITECTURE;
