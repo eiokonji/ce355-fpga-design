@@ -61,19 +61,26 @@ BEGIN
             WHEN idle =>
                 IF (start = '1' AND fired = '1') THEN
                     next_state <= firing;
+                else 
+                    pos_x_c <= tank_x;
+                    pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27);
                 END IF;
+    
 
             WHEN firing =>
                 IF (start = '1') THEN
                     IF (dead = '0') THEN
-                        pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) - BULLET_SPEED);
-                        -- IF (unsigned(pos_y1) - BULLET_SPEED >= unsigned(tank_y) + 17) THEN
-                        --     pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) - BULLET_SPEED);
-                        -- END IF;
+                        if ((unsigned(pos_y1) - BULLET_SPEED) >= 10) then
+                            pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) - BULLET_SPEED);
+                        else 
+                            next_state <= idle;
+                            pos_x_c <= tank_x; --center based on tank position
+                            pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27); 
+                        end if;
                     ELSIF (dead = '1') THEN
                         next_state <= idle;
                         pos_x_c <= tank_x; --center based on tank position
-                        pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27); -- 40 + 10 = 50 
+                        pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27); 
                     END IF;
                 END IF;
         END CASE;

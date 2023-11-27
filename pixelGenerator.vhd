@@ -8,7 +8,8 @@ ENTITY pixelGenerator IS
 		clk, ROM_clk, rst_n, video_on, eof : IN STD_LOGIC;
 		pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
 		tankA_x, tankA_y, tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-		-- bulletA_x, bulletA_y, bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+		bulletA_x, bulletA_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+		--bulletB_x, bulletB_y : 
 		red_out, green_out, blue_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
 	);
 END ENTITY pixelGenerator;
@@ -71,6 +72,11 @@ BEGIN
 		tank_B_rbound <= to_integer(unsigned(tankB_x) + 40);
 		tank_B_tbound <= to_integer(unsigned(tankB_y) - 17);
 		tank_B_bbound <= to_integer(unsigned(tankB_y) + 17);
+
+		bullet_A_lbound <= to_integer(unsigned(bulletA_x) - 5);
+		bullet_A_rbound <= to_integer(unsigned(bulletA_x) + 5);
+		bullet_A_tbound <= to_integer(unsigned(bulletA_y) - 10);
+		bullet_A_bbound <= to_integer(unsigned(bulletA_y) + 10);
 
 	END PROCESS findBounds;
 

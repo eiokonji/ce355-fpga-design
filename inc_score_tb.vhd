@@ -21,8 +21,8 @@ ARCHITECTURE behavioral OF testbench IS
         clk, rst_n, start : IN STD_LOGIC;
         bulletA_x, bulletA_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
         tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-        A_score : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-        dead : OUT STD_LOGIC;
+        A_score : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        dead : OUT STD_LOGIC
 
     );
     END COMPONENT inc_scoreA;
@@ -38,12 +38,18 @@ ARCHITECTURE behavioral OF testbench IS
 
      --testbench signals
     SIGNAL clk_tb, rst_tb, game_tick_tb : STD_LOGIC;
+    --initialize starting position of moving bullet
     signal bulletA_x_tb : std_logic_vector(9 downto 0) := std_logic_vector(to_unsigned(320, 10));
     signal bulletA_y_tb : std_logic_vector(9 downto 0) := std_logic_vector(to_unsigned(452-27, 10));
     --initialize a stationary tank B
     signal tankB_x_tb : std_logic_vector(9 downto 0) := std_logic_vector(to_unsigned(320, 10));
     signal tankB_y_tb : STD_LOGIC_VECTOR(9 DOWNTO 0) := std_logic_vector(to_unsigned(27, 10));
-    SIGNAL A_score_tb : STD_LOGIC_VECTOR(1 DOWNTO 0) := (others => '0');
+    --intialize a stationary tank A
+    signal tankA_x_tb : std_logic_vector(9 downto 0) := std_logic_vector(to_unsigned(320, 10));
+    signal tankA_y_tb : std_logic_vector(9 downto 0) := std_logic_vector(to_unsigned(452, 10));
+
+    --signals for increment score
+    SIGNAL A_score_tb : STD_LOGIC_VECTOR(3 DOWNTO 0) := (others => '0');
     SIGNAL fired_tb, dead_tb: STD_LOGIC;
 
     signal bullet_speed : integer := 25;
@@ -68,8 +74,8 @@ ARCHITECTURE behavioral OF testbench IS
             start => game_tick_tb,
             fired => fired_tb, 
             dead => dead_tb,
-            tank_x => tankB_x_tb, 
-            tank_y => tankB_y_tb,
+            tank_x => tankA_x_tb, 
+            tank_y => tankA_y_tb,
             pos_x => bulletA_x_tb,
             pos_y => bulletA_y_tb
         );
@@ -108,6 +114,14 @@ ARCHITECTURE behavioral OF testbench IS
             rst_tb <= '0';
             WAIT;
         END PROCESS reset_process;
+
+        fire_process : process is
+        begin 
+            WAIT UNTIL (clk_tb = '0');
+            WAIT UNTIL (clk_tb = '1');
+            fired_tb <= '1';
+            wait;
+        end process;
 
         -- increment_process : process is
         -- begin 

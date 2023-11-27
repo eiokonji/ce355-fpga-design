@@ -21,7 +21,7 @@ END ENTITY inc_scoreA;
 
 ARCHITECTURE behavioralScore OF inc_scoreA IS
     --initialize states
-    TYPE states IS (idle, play, win);
+    TYPE states IS (idle, play, collision, win);
     SIGNAL state, next_state : states;
 
     --clocking signals
@@ -87,17 +87,21 @@ BEGIN
                             IF (unsigned(A_bullet_lb) >= unsigned(B_tank_lb) AND unsigned(A_bullet_rb) <= unsigned(B_tank_rb)) THEN
                                 A_score_c <= STD_LOGIC_VECTOR(unsigned(A_score1) + 1);
                                 dead_c <= '1';
+                                next_state <= collision;
                             ELSIF ((unsigned(A_bullet_lb) >= unsigned(B_tank_lb)) AND ((unsigned(A_bullet_lb) + 10) <= (unsigned(B_tank_rb) + 9))) THEN
                                 A_score_c <= STD_LOGIC_VECTOR(unsigned(A_score1) + 1);
                                 dead_c <= '1';
+                                next_state <= collision;
                             ELSIF ((unsigned(A_bullet_rb) <= unsigned(B_tank_rb)) AND ((unsigned(A_bullet_rb) - 10) >= (unsigned(B_tank_lb) - 9))) THEN
                                 A_score_c <= STD_LOGIC_VECTOR(unsigned(A_score1) + 1);
                                 dead_c <= '1';
+                                next_state <= collision;
 
                                 --check if bullet is off screen
-                            ELSIF (unsigned(A_bullet_lb) <= 0) THEN
+                            ELSIF (unsigned(A_bullet_tb) <= 10) THEN
                                 A_score_c <= A_score1;
                                 dead_c <= '1';
+                                next_state <= collision;
                             ELSE
                                 A_score_c <= A_score1; --score stays the same
                                 dead_c <= '0';
@@ -106,10 +110,18 @@ BEGIN
                     END IF;
                 END IF;
 
+            when collision =>
+                if (start = '1') then 
+                    next_state <= play;
+                    dead_c <= '0';
+                end if;
+
             WHEN win =>
-                --don't do anything?
-                next_state <= win;
-                dead_c <= '1';
+                --if (start ='1') then
+                    --don't do anything?
+                    next_state <= win;
+                    dead_c <= '1';
+               -- end if;
 
         END CASE;
 
