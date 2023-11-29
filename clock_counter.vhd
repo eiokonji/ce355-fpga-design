@@ -19,7 +19,7 @@ END ENTITY clock_counter;
 ARCHITECTURE behavioral_counter OF clock_counter IS
     -- SIGNAL cycle_count : NATURAL := 0;
     --create vector of counter bits
-    signal cycle_count : std_logic_vector(BITS-1 downto 0);
+    signal cycle_count : std_logic_vector(BITS-1 downto 0) := (others => '0');
     constant ZEROS : std_logic_vector(BITS-1 downto 0) := (others => '0');
 
 BEGIN

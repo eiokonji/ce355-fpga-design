@@ -9,6 +9,9 @@ END ENTITY testbench;
 
 ARCHITECTURE behavioral OF testbench IS
     COMPONENT clock_counter IS
+        GENERIC (
+            BITS : INTEGER := 3
+        );
         PORT (
             clk, rst : IN STD_LOGIC;
             game_tick : OUT STD_LOGIC
@@ -23,6 +26,9 @@ ARCHITECTURE behavioral OF testbench IS
 
 BEGIN
     dut : clock_counter
+    GENERIC MAP(
+        BITS => 3
+    )
     PORT MAP(
         clk => clk_tb,
         rst => rst_n_tb,
@@ -38,12 +44,17 @@ BEGIN
         WAIT FOR (PERIOD/2);
     END PROCESS clk_generate;
 
-    -- process is
-    --     begin
-    --     -- rst_n_tb <= '0';
-
-    -- end process;
-
-
+    -- reset generate
+    rst_generate : PROCESS IS
+    BEGIN
+        rst_n_tb <= '0';
+        WAIT UNTIL (clk_tb = '0');
+        WAIT UNTIL (clk_tb = '1');
+        rst_n_tb <= '1';
+        WAIT UNTIL (clk_tb = '0');
+        WAIT UNTIL (clk_tb = '1');
+        rst_n_tb <= '0';
+        WAIT;
+    END PROCESS rst_generate;
 
 END ARCHITECTURE behavioral;
