@@ -28,7 +28,7 @@ ARCHITECTURE structural OF top_level IS
 
     COMPONENT clock_counter IS
         GENERIC (
-            BITS : INTEGER := 21
+            BITS : INTEGER := 3
         );
         PORT (
             clk, rst : IN STD_LOGIC;

@@ -58,17 +58,21 @@ ARCHITECTURE behavioral OF testbench IS
 
     --TESTBENCH SIGNALS
     CONSTANT PERIOD : TIME := 20 ns; --50 mhz clock
-    CONSTANT A : std_logic := '0';
-    CONSTANT B : std_logic := '1';
+    CONSTANT A : STD_LOGIC := '0';
+    CONSTANT B : STD_LOGIC := '1';
 
     --control signals
     SIGNAL clk_tb, game_ticks : STD_LOGIC;
-    signal RESET : std_logic := '1';
-    signal RESET_N : std_logic := '0';
+    SIGNAL RESET : STD_LOGIC := '1';
+    SIGNAL RESET_N : STD_LOGIC := '0';
 
     --tank signals
     SIGNAL TANKA_X, TANKA_Y, TANKB_X, TANKB_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
     SIGNAL TANKA_SPEED, TANKB_SPEED : STD_LOGIC_VECTOR(3 DOWNTO 0) := (0 => '1', OTHERS => '0');
+    CONSTANT SPEED0 : STD_LOGIC_VECTOR(3 DOWNTO 0) := "0000";
+    CONSTANT SPEED1 : STD_LOGIC_VECTOR(3 DOWNTO 0) := "0001";
+    CONSTANT SPEED5 : STD_LOGIC_VECTOR(3 DOWNTO 0) := "0101";
+    CONSTANT SPEED10 : STD_LOGIC_VECTOR(3 DOWNTO 0) := "1010";
 
     --bullet signals
     SIGNAL BULLETA_X, BULLETA_Y, BULLETB_X, BULLETB_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -78,10 +82,10 @@ ARCHITECTURE behavioral OF testbench IS
     --score and game state
     SIGNAL A_SCORE, B_SCORE : STD_LOGIC_VECTOR(3 DOWNTO 0);
     SIGNAL WINNER : STD_LOGIC_VECTOR(1 DOWNTO 0);
-    SIGNAL GAME_OVER : std_logic;
+    SIGNAL GAME_OVER : STD_LOGIC;
 
-begin
-    RESET_N <= not RESET;
+BEGIN
+    RESET_N <= NOT RESET;
 
     ------------------------------------------------------------
     --component instantiation
@@ -194,23 +198,110 @@ begin
         WAIT FOR (PERIOD/2);
     END PROCESS clk_generate;
 
-    --THESE PROCESSES SIMULATE PLAYER INPUT BY SYSTEMATICALLY CHANGING SIGNALS
+    --THESE PROCESSES SIMULATE PLAY BY SYSTEMATICALLY CHANGING SIGNALS
     --keyboard inputs (speed, shoot)
     --1) tanks moving back and forth
     --2) switch speed of tank A
-    --2) set speed of tank B to 0 (stationary)
-    --3) tank A shoots and hits tank B
-    --4) tank A shoots and misses (bullet goes off screen)
+    --3) set speed of tank B to 0 (stationary)
+    --4) tank A shoots while moving and misses (bullet goes off screen, preserves x pos)
     --5) set both tanks to stationary
-    --6) tank B shoots and hits tank A
-    --7) tank B shoots until score increments to 3
-    --8) reset game
-    --systematically move tanks
+    --6) tank A shoots and hits tank B
+    --7) tank B shoots and hits tank A
+    --8) tank B shoots until score increments to 3
+    --9) reset game
 
-    update_process : process is
-    begin
-    end process;
+    update_process : PROCESS IS
+    BEGIN
+        --1) tanks moving back and forth
+        WAIT FOR (clk_tb = '0');
+        WAIT FOR (clk_tb = '1');
+        WAIT FOR (clk_tb = '0');
+        WAIT FOR (clk_tb = '1');
+        WAIT FOR (clk_tb = '0');
+        WAIT FOR (clk_tb = '1');
+        WAIT FOR (clk_tb = '0');
+        WAIT FOR (clk_tb = '1');
+        --2) switch speed of tank A
+        --change speed of tank A and observe position
+        TANKA_SPEED <= SPEED5;
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        --wait for tank to collide with wall and switch direction
+        TANKA_SPEED <= SPEED10;
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        TANKA_SPEED <= SPEED1;
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        --3) set speed of tank B to 0 (stationary)
+        TANKB_SPEED <= SPEED0;
+       --4) tank A shoots while moving and misses (bullet goes off screen, preserves x pos)
+        --tank A shoot at tank B
+        BULLETA_FIRED <= '1';
+        --observe bullet x pos same while y pos changes
+        --observe behavior when bullet goes off screen
+        wait for (A_DEAD = '0');
+        wait for (A_DEAD = '1');
+        wait for (A_DEAD = '0');
+        wait for (A_DEAD = '1');
+        BULLETA_FIRED <= '0';
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+         --5) set both tanks to stationary and align them
+        TANKA_POS_X <= STD_LOGIC_VECTOR(to_unsigned(320, 10));
+        TANKB_POS_X <= STD_LOGIC_VECTOR(to_unsigned(320, 10));
+        TANKA_SPEED <= SPEED0;
+        TANKB_SPEED <= SPEED0;
+        --6) tank A shoots and hits tank B
+        BULLETA_FIRED <= '1';
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        BULLETA_FIRED <= '0';
+        WAIT FOR (A_SCORE = "0001");
+        --7) tank B shoots and hits tank A
+        BULLETB_FIRED <= '1';
+        --8) tank B shoots until score increments to 3
+        WAIT FOR (B_SCORE = "0011");
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        --9) reset game
+        RESET <= '0';
+        WAIT FOR (game_ticks = '0');
+        WAIT FOR (game_ticks = '1');
+        RESET <= '1';
 
+        WAIT;
 
+    END PROCESS;
 
-end ARCHITECTURE behavioral;
+END ARCHITECTURE behavioral;
