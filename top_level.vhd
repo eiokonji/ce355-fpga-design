@@ -25,10 +25,11 @@ END ENTITY top_level;
 
 ARCHITECTURE structural OF top_level IS
     SIGNAL VGA_RED_temp, VGA_GREEN_temp, VGA_BLUE_temp : STD_LOGIC_VECTOR(7 DOWNTO 0);
-
+	 SIGNAl clk : std_logic;
+	 
     COMPONENT clock_counter IS
         GENERIC (
-            BITS : INTEGER := 21
+            BITS : INTEGER := 3
         );
         PORT (
             clk, rst : IN STD_LOGIC;
@@ -133,6 +134,15 @@ ARCHITECTURE structural OF top_level IS
         );
     END COMPONENT leddcd;
 
+	COMPONENT pll IS
+	PORT
+	(
+		areset		: IN STD_LOGIC  := '0';
+		inclk0		: IN STD_LOGIC  := '0';
+		c0		: OUT STD_LOGIC 
+	);
+	END COMPONENT pll;
+	
     --Signals for screen position updates
     SIGNAL game_ticks : STD_LOGIC;
     SIGNAL RESET_N : STD_LOGIC;
@@ -145,8 +155,8 @@ ARCHITECTURE structural OF top_level IS
     SIGNAL eof : STD_LOGIC;
 
     --constants for selection between A and B
-    CONSTANT A : std_logic_vector := '0';
-    CONSTANT B : std_logic_vector := '1';
+    CONSTANT A : std_logic := '0';
+    CONSTANT B : std_logic := '1';
 
     --signals for tank and bullet positions
     SIGNAL TANKA_X, TANKA_Y, TANKB_X, TANKB_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -172,20 +182,28 @@ ARCHITECTURE structural OF top_level IS
 BEGIN
     RESET_N <= NOT RESET; -- if reset is 1, because RESET is '0'
 
+	 
+	 pll_inst : pll 
+	 PORT MAP (
+		areset => RESET_N,
+		inclk0 => CLOCK_50,
+		c0	=> clk
+	 );
+	 
     --------------------------------------------------------------------------------------------
     clockCount : clock_counter
     GENERIC MAP(
         BITS => 20
     )
     PORT MAP(
-        clk => CLOCK_50,
+        clk => clk,
         rst => RESET_N,
         game_tick => game_ticks
     );
 
     videoGen : pixelGenerator
     PORT MAP(
-        clk => CLOCK_50,
+        clk => clk,
         ROM_clk => VGA_clk_int,
         rst_n => RESET_N,
         video_on => video_on_int,
@@ -211,7 +229,7 @@ BEGIN
 
     tankAModule : tank
     PORT MAP(
-        clk => CLOCK_50,
+        clk => clk,
         rst_n => RESET_N,
         start => game_ticks,
         A_or_B => A,
@@ -223,7 +241,7 @@ BEGIN
 
     tankBModule : tank
     PORT MAP(
-        clk => CLOCK_50,
+        clk => clk,
         rst_n => RESET_N,
         start => game_ticks,
         A_or_B => B,
@@ -235,7 +253,7 @@ BEGIN
 
     bulletAModule : bullet
     PORT MAP(
-        clk => CLOCK_50,
+        clk => clk,
         start => game_ticks,
         rst_n => RESET_N,
         A_or_B => A,
@@ -249,7 +267,7 @@ BEGIN
 
     bulletBModule : bullet
     PORT MAP(
-        clk => CLOCK_50,
+        clk => clk,
         start => game_ticks,
         rst_n => RESET_N,
         A_or_B => B,
@@ -263,7 +281,7 @@ BEGIN
 
     scoreA : inc_score
     PORT MAP(
-        clk => CLOCK_50,
+        clk => clk,
         start => game_ticks,
         rst_n => RESET_N,
         A_or_B => A,
@@ -277,7 +295,7 @@ BEGIN
 
     scoreB : inc_score
     PORT MAP(
-        clk => CLOCK_50,
+        clk => clk,
         start => game_ticks,
         rst_n => RESET_N,
         A_or_B => B,
@@ -291,7 +309,7 @@ BEGIN
 
     gameState : game_state
     PORT MAP(
-        clk => CLOCK_50,
+        clk => clk,
         start => game_ticks,
         rst_n => RESET_N,
         A_score => A_SCORE,
@@ -314,7 +332,7 @@ BEGIN
 
     keypress_1 : keypresses
     PORT MAP(
-        clock_50MHz => CLOCK_50,
+        clock_50MHz => clk,
         reset => RESET_N,
         start => scan_ready,
         hist2 => hist2,
