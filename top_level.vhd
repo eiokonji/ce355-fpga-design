@@ -135,8 +135,6 @@ ARCHITECTURE structural OF top_level IS
 
     --Signals for screen position updates
     SIGNAL game_ticks : STD_LOGIC;
-    SIGNAL GAME_START : STD_LOGIC;
-    SIGNAL GAME_DONE : STD_LOGIC;
     SIGNAL RESET_N : STD_LOGIC;
 
     --Signals for VGA sync

@@ -38,10 +38,10 @@ ARCHITECTURE behavioral OF pixelGenerator IS
 
 	SIGNAL pixel_row_int, pixel_column_int : NATURAL;
 
-	SIGNAL tank_A_lbound, tank_A_rbound, tank_A_tbound, tank_A_bbound : NATURAL;
-	SIGNAL tank_B_lbound, tank_B_rbound, tank_B_tbound, tank_B_bbound : NATURAL;
-	SIGNAL bullet_A_lbound, bullet_A_rbound, bullet_A_tbound, bullet_A_bbound : NATURAL;
-	SIGNAL bullet_B_lbound, bullet_B_rbound, bullet_B_tbound, bullet_B_bbound : NATURAL;
+	SIGNAL tank_A_lb, tank_A_rb, tank_A_tb, tank_A_bb : NATURAL;
+	SIGNAL tank_B_lb, tank_B_rb, tank_B_tb, tank_B_bb : NATURAL;
+	SIGNAL bullet_A_lb, bullet_A_rb, bullet_A_tb, bullet_A_bb : NATURAL;
+	SIGNAL bullet_B_lb, bullet_B_rb, bullet_B_tb, bullet_B_bb : NATURAL;
 
 	SIGNAL tankA_on, tankB_on : STD_LOGIC;
 	SIGNAL bulletA_on, bulletB_on : STD_LOGIC;
@@ -64,23 +64,23 @@ BEGIN
 	--------------------------------------------------------------------------------------------	
 	findBounds : PROCESS (clk, rst_n, tankA_x, tankA_y, tankB_x, tankB_y, bulletA_x, bulletA_y, bulletB_x, bulletB_y) IS
 	BEGIN
-		tank_A_lbound <= to_integer(unsigned(tankA_x) - 40);
-		tank_A_rbound <= to_integer(unsigned(tankA_x) + 40);
-		tank_A_tbound <= to_integer(unsigned(tankA_y) - 17);
-		tank_A_bbound <= to_integer(unsigned(tankA_y) + 17);
-		tank_B_lbound <= to_integer(unsigned(tankB_x) - 40);
-		tank_B_rbound <= to_integer(unsigned(tankB_x) + 40);
-		tank_B_tbound <= to_integer(unsigned(tankB_y) - 17);
-		tank_B_bbound <= to_integer(unsigned(tankB_y) + 17);
+		tank_A_lb <= to_integer(unsigned(tankA_x) - 40);
+		tank_A_rb <= to_integer(unsigned(tankA_x) + 40);
+		tank_A_tb <= to_integer(unsigned(tankA_y) - 17);
+		tank_A_bb <= to_integer(unsigned(tankA_y) + 17);
+		tank_B_lb <= to_integer(unsigned(tankB_x) - 40);
+		tank_B_rb <= to_integer(unsigned(tankB_x) + 40);
+		tank_B_tb <= to_integer(unsigned(tankB_y) - 17);
+		tank_B_bb <= to_integer(unsigned(tankB_y) + 17);
 
-		bullet_A_lbound <= to_integer(unsigned(bulletA_x) - 5);
-		bullet_A_rbound <= to_integer(unsigned(bulletA_x) + 5);
-		bullet_A_tbound <= to_integer(unsigned(bulletA_y) - 10);
-		bullet_A_bbound <= to_integer(unsigned(bulletA_y) + 10);
-		bullet_B_lbound <= to_integer(unsigned(bulletB_x) - 5);
-		bullet_B_rbound <= to_integer(unsigned(bulletB_x) + 5);
-		bullet_B_tbound <= to_integer(unsigned(bulletB_y) - 10);
-		bullet_B_bbound <= to_integer(unsigned(bulletB_y) + 10);
+		bullet_A_lb <= to_integer(unsigned(bulletA_x) - 5);
+		bullet_A_rb <= to_integer(unsigned(bulletA_x) + 5);
+		bullet_A_tb <= to_integer(unsigned(bulletA_y) - 10);
+		bullet_A_bb <= to_integer(unsigned(bulletA_y) + 10);
+		bullet_B_lb <= to_integer(unsigned(bulletB_x) - 5);
+		bullet_B_rb <= to_integer(unsigned(bulletB_x) + 5);
+		bullet_B_tb <= to_integer(unsigned(bulletB_y) - 10);
+		bullet_B_bb <= to_integer(unsigned(bulletB_y) + 10);
 
 	END PROCESS findBounds;
 
@@ -110,28 +110,28 @@ BEGIN
 
 	END PROCESS pixelDraw;
 
-	checkPixel : PROCESS (clk, rst_n, pixel_row_int, pixel_column_int, tank_A_tbound,tank_A_bbound,tank_A_lbound,tank_A_rbound,tank_B_tbound,tank_B_bbound,tank_B_lbound,tank_B_rbound,bullet_A_tbound,bullet_A_bbound,bullet_A_lbound,bullet_A_rbound,bullet_B_tbound,bullet_B_bbound,bullet_B_lbound,bullet_B_rbound) IS
+	checkPixel : PROCESS (clk, rst_n, pixel_row_int, pixel_column_int, tank_A_tb,tank_A_bb,tank_A_lb,tank_A_rb,tank_B_tb,tank_B_bb,tank_B_lb,tank_B_rb,bullet_A_tb,bullet_A_bb,bullet_A_lb,bullet_A_rb,bullet_B_tb,bullet_B_bb,bullet_B_lb,bullet_B_rb) IS
 		BEGIN
 			--check if pixel is on tankA
-			IF (pixel_row_int >= tank_A_tbound AND pixel_row_int < tank_A_bbound AND pixel_column_int >= tank_A_lbound AND pixel_column_int < tank_A_rbound) THEN
+			IF (pixel_row_int >= tank_A_tb AND pixel_row_int < tank_A_bb AND pixel_column_int >= tank_A_lb AND pixel_column_int < tank_A_rb) THEN
 				tankA_on <= '1';
 			ELSE
 				tankA_on <= '0';
 			END IF;
 			--check if pixel is on tankB
-			IF (pixel_row_int >= tank_B_tbound AND pixel_row_int < tank_B_bbound AND pixel_column_int >= tank_B_lbound AND pixel_column_int < tank_B_rbound) THEN
+			IF (pixel_row_int >= tank_B_tb AND pixel_row_int < tank_B_bb AND pixel_column_int >= tank_B_lb AND pixel_column_int < tank_B_rb) THEN
 				tankB_on <= '1';
 			ELSE
 				tankB_on <= '0';
 			END IF;
 			--check if pixel is on bulletA
-			IF (pixel_row_int >= bullet_A_tbound AND pixel_row_int < bullet_A_bbound AND pixel_column_int >= bullet_A_lbound AND pixel_column_int < bullet_A_rbound) THEN
+			IF (pixel_row_int >= bullet_A_tb AND pixel_row_int < bullet_A_bb AND pixel_column_int >= bullet_A_lb AND pixel_column_int < bullet_A_rb) THEN
 				bulletA_on <= '1';
 			else 
 				bulletA_on <= '0';
 			end if;
 			--check if pixel is on bulletB
-			if (pixel_row_int >= bullet_B_tbound AND pixel_row_int < bullet_B_bbound AND pixel_column_int >= bullet_B_lbound AND pixel_column_int < bullet_B_rbound) THEN
+			if (pixel_row_int >= bullet_B_tb AND pixel_row_int < bullet_B_bb AND pixel_column_int >= bullet_B_lb AND pixel_column_int < bullet_B_rb) THEN
 				bulletB_on <= '1';
 			else 
 				bulletB_on <= '0';
