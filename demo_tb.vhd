@@ -62,7 +62,9 @@ ARCHITECTURE behavioral OF testbench IS
     CONSTANT B : std_logic := '1';
 
     --control signals
-    SIGNAL clk_tb, RESET, RESET_N, game_ticks : STD_LOGIC;
+    SIGNAL clk_tb, game_ticks : STD_LOGIC;
+    signal RESET : std_logic := '1';
+    signal RESET_N : std_logic := '0';
 
     --tank signals
     SIGNAL TANKA_X, TANKA_Y, TANKB_X, TANKB_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -83,9 +85,9 @@ begin
 
     ------------------------------------------------------------
     --component instantiation
-    clockCount : clock_counter
+    dut : clock_counter
     GENERIC MAP(
-        BITS => 20
+        BITS => 3
     )
     PORT MAP(
         clk => clk_tb,
