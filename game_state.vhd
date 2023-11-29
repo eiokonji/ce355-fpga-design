@@ -14,7 +14,7 @@ USE IEEE.numeric_std.ALL;
 
 ENTITY game_state IS
     PORT (
-        clk, rst_n, start : IN STD_LOGIC;
+        clk, rst_n : IN STD_LOGIC;
         A_score, B_score : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
         game_over : OUT STD_LOGIC;
         winner : OUT STD_LOGIC_VECTOR (1 DOWNTO 0)
@@ -23,7 +23,7 @@ END ENTITY game_state;
 
 ARCHITECTURE behavioral OF game_state IS
     -- initialize states
-    TYPE states IS (idle, check, win);
+    TYPE states IS (check, find_winner, win);
     SIGNAL state, next_state : states;
 
     -- signals for clocking
@@ -37,7 +37,7 @@ BEGIN
     clockProcess : PROCESS (clk, rst_n) IS
     BEGIN
         IF (rst_n = '1') THEN
-            state <= idle;
+            state <= check;
             game_over1 <= '0';
             winner1 <= "00";
         ELSIF (rising_edge(clk)) THEN
@@ -47,7 +47,7 @@ BEGIN
         END IF;
     END PROCESS clockProcess;
 
-    gameStateProcess : PROCESS (start, state, A_score, B_score, game_over1, winner1) IS
+    gameStateProcess : PROCESS (state, A_score, B_score, game_over1, winner1) IS
     BEGIN
         -- defaults for combinational signals
         next_state <= state;
@@ -55,37 +55,27 @@ BEGIN
         winner_c <= winner1;
 
         CASE state IS
-            WHEN idle =>
-                IF (start = '1') THEN
-                    next_state <= check;
-                    game_over_c <= '0';
-                    winner_c <= "00";
+            WHEN check =>
+                IF ((A_score = WIN_SCORE) OR (B_score = WIN_SCORE)) THEN
+                    next_state <= find_winner;
+                    game_over_c <= '1';
                 END IF;
 
-            WHEN check =>
-                IF (start = '1') THEN
-                    IF ((A_score = WIN_SCORE) OR (B_score = WIN_SCORE)) THEN
-                        next_state <= win;
-                        game_over_c <= '1';
-                        IF (unsigned(A_score) > unsigned(B_score)) THEN
-                            winner_c <= "01";
-                        ELSIF (unsigned(B_score) > unsigned(A_score)) THEN
-                            winner_c <= "10";
-                        ELSE
-                            winner_c <= "00";
-                        END IF;
-                    ELSE
-                        next_state <= check;
-                        game_over_c <= '0';
-                        winner_c <= winner1;
-                    END IF;
+            WHEN find_winner =>
+                IF (unsigned(A_score) > unsigned(B_score)) THEN
+                    winner_c <= "01";
+                    next_state <= win;
+                ELSIF (unsigned(B_score) > unsigned(A_score)) THEN
+                    winner_c <= "10";
+                    next_state <= win;
+                ELSE
+                    winner_c <= "00";
+                    next_state <= check;
                 END IF;
 
             WHEN win =>
-                IF (start = '1') THEN
-                    next_state <= win;
-                    game_over_c <= '1';
-                END IF;
+                next_state <= win;
+                game_over_c <= '1';
         END CASE;
 
     END PROCESS gameStateProcess;

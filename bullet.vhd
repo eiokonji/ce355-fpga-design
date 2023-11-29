@@ -26,7 +26,7 @@ END ENTITY bullet;
 
 ARCHITECTURE behavioral OF bullet IS
 	--initialize states
-	TYPE states IS (WAIT_ON_FIRE, idle, firing);
+	TYPE states IS (WAIT_ON_FIRE, idle, firing, bulletA, bulletB);
 	SIGNAL state, next_state : states;
 
 	--clocking signals for position
@@ -50,7 +50,7 @@ BEGIN
 		END IF;
 	END PROCESS clockProcess;
 
-	bulletProcess : PROCESS (start, state, fired, dead, tank_x, tank_y, pos_y1, pos_x1) IS
+	bulletProcess : PROCESS (start, state, fired, dead, A_or_B, tank_x, tank_y, pos_y1, pos_x1) IS
 	BEGIN
 		next_state <= state;
 		pos_x_c <= pos_x1;
@@ -59,9 +59,9 @@ BEGIN
 		CASE state IS
 			WHEN WAIT_ON_FIRE =>
 				pos_x_c <= tank_x;
-				IF (A_or_B = '0') THEN 
+				IF (A_or_B = '0') THEN
 					pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) - 27); --Bullet A
-				ELSE 
+				ELSE
 					pos_y_c <= STD_LOGIC_VECTOR(unsigned(tank_y) + 27); --Bullet B
 				END IF;
 
@@ -77,31 +77,37 @@ BEGIN
 			WHEN firing =>
 				--if bullet A:
 				IF (A_or_B = '0') THEN
-					IF ((unsigned(pos_y1) >= BULLET_SPEED) AND dead = '0') THEN
-						pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) - BULLET_SPEED);
-						next_state <= idle;
-					ELSE
-						next_state <= WAIT_ON_FIRE;
-					END IF;
-				--if bullet B:
+					next_state <= bulletA;
+					--if bullet B:
 				ELSE
-					IF ((unsigned(pos_y1) <= 470) AND dead = '0') THEN
-						pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) + BULLET_SPEED);
-						next_state <= idle;
-					ELSE
-						next_state <= WAIT_ON_FIRE;
-					END IF;
-				end if;
+					next_state <= bulletB;
+				END IF;
 
-				WHEN OTHERS =>
+			WHEN bulletA =>
+				IF ((unsigned(pos_y1) >= BULLET_SPEED)) THEN
+					pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) - BULLET_SPEED);
+					next_state <= idle;
+				ELSE
 					next_state <= WAIT_ON_FIRE;
+				END IF;
 
-				END CASE;
+			WHEN bulletB =>
+				IF ((unsigned(pos_y1) <= 470)) THEN
+					pos_y_c <= STD_LOGIC_VECTOR(unsigned(pos_y1) + BULLET_SPEED);
+					next_state <= idle;
+				ELSE
+					next_state <= WAIT_ON_FIRE;
+				END IF;
 
-		END PROCESS bulletProcess;
+			WHEN OTHERS =>
+				next_state <= WAIT_ON_FIRE;
 
-		--assign output signals
-		pos_x <= pos_x1;
-		pos_y <= pos_y1;
+		END CASE;
 
-	END ARCHITECTURE behavioral;
+	END PROCESS bulletProcess;
+
+	--assign output signals
+	pos_x <= pos_x1;
+	pos_y <= pos_y1;
+
+END ARCHITECTURE behavioral;

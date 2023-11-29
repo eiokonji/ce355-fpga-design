@@ -17,9 +17,9 @@ ENTITY game IS
         BULLETA_DEAD, BULLETB_DEAD : out std_logic;
 
         WINNER : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-        GAME_TICKS : out std_logic; --this is so that we can more easily control the game in the simulation
+        GAME_TICKS1 : out std_logic; --this is so that we can more easily control the game in the simulation
 
-        A_SCORE, B_SCORE : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        A_SCORE, B_SCORE : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
     );
 END ENTITY game;
 
@@ -76,7 +76,7 @@ ARCHITECTURE structural OF game IS
 
     -- signals for screen position updates
     SIGNAL RESET_N : STD_LOGIC;
-    SIGNAL GAME_TICKS : std_logic;
+	signal game_ticks : std_logic;
 
     -- signals for tank and bullet positions
     SIGNAL TANKA_X_T, TANKA_Y_T, TANKB_X_T, TANKB_Y_T : STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -86,32 +86,33 @@ ARCHITECTURE structural OF game IS
     SIGNAL A_DEAD, B_DEAD : STD_LOGIC;
 
     --signals for scoring
-    SIGNAL A_SCORE_T, B_SCORE_T : STD_LOGIC_VECTOR(3 DOWNTO 0);
-    SIGNAL WINNER_T : STD_LOGIC_VECTOR(1 DOWNTO 0);
+    SIGNAL A_SCORE_T, B_SCORE_T : STD_LOGIC_VECTOR(3 DOWNTO 0) := (others => '0');
+    SIGNAL WINNER_T : STD_LOGIC_VECTOR(1 DOWNTO 0) := (others => '0');
 
     -- constants for selection between A and B
-    CONSTANT A : STD_LOGIC_VECTOR := '0';
-    CONSTANT B : STD_LOGIC_VECTOR := '1';
+    CONSTANT A : STD_LOGIC := '0';
+    CONSTANT B : STD_LOGIC := '1';
 BEGIN
     RESET_N <= NOT RESET;
     BULLETA_DEAD <= A_DEAD;
     BULLETB_DEAD <= B_DEAD;
+    GAME_TICKS1 <= game_ticks;
 
     clockCount : clock_counter
     GENERIC MAP(
-        BITS => 20
+        BITS => 3
     )
     PORT MAP(
         clk => CLOCK_50,
         rst => RESET_N,
-        game_tick => GAME_TICKS
+        game_tick => game_ticks
     );
 
     tankAModule : tank
     PORT MAP(
         clk => CLOCK_50,
         rst_n => RESET_N,
-        start => GAME_TICKS,
+        start => game_ticks,
         A_or_B => A,
         winner => WINNER_T,
         speed => TANKA_SPEED,
@@ -123,7 +124,7 @@ BEGIN
     PORT MAP(
         clk => CLOCK_50,
         rst_n => RESET_N,
-        start => GAME_TICKS,
+        start => game_ticks,
         A_or_B => B,
         winner => WINNER_T,
         speed => TANKB_SPEED,
@@ -134,7 +135,7 @@ BEGIN
     bulletAModule : bullet
     PORT MAP(
         clk => CLOCK_50,
-        start => GAME_TICKS,
+        start => game_ticks,
         rst_n => RESET_N,
         A_or_B => A,
         fired => BULLETA_FIRED,
@@ -148,7 +149,7 @@ BEGIN
     bulletBModule : bullet
     PORT MAP(
         clk => CLOCK_50,
-        start => GAME_TICKS,
+        start => game_ticks,
         rst_n => RESET_N,
         A_or_B => B,
         fired => BULLETB_FIRED,
@@ -162,7 +163,7 @@ BEGIN
     scoreA : inc_score
     PORT MAP(
         clk => CLOCK_50,
-        start => GAME_TICKS,
+        start => game_ticks,
         rst_n => RESET_N,
         A_or_B => A,
         bullet_x => BULLETA_X_T,
@@ -176,7 +177,7 @@ BEGIN
     scoreB : inc_score
     PORT MAP(
         clk => CLOCK_50,
-        start => GAME_TICKS,
+        start => game_ticks,
         rst_n => RESET_N,
         A_or_B => B,
         bullet_x => BULLETB_X_T,
@@ -190,7 +191,7 @@ BEGIN
     gameState : game_state
     PORT MAP(
         clk => CLOCK_50,
-        start => GAME_TICKS,
+        start => game_ticks,
         rst_n => RESET_N,
         A_score => A_SCORE_T,
         B_score => B_SCORE_T,

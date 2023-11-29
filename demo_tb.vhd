@@ -22,9 +22,9 @@ ARCHITECTURE behavioral OF testbench IS
         BULLETA_DEAD, BULLETB_DEAD : out std_logic;
 
         WINNER : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-        GAME_TICKS : OUT std_logic;
+        GAME_TICKS1 : OUT std_logic;
 
-        A_SCORE, B_SCORE : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        A_SCORE, B_SCORE : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
     );
     END COMPONENT game;
 
@@ -32,7 +32,7 @@ ARCHITECTURE behavioral OF testbench IS
     CONSTANT PERIOD : TIME := 20 ns; --50 mhz clock
 
     --control signals
-    SIGNAL clk_tb, GAME_TICKS : STD_LOGIC;
+    SIGNAL clk_tb, GAME_TICKS1 : STD_LOGIC;
     SIGNAL RESET : STD_LOGIC := '1';
     SIGNAL RESET_N : STD_LOGIC := '0';
 
@@ -46,17 +46,18 @@ ARCHITECTURE behavioral OF testbench IS
 
     --bullet signals
     SIGNAL BULLETA_X, BULLETA_Y, BULLETB_X, BULLETB_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
-    SIGNAL BULLETA_FIRED, BULLETB_FIRED, BULLETA_DEAD, BULLETB_DEAD : STD_LOGIC;
+    SIGNAL BULLETA_FIRED, BULLETB_FIRED : std_logic := '0'; 
+    signal BULLETA_DEAD, BULLETB_DEAD : STD_LOGIC := '1';
 
     --score and game state
-    SIGNAL A_SCORE, B_SCORE : STD_LOGIC_VECTOR(3 DOWNTO 0);
-    SIGNAL WINNER : STD_LOGIC_VECTOR(1 DOWNTO 0);
+    SIGNAL A_SCORE, B_SCORE: STD_LOGIC_VECTOR(3 DOWNTO 0) := (others => '0');
+    SIGNAL WINNER : STD_LOGIC_VECTOR(1 DOWNTO 0) := (others => '0');
 
 BEGIN
     RESET_N <= NOT RESET;
 
     ------------------------------------------------------------
-    game_inst : game
+    dut : game
     PORT MAP(
         CLOCK_50 => clk_tb,
         RESET => RESET,
@@ -78,7 +79,7 @@ BEGIN
         BULLETB_DEAD => BULLETB_DEAD,
 
         WINNER => WINNER,
-        GAME_TICKS => GAME_TICKS,
+        GAME_TICKS1 => GAME_TICKS1,
 
         A_SCORE => A_SCORE, 
         B_SCORE => B_SCORE
@@ -107,84 +108,91 @@ BEGIN
 
     update_process : PROCESS IS
     BEGIN
+        RESET <= '1';
+        wait for 1 ns;
+        RESET <= '0';
+        wait for 1 ns;
+        RESET <= '1';
         --1) tanks moving back and forth
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
         --2) switch speed of tank A
         --change speed of tank A and observe position
         TANKA_SPEED <= SPEED5;
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
         --wait for tank to collide with wall and switch direction
         TANKA_SPEED <= SPEED10;
-        WAIT FOR (TANKA_X = std_logic_vector(to_unsigned(200,10))); 
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (TANKA_X = std_logic_vector(to_unsigned(200,10))); --checking when it reaching this x pos twice
+        WAIT UNTIL (TANKA_X > std_logic_vector(to_unsigned(200,10))); 
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (TANKA_X < std_logic_vector(to_unsigned(200,10))); --checking when it reaching this x pos twice
         TANKA_SPEED <= SPEED1;
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
         --3) set speed of tank B to 0 (stationary)
         TANKB_SPEED <= SPEED0;
        --4) tank A shoots while moving and misses (bullet goes off screen, preserves x pos)
         BULLETA_FIRED <= '1';
         --observe bullet x pos same while y pos changes
         --observe behavior when bullet goes off screen
-        wait for (BULLETA_DEAD = '0');
-        wait for (BULLETA_DEAD = '1');
-        wait for (BULLETA_DEAD = '0');
-        wait for (BULLETA_DEAD = '1');
+        wait until (BULLETA_DEAD = '0');
+        wait until (BULLETA_DEAD = '1');
+        wait until (BULLETA_DEAD = '0');
+        wait until (BULLETA_DEAD = '1');
         BULLETA_FIRED <= '0';
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
         
          --5) set both tanks to stationary and align them
-        WAIT FOR (TANKA_X = std_logic_vector(to_unsigned(320, 10)));
+        TANKB_SPEED <= SPEED10;
+        WAIT UNTIL (TANKA_X > std_logic_vector(to_unsigned(320, 10)) and TANKA_X < std_logic_vector(to_unsigned(400, 10)));
         TANKA_SPEED <= SPEED0;
-        WAIT FOR (TANKB_X = std_logic_vector(to_unsigned(320, 10)));
+        WAIT UNTIL (TANKB_X > std_logic_vector(to_unsigned(320, 10)) and TANKB_X < std_logic_vector(to_unsigned(400, 10)));
         TANKB_SPEED <= SPEED0;
 
         --6) tank A shoots and hits tank B
         BULLETA_FIRED <= '1';
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
         BULLETA_FIRED <= '0';
-        WAIT FOR (A_SCORE = "0001");
+                    --up until here works
+        WAIT UNTIL (A_SCORE = "0001");
         --7) tank B shoots and hits tank A
         BULLETB_FIRED <= '1';
         --8) tank B shoots until score increments to 3
-        WAIT FOR (B_SCORE = "0011");
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
+        WAIT UNTIL (B_SCORE = "0011");
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
         --9) reset game
         RESET <= '0';
-        WAIT FOR (GAME_TICKS = '0');
-        WAIT FOR (GAME_TICKS = '1');
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
         RESET <= '1';
 
-        WAIT;
+        WAIT for 20 ns;
 
     END PROCESS;
 

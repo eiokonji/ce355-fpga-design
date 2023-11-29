@@ -70,7 +70,7 @@ ARCHITECTURE structural OF top_level IS
 
     COMPONENT inc_score IS
         PORT (
-            clk, rst_n, start : IN STD_LOGIC;
+            clk, rst_n : IN STD_LOGIC;
             A_or_B : IN STD_LOGIC;
             bullet_x, bullet_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
             tank_x, tank_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -81,7 +81,7 @@ ARCHITECTURE structural OF top_level IS
 
     COMPONENT game_state IS
         PORT (
-            clk, rst_n, start : IN STD_LOGIC;
+            clk, rst_n : IN STD_LOGIC;
             A_score, B_score : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
             game_over : OUT STD_LOGIC;
             winner : OUT STD_LOGIC_VECTOR (1 DOWNTO 0)
@@ -282,7 +282,6 @@ BEGIN
     scoreA : inc_score
     PORT MAP(
         clk => clk,
-        start => game_ticks,
         rst_n => RESET_N,
         A_or_B => A,
         bullet_x => BULLETA_X,
@@ -296,7 +295,6 @@ BEGIN
     scoreB : inc_score
     PORT MAP(
         clk => clk,
-        start => game_ticks,
         rst_n => RESET_N,
         A_or_B => B,
         bullet_x => BULLETB_X,
@@ -310,7 +308,6 @@ BEGIN
     gameState : game_state
     PORT MAP(
         clk => clk,
-        start => game_ticks,
         rst_n => RESET_N,
         A_score => A_SCORE,
         B_score => B_SCORE,
