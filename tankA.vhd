@@ -73,8 +73,6 @@ BEGIN
                 IF (start = '1') THEN
                     next_state <= move;
                 ELSE
-                    --pos_x1 <= STD_LOGIC_VECTOR(to_unsigned(320, 10));
-                    --pos_y1 <= STD_LOGIC_VECTOR(to_unsigned(452, 10));
                     next_state <= idle;
                 END IF;
             WHEN move =>

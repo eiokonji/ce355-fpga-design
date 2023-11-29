@@ -41,42 +41,68 @@ ARCHITECTURE structural OF top_level IS
             clk, ROM_clk, rst_n, video_on, eof : IN STD_LOGIC;
             pixel_row, pixel_column : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
             tankA_x, tankA_y, tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-            bulletA_x, bulletA_y, bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-            winner : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+            bulletA_x, bulletA_y, bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);     
+            winner : in std_logic_vector(1 downto 0);
             red_out, green_out, blue_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
         );
     END COMPONENT pixelGenerator;
 
-    COMPONENT tank IS
+    COMPONENT tankA IS
         PORT (
             clk, rst_n, start : IN STD_LOGIC;
-            A_or_B : IN STD_LOGIC;
             speed : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-            winner : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+            winner : IN std_logic_vector(1 downto 0);
             pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
         );
-    END COMPONENT tank;
+    END COMPONENT tankA;
 
-    COMPONENT bullet IS
+    COMPONENT tankB IS
         PORT (
             clk, rst_n, start : IN STD_LOGIC;
-            A_or_B : IN STD_LOGIC;
+            speed : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+            winner : in std_logic_vector(1 downto 0);
+            pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+        );
+    END COMPONENT tankB;
+
+    COMPONENT bulletA IS
+        PORT (
+            clk, rst_n, start : IN STD_LOGIC;
             fired, dead : IN STD_LOGIC;
             tank_x, tank_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
             pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
         );
-    END COMPONENT bullet;
+    END COMPONENT bulletA;
 
-    COMPONENT inc_score IS
+    COMPONENT bulletB IS
         PORT (
             clk, rst_n, start : IN STD_LOGIC;
-            A_or_B : IN STD_LOGIC;
-            bullet_x, bullet_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+            fired, dead : IN STD_LOGIC;
             tank_x, tank_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-            score : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+            pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+        );
+    END COMPONENT bulletB;
+
+    COMPONENT inc_scoreA IS
+        PORT (
+            clk, rst_n, start : IN STD_LOGIC;
+            bulletA_x, bulletA_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+            tankB_x, tankB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+            A_score : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+            dead : OUT STD_LOGIC
+
+        );
+    END COMPONENT inc_scoreA;
+
+    COMPONENT inc_scoreB IS
+        PORT (
+            clk, rst_n, start : IN STD_LOGIC;
+            bulletB_x, bulletB_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+            tankA_x, tankA_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+            B_score : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
             dead : OUT STD_LOGIC
         );
-    END COMPONENT inc_score;
+    END COMPONENT inc_scoreB;
 
     COMPONENT game_state IS
         PORT (
@@ -146,10 +172,6 @@ ARCHITECTURE structural OF top_level IS
     SIGNAL VGA_clk_int : STD_LOGIC;
     SIGNAL eof : STD_LOGIC;
 
-    --constants for selection between A and B
-    CONSTANT A : std_logic_vector := '0';
-    CONSTANT B : std_logic_vector := '1';
-
     --signals for tank and bullet positions
     SIGNAL TANKA_X, TANKA_Y, TANKB_X, TANKB_Y : STD_LOGIC_VECTOR(9 DOWNTO 0);
 
@@ -201,8 +223,8 @@ BEGIN
         tankB_y => TANKB_Y,
         bulletA_x => BULLETA_X,
         bulletA_y => BULLETA_Y,
-        bulletB_x => BULLETB_X,
-        bulletB_y => BULLETB_Y,
+        bulletB_x => BULLETB_X, 
+        bulletB_y => BULLETB_Y, 
 
         winner => WINNER,
 
@@ -211,36 +233,33 @@ BEGIN
         blue_out => VGA_BLUE
     );
 
-    tankAModule : tank
+    tankAModule : tankA
     PORT MAP(
         clk => CLOCK_50,
         rst_n => RESET_N,
         start => game_ticks,
-        A_or_B => A,
         winner => WINNER,
         speed => TANKA_SPEED,
         pos_x => TANKA_X,
         pos_y => TANKA_Y
     );
 
-    tankBModule : tank
+    tankBModule : tankB
     PORT MAP(
         clk => CLOCK_50,
         rst_n => RESET_N,
         start => game_ticks,
-        A_or_B => B,
         winner => WINNER,
         speed => TANKB_SPEED,
         pos_x => TANKB_X,
         pos_y => TANKB_Y
     );
 
-    bulletAModule : bullet
+    bulletAModule : bulletA
     PORT MAP(
         clk => CLOCK_50,
         start => game_ticks,
         rst_n => RESET_N,
-        A_or_B => A,
         fired => BULLETA_FIRED,
         dead => A_DEAD,
         tank_x => TANKA_X,
@@ -249,12 +268,11 @@ BEGIN
         pos_y => BULLETA_Y
     );
 
-    bulletBModule : bullet
+    bulletBModule : bulletB
     PORT MAP(
         clk => CLOCK_50,
         start => game_ticks,
         rst_n => RESET_N,
-        A_or_B => B,
         fired => BULLETB_FIRED,
         dead => B_DEAD,
         tank_x => TANKB_X,
@@ -263,31 +281,29 @@ BEGIN
         pos_y => BULLETB_Y
     );
 
-    scoreA : inc_score
+    scoreA : inc_scoreA
     PORT MAP(
         clk => CLOCK_50,
         start => game_ticks,
         rst_n => RESET_N,
-        A_or_B => A,
-        bullet_x => BULLETA_X,
-        bullet_y => BULLETA_Y,
-        tank_x => TANKB_X,
-        tank_y => TANKB_Y,
-        score => A_SCORE,
+        bulletA_x => BULLETA_X,
+        bulletA_y => BULLETA_Y,
+        tankB_x => TANKB_X,
+        tankB_y => TANKB_Y,
+        A_score => A_SCORE,
         dead => A_DEAD
     );
 
-    scoreB : inc_score
+    scoreB : inc_scoreB
     PORT MAP(
         clk => CLOCK_50,
         start => game_ticks,
         rst_n => RESET_N,
-        A_or_B => B,
-        bullet_x => BULLETB_X,
-        bullet_y => BULLETB_Y,
-        tank_x => TANKA_X,
-        tank_y => TANKA_Y,
-        score => B_SCORE,
+        bulletB_x => BULLETB_X,
+        bulletB_y => BULLETB_Y,
+        tankA_x => TANKA_X,
+        tankA_y => TANKA_Y,
+        B_score => B_SCORE,
         dead => B_DEAD
     );
 
@@ -308,7 +324,7 @@ BEGIN
         clock_50MHz => CLOCK_50,
         reset => RESET,
         scan_readyo => scan_ready,
-        hist3 => OPEN,
+        hist3 => open,
         hist2 => hist2,
         hist1 => hist1,
         hist0 => hist0

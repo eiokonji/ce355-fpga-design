@@ -1,87 +1,120 @@
---This module renders the tanks on the screen via VGA (in blue and red)
+--This module updates the horizontal position of the tanks, 
+--flipping the direction when the tank reaches the side boundaries
 LIBRARY IEEE;
 
 USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
 
---inputs: clk, rst_n, center positions
---outputs: left_bound, right_bound, top_bound, bottom_bound based on top left position
---width: 80, height: 34
+--inputs: clk, rst_n, start (game ticks), A (0) or B (1), speed, winner
+--outputs: (x,y) of tank
+
+--notes: 
+	--speed comes from keyboard input
 
 ENTITY tank IS
-	PORT (
-		clk, rst_n, start : IN STD_LOGIC;
-		pos_x, pos_y : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-		left_bound, right_bound, top_bound, bottom_bound : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
-	);
+    PORT (
+        clk, rst_n, start: IN STD_LOGIC;
+		A_or_B : in std_logic;
+        speed : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+        winner : IN STD_LOGIC_VECTOR(1 downto 0);
+        pos_x, pos_y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
+    );
 END ENTITY tank;
 
 ARCHITECTURE behavioral OF tank IS
-
-	SIGNAL pos_x_int, pos_y_int : NATURAL;
-
-	--initialize states
-	TYPE states IS (idle, move);
+    --initialize states
+    TYPE states IS (init, idle, move, game_over);
     SIGNAL state, next_state : states;
 
-	--clocking signals
-	signal left_bound_c, right_bound_c, top_bound_c, bottom_bound_c : std_logic_vector(9 downto 0);
+    --signals for position
+    SIGNAL pos_x1, pos_y1, pos_x_c, pos_y_c : STD_LOGIC_VECTOR(9 DOWNTO 0);
+
+    --signal for direction (0= right, 1 = left)
+    SIGNAL direction : STD_LOGIC := '0';
+    SIGNAL direction_c : STD_LOGIC;
+
+    --declare constant bounds
+    CONSTANT left_bound : NATURAL := 0 + 40;
+    CONSTANT right_bound : NATURAL := 640 - 40;
+
+	--constants for tank assignment
+	CONSTANT TANKA_POS_X : std_logic_vector(9 downto 0) := STD_LOGIC_VECTOR(to_unsigned(320, 10));
+	CONSTANT TANKA_POS_Y : std_logic_vector(9 downto 0) := STD_LOGIC_VECTOR(to_unsigned(452, 10));
+	CONSTANT TANKB_POS_X : std_logic_vector(9 downto 0) := STD_LOGIC_VECTOR(to_unsigned(320, 10));
+	CONSTANT TANKB_POS_Y : std_logic_vector(9 downto 0) := STD_LOGIC_VECTOR(to_unsigned(27, 10));
 
 BEGIN
 
-	--------------------------------------------------------------------------------------------
+    clockProcess : PROCESS (clk, rst_n) IS
+    BEGIN
+        IF (rst_n = '1') THEN
+            state <= init;
+            pos_x1 <= (others => '0');
+            pos_y1 <= (others => '0');
 
-	pos_x_int <= to_integer(unsigned(pos_x));
-	pos_y_int <= to_integer(unsigned(pos_y));
+        ELSIF (rising_edge(clk)) THEN
+            state <= next_state;
+            pos_x1 <= pos_x_c;
+            pos_y1 <= pos_y_c;
+            direction <= direction_c;
 
-	--------------------------------------------------------------------------------------------
-	clockProcess : process (clk, rst_n) IS
-	begin 
-		if (rst_n = '1') then 
-			state <= idle;
-			left_bound <= std_logic_vector(to_unsigned(280, 10));
-			right_bound <= std_logic_vector(to_unsigned(360, 10));
-			top_bound <= std_logic_vector(to_unsigned(435, 10));
-			bottom_bound <= std_logic_vector(to_unsigned(470, 10));
+        END IF;
+    END PROCESS clockProcess;
 
-		elsif (rising_edge(clk)) then
-			state <= next_state;
-			left_bound <= left_bound_c;
-			right_bound <= right_bound_c;
-			top_bound <= top_bound_c;
-			bottom_bound <= bottom_bound_c;
-		end if;
-	end process clockProcess;
+    --update positions
+    tankProcess : PROCESS (start, state, pos_x1, pos_y1, direction, speed) IS
+    BEGIN
+        --assign defaults
+        next_state <= state;
+        pos_x_c <= pos_x1;
+        pos_y_c <= pos_y1;
+        direction_c <= direction;
 
-	tank_Draw : PROCESS (start, pos_x, pos_y) IS
-	BEGIN
-		--assign defaults
-		next_state <= state;
-		left_bound_c <= left_bound;
-		right_bound_c <= right_bound;
-		top_bound_c <= top_bound;
-		bottom_bound_c <= bottom_bound;s
+        CASE state IS
+			WHEN init =>
+					if (A_or_B = '0') then
+						pos_x_c <= TANKA_POS_X; --Tank A default
+						pos_y_c <= TANKA_POS_Y;
+					else 
+						pos_x_c <= TANKB_POS_X; --Tank B default
+						pos_y_c <= TANKB_POS_Y;
+					end if;
+					next_state <= idle;
+					
+            WHEN idle =>
+                IF (start = '1') THEN
+                    next_state <= move;
+                ELSE
+                    next_state <= idle;
+                END IF;
+            WHEN move =>
+                if (start = '1') then 
+                    IF (direction = '0') THEN
+                        IF (unsigned(pos_x1) + unsigned(speed) <= right_bound) THEN
+                            pos_x_c <= std_logic_vector(unsigned(pos_x1) + unsigned(speed));
+                        ELSE
+                            direction_c <= '1'; --if tank exceeds right bound, flip direction
+                        END IF;
+                    ELSIF (direction = '1') THEN
+                        IF (unsigned(pos_x1) - unsigned(speed) >= left_bound) THEN
+                            pos_x_c <= std_logic_vector(unsigned(pos_x1) - unsigned(speed));
+                        ELSE
+                            direction_c <= '0'; --if tank exceeds left bound, flip direction
+                        END IF;
+                    END IF;
+                    if (winner = "01" or winner = "10") then 
+                        next_state <= game_over;
+                    end if;
+                end if;
 
+            WHEN game_over =>
+                next_state <= game_over;
 
-		case state is
-			when idle =>
-				if (start = '1') then
-					next_state <= move;
-				else 
-					left_bound_c <= std_logic_vector(to_unsigned(280, 10));
-					right_bound_c <= std_logic_vector(to_unsigned(360, 10));
-					top_bound_c <= std_logic_vector(to_unsigned(435, 10));
-					bottom_bound_c <= std_logic_vector(to_unsigned(470, 10));
-				end if;
-			when move =>
-				left_bound_c <= std_logic_vector(to_unsigned(pos_x_int, 10));
-				right_bound_c <= std_logic_vector(to_unsigned(pos_x_int + 80, 10));
-				top_bound_c <= std_logic_vector(to_unsigned(pos_y_int, 10));
-				bottom_bound_c <= std_logic_vector(to_unsigned(pos_y_int + 35, 10));
-		end case;
+        END CASE;
 
-	END PROCESS tank_Draw;
+    END PROCESS tankProcess;
 
-	--------------------------------------------------------------------------------------------
+    pos_x <= pos_x1;
+    pos_y <= pos_y1;
 
 END ARCHITECTURE behavioral;
