@@ -14,7 +14,10 @@ ENTITY game IS
 
         TANKA_X, TANKA_Y, TANKB_X, TANKB_Y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
         BULLETA_X, BULLETA_Y, BULLETB_X, BULLETB_Y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
+        BULLETA_DEAD, BULLETB_DEAD : out std_logic;
+
         WINNER : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+        GAME_TICKS : out std_logic; --this is so that we can more easily control the game in the simulation
 
         A_SCORE, B_SCORE : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
     );
@@ -91,6 +94,8 @@ ARCHITECTURE structural OF game IS
     CONSTANT B : STD_LOGIC_VECTOR := '1';
 BEGIN
     RESET_N <= NOT RESET;
+    BULLETA_DEAD <= A_DEAD;
+    BULLETB_DEAD <= B_DEAD;
 
     clockCount : clock_counter
     GENERIC MAP(
