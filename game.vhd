@@ -9,7 +9,6 @@ ENTITY game IS
         CLOCK_50 : IN STD_LOGIC;
         RESET : IN STD_LOGIC;
 
-        GAME_TICKS : IN STD_LOGIC;
         TANKA_SPEED, TANKB_SPEED : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
         BULLETA_FIRED, BULLETB_FIRED : IN STD_LOGIC;
 
@@ -20,7 +19,17 @@ ENTITY game IS
         A_SCORE, B_SCORE : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
     );
 END ENTITY game;
+
 ARCHITECTURE structural OF game IS
+    COMPONENT clock_counter IS
+        GENERIC (
+            BITS : INTEGER := 20
+        );
+        PORT (
+            clk, rst : IN STD_LOGIC;
+            game_tick : OUT STD_LOGIC
+        );
+    END COMPONENT clock_counter;
 
     COMPONENT tank IS
         PORT (
@@ -64,6 +73,7 @@ ARCHITECTURE structural OF game IS
 
     -- signals for screen position updates
     SIGNAL RESET_N : STD_LOGIC;
+    SIGNAL GAME_TICKS : std_logic;
 
     -- signals for tank and bullet positions
     SIGNAL TANKA_X_T, TANKA_Y_T, TANKB_X_T, TANKB_Y_T : STD_LOGIC_VECTOR(9 DOWNTO 0);
@@ -81,6 +91,16 @@ ARCHITECTURE structural OF game IS
     CONSTANT B : STD_LOGIC_VECTOR := '1';
 BEGIN
     RESET_N <= NOT RESET;
+
+    clockCount : clock_counter
+    GENERIC MAP(
+        BITS => 20
+    )
+    PORT MAP(
+        clk => CLOCK_50,
+        rst => RESET_N,
+        game_tick => GAME_TICKS
+    );
 
     tankAModule : tank
     PORT MAP(

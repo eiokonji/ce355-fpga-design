@@ -26,15 +26,19 @@ END ENTITY top_game;
 
 ARCHITECTURE structural OF top_game IS
 
-    COMPONENT clock_counter IS
-        GENERIC (
-            BITS : INTEGER := 20
-        );
+     COMPONENT game IS
         PORT (
-            clk, rst : IN STD_LOGIC;
-            game_tick : OUT STD_LOGIC
+            CLOCK_50 : IN STD_LOGIC;
+            RESET : IN STD_LOGIC;
+            GAME_TICKS : IN STD_LOGIC;
+            TANKA_SPEED, TANKB_SPEED : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+            BULLETA_FIRED, BULLETB_FIRED : IN STD_LOGIC;
+            TANKA_X, TANKA_Y, TANKB_X, TANKB_Y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
+            BULLETA_X, BULLETA_Y, BULLETB_X, BULLETB_Y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
+            WINNER : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+            A_SCORE, B_SCORE : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
         );
-    END COMPONENT clock_counter;
+    END COMPONENT game;
 
     COMPONENT pixelGenerator IS
         PORT (
@@ -67,20 +71,6 @@ ARCHITECTURE structural OF top_game IS
             hist0 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
         );
     END COMPONENT ps2;
-
-    COMPONENT game IS
-        PORT (
-            CLOCK_50 : IN STD_LOGIC;
-            RESET : IN STD_LOGIC;
-            GAME_TICKS : IN STD_LOGIC;
-            TANKA_SPEED, TANKB_SPEED : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-            BULLETA_FIRED, BULLETB_FIRED : IN STD_LOGIC;
-            TANKA_X, TANKA_Y, TANKB_X, TANKB_Y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
-            BULLETA_X, BULLETA_Y, BULLETB_X, BULLETB_Y : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
-            WINNER : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-            A_SCORE, B_SCORE : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-        );
-    END COMPONENT game;
 
     COMPONENT keypresses IS
         PORT (
@@ -140,15 +130,6 @@ BEGIN
     RESET_N <= NOT RESET; -- if reset is 1, because RESET is '0'
 
     --------------------------------------------------------------------------------------------
-    clockCount : clock_counter
-    GENERIC MAP(
-        BITS => 20
-    )
-    PORT MAP(
-        clk => CLOCK_50,
-        rst => RESET_N,
-        game_tick => GAME_TICKS
-    );
 
     topGame : game
     PORT MAP(
