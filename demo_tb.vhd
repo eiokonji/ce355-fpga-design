@@ -51,7 +51,7 @@ ARCHITECTURE behavioral OF testbench IS
 
     --score and game state
     SIGNAL A_SCORE, B_SCORE: STD_LOGIC_VECTOR(3 DOWNTO 0) := (others => '0');
-    SIGNAL WINNER : STD_LOGIC_VECTOR(1 DOWNTO 0) := (others => '0');
+    SIGNAL WINNER: STD_LOGIC_VECTOR(1 DOWNTO 0);
 
 BEGIN
     RESET_N <= NOT RESET;
@@ -154,10 +154,10 @@ BEGIN
         BULLETA_FIRED <= '1';
         --observe bullet x pos same while y pos changes
         --observe behavior when bullet goes off screen
-        wait until (BULLETA_DEAD = '0');
-        wait until (BULLETA_DEAD = '1');
-        wait until (BULLETA_DEAD = '0');
-        wait until (BULLETA_DEAD = '1');
+        wait until (BULLETA_Y < std_logic_vector(to_unsigned(10,10)));
+        -- wait until (BULLETA_DEAD = '1');
+        -- wait until (BULLETA_DEAD < std_logic_vector(to_unsigned(200,10)));
+        -- wait until (BULLETA_DEAD = '1');
         BULLETA_FIRED <= '0';
         WAIT UNTIL (GAME_TICKS1 = '0');
         WAIT UNTIL (GAME_TICKS1 = '1');
@@ -188,6 +188,8 @@ BEGIN
         WAIT UNTIL (GAME_TICKS1 = '1');
         --9) reset game
         RESET <= '0';
+        WAIT UNTIL (GAME_TICKS1 = '0');
+        WAIT UNTIL (GAME_TICKS1 = '1');
         WAIT UNTIL (GAME_TICKS1 = '0');
         WAIT UNTIL (GAME_TICKS1 = '1');
         RESET <= '1';

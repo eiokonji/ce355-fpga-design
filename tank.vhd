@@ -23,7 +23,7 @@ END ENTITY tank;
 
 ARCHITECTURE behavioral OF tank IS
     --initialize states
-    TYPE states IS (init, idle, move, game_over);
+    TYPE states IS (init, idle, move_right, move_left, game_over);
     SIGNAL state, next_state : states;
 
     --signals for position
@@ -83,29 +83,38 @@ BEGIN
 
             WHEN idle =>
                 IF (start = '1') THEN
-                    next_state <= move;
-                ELSE
-                    next_state <= idle;
+                    IF (direction = '0') THEN
+                        next_state <= move_right;
+                    ELSE
+                        next_state <= move_left;
+                    END IF;
+                    --next_state <= move;
                 END IF;
 
-            WHEN move =>
-                IF (start = '1') THEN
-                    IF (direction = '0') THEN
-                        IF (unsigned(pos_x1) + unsigned(speed) <= right_bound) THEN
-                            pos_x_c <= STD_LOGIC_VECTOR(unsigned(pos_x1) + unsigned(speed));
-                        ELSE
-                            direction_c <= '1'; --if tank exceeds right bound, flip direction
-                        END IF;
-                    ELSIF (direction = '1') THEN
-                        IF (unsigned(pos_x1) - unsigned(speed) >= left_bound) THEN
-                            pos_x_c <= STD_LOGIC_VECTOR(unsigned(pos_x1) - unsigned(speed));
-                        ELSE
-                            direction_c <= '0'; --if tank exceeds left bound, flip direction
-                        END IF;
-                    END IF;
-                    IF (winner = "01" OR winner = "10") THEN
-                        next_state <= game_over;
-                    END IF;
+            WHEN move_right =>
+                IF (unsigned(pos_x1) + unsigned(speed) <= right_bound) THEN
+                    pos_x_c <= STD_LOGIC_VECTOR(unsigned(pos_x1) + unsigned(speed));
+                ELSE
+                    direction_c <= '1'; --if tank exceeds right bound, flip direction
+                END IF;
+                next_state <= idle;
+
+                --check if the game has been won
+                IF (winner = "01" OR winner = "10") THEN
+                    next_state <= game_over;
+                END IF;
+
+            WHEN move_left =>
+                IF (unsigned(pos_x1) - unsigned(speed) >= left_bound) THEN
+                    pos_x_c <= STD_LOGIC_VECTOR(unsigned(pos_x1) - unsigned(speed));
+                ELSE
+                    direction_c <= '0'; --if tank exceeds left bound, flip direction
+                END IF;
+                next_state <= idle;
+
+                --check if the game has been won
+                IF (winner = "01" OR winner = "10") THEN
+                    next_state <= game_over;
                 END IF;
 
             WHEN game_over =>
