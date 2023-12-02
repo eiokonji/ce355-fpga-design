@@ -25,14 +25,6 @@ ARCHITECTURE behavioral OF pixelGenerator IS
 	CONSTANT color_black : STD_LOGIC_VECTOR(2 DOWNTO 0) := "110";
 	CONSTANT color_white : STD_LOGIC_VECTOR(2 DOWNTO 0) := "111";
 
-	-- COMPONENT colorROM IS
-	-- 	PORT (
-	-- 		address : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
-	-- 		clock : IN STD_LOGIC := '1';
-	-- 		q : OUT STD_LOGIC_VECTOR (23 DOWNTO 0)
-	-- 	);
-	-- END COMPONENT colorROM;
-
 	SIGNAL colorAddress : STD_LOGIC_VECTOR (2 DOWNTO 0);
 	SIGNAL color : STD_LOGIC_VECTOR (23 DOWNTO 0);
 
@@ -58,10 +50,6 @@ BEGIN
 	pixel_column_int <= to_integer(unsigned(pixel_column));
 	--------------------------------------------------------------------------------------------	
 
-	-- colors : colorROM
-	-- PORT MAP(colorAddress, ROM_clk, color);
-
-	--------------------------------------------------------------------------------------------	
 	tank_A_lb <= to_integer(unsigned(tankA_x) - 40);
 	tank_A_rb <= to_integer(unsigned(tankA_x) + 40);
 	tank_A_tb <= to_integer(unsigned(tankA_y) - 17);
@@ -86,25 +74,18 @@ BEGIN
 
 		IF (rising_edge(clk)) THEN
 			IF (video_on = '0') THEN
-				-- colorAddress <= color_black;
-				color <= X"000000";
-				-- color <= "000000000000000000000000000000";
+				color <= X"000000"; --black
 			ELSE
 				IF (tankA_on = '1' AND (winner /= "10")) THEN
-					-- color <= "000000000000000000001111111111"; -- black
 					color <= X"0000FF"; -- blue
 				ELSIF (tankB_on = '1' AND (winner /= "01")) THEN
 					color <= X"FF0000"; -- red
-					-- colorAddress <= color_red;
 				ELSIF (bulletA_on = '1' AND winner = "00") THEN
 					color <= X"0000FF"; -- blue
-					-- colorAddress <= color_blue;
 				ELSIF (bulletB_on = '1' AND winner = "00") THEN
-					-- colorAddress <= color_red;
 					color <= X"FF0000"; -- red
 				ELSE
-					-- colorAddress <= color_black;
-					color <= X"000000";
+					color <= X"000000"; --black
 				END IF;
 			END IF;
 		END IF;

@@ -6,7 +6,6 @@ USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
 
 --Inputs: clock, reset, start (game_ticks), A (0) or B (1), fired, dead, tank (x,y)
-
 --Outputs: (x, y) aka (pixel_row, pixel_column) position of BULLET, active
 
 --Notes:
@@ -40,7 +39,7 @@ BEGIN
 	BEGIN
 		IF (rst_n = '1') THEN
 			state <= WAIT_ON_FIRE;
-			pos_x1 <= (OTHERS => '0'); --center based on tank position
+			pos_x1 <= (OTHERS => '0');
 			pos_y1 <= (OTHERS => '0');
 
 		ELSIF (rising_edge(clk)) THEN

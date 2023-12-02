@@ -4,8 +4,8 @@ LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
 
---inputs: clk, rst_n, start (game_ticks), A or B, self bullet, enemy tank
---outputs: score and dead (indicates if bullet is still)
+--inputs: clk, rst_n, A or B, bullet (x,y), opponent tank (x,y)
+--outputs: score and dead (indicates if bullet is still alive)
 
 ENTITY inc_score IS
     PORT (
@@ -81,7 +81,6 @@ BEGIN
                 END IF;
 
             WHEN possible_collision =>
-                -- IF (A_or_B = '0') AND (unsigned(bullet_tb) <= unsigned(tank_bb)) THEN
                 --check for collision (has bullet A hit tank B?)
                 IF (((unsigned(bullet_lb) >= unsigned(tank_lb)) AND ((unsigned(bullet_lb) + 1) < unsigned(tank_rb)))
                     OR ((unsigned(bullet_rb) <= unsigned(tank_rb)) AND ((unsigned(bullet_rb) - 1) > unsigned(tank_lb)))) THEN
@@ -94,22 +93,6 @@ BEGIN
                     next_state <= play;
                     dead_c <= '0';
                 END IF;
-                -- END IF;
-                -- ELSIF (A_or_B = '1') AND (unsigned(bullet_bb) >= unsigned(tank_tb)) THEN
-                --     --check for collision (has bullet B hit tank A?)
-                --     IF (((unsigned(bullet_lb) >= unsigned(tank_lb)) AND ((unsigned(bullet_lb) + 10) <= (unsigned(tank_rb) + 9)))
-                --         OR ((unsigned(bullet_rb) <= unsigned(tank_rb)) AND ((unsigned(bullet_rb) - 10) >= (unsigned(tank_lb) - 9)))) THEN
-                --         score_c <= STD_LOGIC_VECTOR(unsigned(score1) + 1);
-                --         dead_c <= '1';
-                --         next_state <= collision;
-
-                --     ELSE
-                --         score_c <= score1; --score stays the same
-                --         dead_c <= '0';
-                --     END IF;
-                -- END IF;
-                -- END IF;
-                -- END IF;
 
             WHEN collision => --THE PURPOSE OF THIS IS TO SET BULLET ALIVE AGAIN
                 IF (A_or_B = '0') THEN
